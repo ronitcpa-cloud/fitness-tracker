@@ -7,6 +7,10 @@
 <meta name="theme-color" content="#1C0E24">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="האימון שלי">
+<link rel="apple-touch-icon" sizes="180x180" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Suez+One&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -379,56 +383,67 @@
     overflow-y:auto;
   }
   .player.on{display:block}
-  .p-wrap{max-width:520px;margin:0 auto;padding:14px 16px 40px;
-    min-height:100dvh;display:flex;flex-direction:column}
-  .p-bar{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .player{overflow:hidden}
+  .p-wrap{
+    max-width:520px;margin:0 auto;
+    padding:calc(10px + env(safe-area-inset-top)) 14px calc(10px + env(safe-area-inset-bottom));
+    height:100vh;height:100dvh;display:flex;flex-direction:column;gap:0;
+  }
+  .p-row{display:flex;align-items:center;gap:10px;margin:6px 0 2px}
+  .p-row #pFig{flex:1;min-width:0}
+  .p-row #pDialWrap{flex-shrink:0}
+  .p-bar{display:flex;align-items:center;gap:10px;margin-bottom:5px;flex-shrink:0}
   .p-close{border:none;background:rgba(255,255,255,.1);color:var(--ink);
     width:38px;height:38px;border-radius:50%;font-size:1.1rem;cursor:pointer;flex-shrink:0}
   .p-of{flex:1;font-size:.82rem;color:var(--muted)}
   .p-of b{color:var(--ink)}
-  .p-seg{display:flex;gap:3px;margin-bottom:14px}
+  .p-seg{display:flex;gap:2px;margin-bottom:8px;flex-shrink:0}
   .p-seg i{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.16)}
   .p-seg i.on{background:var(--aqua)}
   .p-seg i.cur{background:var(--pink)}
 
-  .p-name{font-family:'Suez One',serif;font-size:1.5rem;line-height:1.25;text-align:center}
+  .p-name{font-family:'Suez One',serif;font-size:clamp(1.05rem,4.4vw,1.35rem);line-height:1.2;text-align:center}
   .p-side{
-    display:inline-block;margin:8px auto 0;font-size:.8rem;font-weight:800;color:#1C0E24;
-    background:var(--aqua);padding:3px 14px;border-radius:99px;
+    display:inline-block;margin:5px auto 0;font-size:.74rem;font-weight:800;color:#1C0E24;
+    background:var(--aqua);padding:2px 12px;border-radius:99px;
   }
+  #pSideWrap{text-align:center}
   .p-side.rest{background:var(--muted)}
-  .p-center{text-align:center;margin:14px 0}
+  .p-center{text-align:center;margin:4px 0}
 
-  .dial{position:relative;width:230px;height:230px;margin:0 auto}
+  .dial{position:relative;width:clamp(126px,38vw,164px);height:clamp(126px,38vw,164px);margin:0 auto}
   .dial svg{transform:rotate(-90deg)}
   .dial .txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .dial .txt b{font-family:'Suez One',serif;font-size:3.4rem;line-height:1}
-  .dial .txt span{font-size:.78rem;color:var(--muted);margin-top:2px}
+  .dial svg{width:100%;height:100%}
+  .dial .txt b{font-family:'Suez One',serif;font-size:clamp(1.9rem,7.4vw,2.6rem);line-height:1}
+  .dial .txt span{font-size:.68rem;color:var(--muted);margin-top:2px}
 
-  .p-ctrl{display:flex;gap:10px;justify-content:center;align-items:center;margin:18px 0 6px}
+  .p-ctrl{display:flex;gap:8px;justify-content:center;align-items:center;margin:8px 0 8px;flex-shrink:0}
   .p-ctrl button{
     border:1px solid var(--line);cursor:pointer;color:var(--ink);
     background:rgba(255,255,255,.08);
-    font-family:'Assistant',sans-serif;font-weight:800;font-size:.9rem;
-    padding:12px 16px;border-radius:16px;
+    font-family:'Assistant',sans-serif;font-weight:800;font-size:.85rem;
+    padding:11px 14px;border-radius:15px;
   }
   .p-ctrl button.main{
-    min-width:130px;font-size:1.05rem;color:#0E2A26;border:none;
+    min-width:124px;font-size:1rem;color:#0E2A26;border:none;
     background:linear-gradient(180deg,#5CF2DA,var(--aqua));
     box-shadow:0 5px 0 #0E8E7A;
   }
   .p-ctrl button.main:active{transform:translateY(4px);box-shadow:0 1px 0 #0E8E7A}
   .p-info{
-    margin-top:auto;border-radius:16px;padding:14px;
-    background:rgba(0,0,0,.3);border:1px solid var(--line);font-size:.86rem;line-height:1.55;
+    flex:1 1 auto;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;
+    border-radius:16px;padding:11px 13px;
+    background:rgba(0,0,0,.3);border:1px solid var(--line);font-size:.86rem;line-height:1.4;
   }
-  .p-info h5{font-size:.78rem;color:var(--orange);margin-bottom:4px}
-  .p-info h5.c{color:var(--pink);margin-top:10px}
-  .p-info ol{padding-inline-start:18px}
-  .p-info ul{padding-inline-start:18px;list-style:none}
+  .p-info h5{font-size:.72rem;color:var(--orange);margin-bottom:3px}
+  .p-info h5.c{color:var(--pink);margin-top:8px}
+  .p-info .why{color:var(--aqua);margin-bottom:8px;line-height:1.4}
+  .p-info ol{padding-inline-start:16px}
+  .p-info ul{padding-inline-start:14px;list-style:none}
   .p-info ul li::before{content:'⚠ ';color:var(--pink)}
-  .p-info li{margin-bottom:3px}
-  .p-why{font-size:.84rem;color:var(--aqua);text-align:center;margin-bottom:6px;line-height:1.5}
+  .p-info li{margin-bottom:2px}
+
 
   /* reps mode */
   .reps{font-family:'Suez One',serif;font-size:4rem;line-height:1}
@@ -486,16 +501,16 @@
 
   /* ---- איור בנגן ---- */
   .p-fig{
-    width:190px;height:114px;margin:10px auto 2px;border-radius:16px;padding:6px;
+    width:100%;aspect-ratio:200/122;max-height:clamp(126px,38vw,164px);margin:0;border-radius:14px;padding:5px;
     background:linear-gradient(145deg,#3B1A44,#241030);border:1px solid var(--line);
     box-shadow:inset 0 2px 10px rgba(0,0,0,.5);
   }
   .p-fig svg{width:100%;height:100%}
-  .dial{width:214px;height:214px}
+
   .reps-dial{cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
   .reps-dial:active{transform:scale(.97)}
-  .dial .txt .reps{font-family:'Suez One',serif;font-size:3.2rem;line-height:1}
-  .dial .txt .reps small{font-size:1rem;color:var(--muted)}
+  .dial .txt .reps{font-family:'Suez One',serif;font-size:clamp(1.9rem,7.4vw,2.6rem);line-height:1}
+  .dial .txt .reps small{font-size:.9rem;color:var(--muted)}
   .p-ctrl button.main.tap{
     min-width:150px;color:#fff;
     background:linear-gradient(180deg,#FF6FA8,var(--pink));
@@ -503,10 +518,13 @@
   }
   .p-ctrl button.main.tap:active{transform:translateY(4px);box-shadow:0 1px 0 var(--pink-deep)}
   .mode-link{
-    display:block;margin:12px auto 0;border:1px solid var(--line);cursor:pointer;
+    display:block;margin:0 auto;border:1px solid var(--line);cursor:pointer;
     background:rgba(255,255,255,.06);color:var(--muted);
-    font-family:'Assistant',sans-serif;font-size:.78rem;padding:8px 16px;border-radius:99px;
+    font-family:'Assistant',sans-serif;font-size:.72rem;padding:5px 13px;border-radius:99px;
   }
+  #pExtra{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;
+    margin:4px 0 0;min-height:0;flex-shrink:0}
+  #pExtra .grip{margin:0;font-size:.74rem;padding:4px 12px}
   .start-btn.pinkbtn{
     color:#fff;
     background:linear-gradient(180deg,#FF6FA8 0%,var(--pink) 45%,#E32873 100%);
@@ -680,8 +698,11 @@
       <div id="pSideWrap"></div>
     </div>
 
-    <div id="pFig"></div>
-    <div id="pDialWrap"></div>
+    <div class="p-row">
+      <div id="pFig"></div>
+      <div id="pDialWrap"></div>
+    </div>
+    <div id="pExtra"></div>
 
     <div class="p-ctrl">
       <button onclick="prevStep()">הקודם</button>
@@ -689,7 +710,6 @@
       <button onclick="nextStep()">הבא</button>
     </div>
 
-    <div class="p-why" id="pWhy"></div>
     <div class="p-info" id="pInfo"></div>
   </div>
 </div>
@@ -1696,9 +1716,9 @@ function loadStep(autoplay){
   document.getElementById('pSideWrap').innerHTML =
     s.side ? `<span class="p-side ${s.kind==='rest'?'rest':''}">${s.side}</span>` : '';
   document.getElementById('pFig').innerHTML = s.fig ? `<div class="p-fig">${s.fig}</div>` : '';
-  document.getElementById('pWhy').textContent = s.why || '';
   document.getElementById('pInfo').innerHTML = s.how
-    ? `<h5>שלבי הביצוע</h5><ol>${s.how.map(x=>`<li>${x}</li>`).join('')}</ol>
+    ? `${s.why?`<div class="why">${s.why}</div>`:''}
+       <h5>שלבי הביצוע</h5><ol>${s.how.map(x=>`<li>${x}</li>`).join('')}</ol>
        <h5 class="c">חשוב להקפיד</h5><ul>${s.cues.map(x=>`<li>${x}</li>`).join('')}</ul>`
     : '';
 
@@ -1706,9 +1726,32 @@ function loadStep(autoplay){
   endAt = Date.now() + left*1000;
   drawDial();
   updateMain();
+  fitInfo();
   if(tick) clearInterval(tick);
   tick = setInterval(step, 250);
 }
+function fitInfo(){
+  const el = document.getElementById('pInfo');
+  if(!el || !el.firstChild) return;
+  const apply = () => {
+    const why = el.querySelector('.why');
+    if(why) why.style.display = '';
+    const over = () => el.scrollHeight > el.clientHeight + 1;
+    let fs = 0.88, guard = 0;
+    el.style.fontSize = fs + 'rem';
+    // שלב א: הקטנה מתונה של הטקסט
+    while(over() && fs > 0.72 && guard++ < 20){ fs -= 0.02; el.style.fontSize = fs.toFixed(2) + 'rem'; }
+    // שלב ב: הסתרת שורת ההסבר, שהיא הפחות חיונית תוך כדי ביצוע
+    if(over() && why) why.style.display = 'none';
+    // שלב ג: הקטנה נוספת רק אם עדיין צריך
+    while(over() && fs > 0.64 && guard++ < 40){ fs -= 0.02; el.style.fontSize = fs.toFixed(2) + 'rem'; }
+  };
+  if(typeof requestAnimationFrame === 'function') requestAnimationFrame(apply); else apply();
+}
+window.addEventListener('resize', ()=>{
+  if(document.getElementById('player').classList.contains('on')) fitInfo();
+});
+
 function updateMain(){
   const s = Q[qi], b = document.getElementById('pPlay');
   if(s.kind === 'reps' && s.exId && modeOf(s.exId) === 'tap'){
@@ -1727,9 +1770,9 @@ function drawDial(){
     const pct = doneR/total;
     const r = 92, c = 2*Math.PI*r;
     w.innerHTML = `<div class="dial reps-dial" ${tapMode?'onclick="tapRep()"':''}>
-      <svg viewBox="0 0 214 214" width="214" height="214">
-        <circle cx="107" cy="107" r="${r}" stroke="rgba(255,255,255,.12)" stroke-width="13" fill="none"/>
-        <circle cx="107" cy="107" r="${r}" stroke="var(--pink)" stroke-width="13" fill="none"
+      <svg viewBox="0 0 214 214">
+        <circle cx="107" cy="107" r="${r}" stroke="rgba(255,255,255,.12)" stroke-width="14" fill="none"/>
+        <circle cx="107" cy="107" r="${r}" stroke="var(--pink)" stroke-width="14" fill="none"
           stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}"/>
       </svg>
       <div class="txt">
@@ -1737,17 +1780,20 @@ function drawDial(){
         <span>${tapMode ? 'הקישי על העיגול' : fmt(left)+' נותרו'}</span>
       </div>
     </div>
-    ${s.grip?`<div class="p-center"><span class="grip">${s.grip}</span></div>`:''}
-    ${s.exId?`<button class="mode-link" onclick="toggleMode()">${tapMode?'מעבר לספירה אוטומטית בקצב':'מעבר לספירה בהקשה'}</button>`:''}`;
+    `;
+    document.getElementById('pExtra').innerHTML =
+      `${s.grip?`<span class="grip">${s.grip}</span>`:''}
+       ${s.exId?`<button class="mode-link" onclick="toggleMode()">${tapMode?'ספירה אוטומטית':'ספירה בהקשה'}</button>`:''}`;
     return;
   }
+  document.getElementById('pExtra').innerHTML = '';
   const pct = s.sec ? (s.sec - left) / s.sec : 0;
   const r = 100, c = 2*Math.PI*r;
   w.innerHTML = `<div class="dial">
-    <svg viewBox="0 0 230 230" width="230" height="230">
-      <circle cx="115" cy="115" r="${r}" stroke="rgba(255,255,255,.12)" stroke-width="13" fill="none"/>
+    <svg viewBox="0 0 230 230">
+      <circle cx="115" cy="115" r="${r}" stroke="rgba(255,255,255,.12)" stroke-width="14" fill="none"/>
       <circle cx="115" cy="115" r="${r}" stroke="${s.kind==='rest'?'var(--muted)':'var(--aqua)'}"
-        stroke-width="13" fill="none" stroke-linecap="round"
+        stroke-width="14" fill="none" stroke-linecap="round"
         stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}"/>
     </svg>
     <div class="txt"><b>${fmt(left)}</b><span>${s.kind==='rest'?'מעבר':'החזקה'}</span></div>
