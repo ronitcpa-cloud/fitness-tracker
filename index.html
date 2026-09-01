@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>רונית · חיטוב ישבן וירכיים</title>
+<title>רונית · האימון היומי</title>
+<meta name="theme-color" content="#1C0E24">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link href="https://fonts.googleapis.com/css2?family=Suez+One&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -229,26 +232,317 @@
   @media (prefers-reduced-motion: reduce){
     *{transition:none!important;animation:none!important}
   }
+
+  /* ===================== תוספות חדשות ===================== */
+  :root{
+    --blue:#5AB0FF;
+    --lime:#B6E356;
+  }
+  body{padding-bottom:96px}
+
+  /* ---- Views ---- */
+  .view{display:none}
+  .view.on{display:block}
+
+  /* ---- Bottom nav ---- */
+  nav.tabs{
+    position:fixed;inset-inline:0;bottom:0;z-index:40;
+    display:flex;justify-content:center;gap:2px;
+    padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+    background:rgba(28,14,36,.92);
+    backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+  }
+  nav.tabs button{
+    flex:1;max-width:120px;border:none;background:none;cursor:pointer;
+    color:var(--muted);font-family:'Assistant',sans-serif;font-size:.7rem;font-weight:700;
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:6px 2px;border-radius:14px;
+  }
+  nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  nav.tabs button.on{color:#fff;background:linear-gradient(180deg,rgba(255,62,138,.28),rgba(255,122,69,.12))}
+  nav.tabs button:focus-visible{outline:2px solid var(--aqua);outline-offset:2px}
+
+  /* ---- Today: station list ---- */
+  .day-head{
+    border-radius:22px;padding:16px 18px;margin-bottom:16px;
+    background:linear-gradient(180deg,var(--card-hi),transparent),var(--card);
+    border:1px solid var(--line);
+    box-shadow:0 12px 30px rgba(0,0,0,.4);
+  }
+  .day-head .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .day-title{font-family:'Suez One',serif;font-size:1.15rem}
+  .day-date{font-size:.78rem;color:var(--muted);margin-top:2px}
+  .day-pct{font-family:'Suez One',serif;font-size:1.7rem;
+    background:linear-gradient(90deg,var(--aqua),var(--pink));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .bar{height:9px;border-radius:99px;background:rgba(0,0,0,.35);overflow:hidden;margin-top:12px}
+  .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--aqua),var(--pink),var(--orange));transition:width .35s ease}
+  .day-note{font-size:.8rem;color:var(--muted);margin-top:10px;line-height:1.5}
+
+  .station{
+    display:flex;align-items:center;gap:12px;
+    background:linear-gradient(180deg,var(--card-hi),transparent),var(--card);
+    border:1px solid var(--line);border-radius:18px;
+    padding:12px 14px;margin-bottom:10px;
+    box-shadow:0 8px 22px rgba(0,0,0,.35);
+    position:relative;overflow:hidden;
+  }
+  .station::before{content:'';position:absolute;inset-inline-start:0;top:0;bottom:0;width:5px;background:var(--sc,var(--pink))}
+  .station.done{opacity:.62}
+  .station.done .st-name{text-decoration:line-through;text-decoration-thickness:1.5px}
+  .st-tick{
+    width:34px;height:34px;flex-shrink:0;border-radius:50%;
+    border:2px solid var(--sc,var(--pink));background:rgba(0,0,0,.3);
+    color:var(--sc,var(--pink));font-size:1rem;font-weight:800;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;padding:0;
+  }
+  .station.done .st-tick{background:var(--sc,var(--pink));color:#1C0E24}
+  .st-body{flex:1;min-width:0}
+  .st-name{font-weight:800;font-size:.98rem}
+  .st-meta{font-size:.75rem;color:var(--muted);margin-top:2px}
+  .st-go{
+    border:none;cursor:pointer;flex-shrink:0;
+    background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.05));
+    border:1px solid var(--line);
+    color:#fff;font-family:'Assistant',sans-serif;font-weight:800;font-size:.82rem;
+    padding:9px 14px;border-radius:13px;
+  }
+  .st-go:active{transform:translateY(2px)}
+  .st-step{
+    font-family:'Suez One',serif;font-size:.85rem;color:var(--muted);
+    width:20px;text-align:center;flex-shrink:0;
+  }
+
+  /* ---- Level / progression ---- */
+  .level{
+    border-radius:18px;padding:14px 16px;margin-bottom:16px;
+    background:linear-gradient(90deg,rgba(46,230,200,.14),rgba(90,176,255,.1));
+    border:1px solid rgba(46,230,200,.35);
+  }
+  .level h4{font-size:.92rem;margin-bottom:4px;color:var(--aqua)}
+  .level p{font-size:.82rem;line-height:1.5;color:var(--ink)}
+  .pips{display:flex;gap:6px;margin-top:10px}
+  .pips i{flex:1;height:6px;border-radius:99px;background:rgba(255,255,255,.15)}
+  .pips i.on{background:linear-gradient(90deg,var(--aqua),var(--blue))}
+
+  /* ---- Stretch list ---- */
+  .slist{margin-bottom:8px}
+  .srow{
+    display:flex;gap:12px;align-items:center;
+    border:1px solid var(--line);border-radius:16px;
+    background:rgba(0,0,0,.22);padding:10px 12px;margin-bottom:9px;
+  }
+  .pose{
+    width:56px;height:52px;flex-shrink:0;border-radius:12px;padding:3px;
+    background:linear-gradient(145deg,#3B1A44,#241030);border:1px solid var(--line);
+  }
+  .pose svg{width:100%;height:100%}
+  .srow .nm{font-weight:800;font-size:.92rem}
+  .srow .pos{font-size:.7rem;color:var(--muted)}
+  .srow .sec{
+    margin-inline-start:auto;flex-shrink:0;
+    font-family:'Suez One',serif;font-size:.95rem;color:var(--aqua);
+  }
+  .srow .info{
+    border:none;background:rgba(255,255,255,.08);color:var(--ink);
+    width:28px;height:28px;border-radius:50%;cursor:pointer;flex-shrink:0;font-weight:800;
+  }
+
+  /* ---- Big start button ---- */
+  .start-btn{
+    width:100%;border:none;cursor:pointer;color:#0E2A26;
+    font-family:'Assistant',sans-serif;font-weight:800;font-size:1.08rem;
+    padding:15px;border-radius:18px;margin-top:4px;
+    background:linear-gradient(180deg,#5CF2DA 0%,var(--aqua) 45%,#17BBA1 100%);
+    box-shadow:0 7px 0 #0E8E7A, 0 14px 26px rgba(46,230,200,.35);
+    transition:transform .08s, box-shadow .08s;
+  }
+  .start-btn:active{transform:translateY(5px);box-shadow:0 2px 0 #0E8E7A}
+  .start-btn.alt{
+    color:#fff;
+    background:linear-gradient(180deg,#FFA06B 0%,var(--orange) 45%,#E05A20 100%);
+    box-shadow:0 7px 0 #A83C10, 0 14px 26px rgba(255,122,69,.35);
+  }
+  .start-btn.alt:active{box-shadow:0 2px 0 #A83C10}
+  .start-btn.blue{
+    color:#04203D;
+    background:linear-gradient(180deg,#8CC9FF 0%,var(--blue) 45%,#2C87DB 100%);
+    box-shadow:0 7px 0 #1B5E9E, 0 14px 26px rgba(90,176,255,.35);
+  }
+  .start-btn.blue:active{box-shadow:0 2px 0 #1B5E9E}
+
+  /* ---- Player overlay ---- */
+  .player{
+    position:fixed;inset:0;z-index:90;display:none;
+    background:linear-gradient(165deg,#160A1E 0%,#2E0F35 60%,#1B0B27 100%);
+    overflow-y:auto;
+  }
+  .player.on{display:block}
+  .p-wrap{max-width:520px;margin:0 auto;padding:14px 16px 40px;
+    min-height:100dvh;display:flex;flex-direction:column}
+  .p-bar{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .p-close{border:none;background:rgba(255,255,255,.1);color:var(--ink);
+    width:38px;height:38px;border-radius:50%;font-size:1.1rem;cursor:pointer;flex-shrink:0}
+  .p-of{flex:1;font-size:.82rem;color:var(--muted)}
+  .p-of b{color:var(--ink)}
+  .p-seg{display:flex;gap:3px;margin-bottom:14px}
+  .p-seg i{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.16)}
+  .p-seg i.on{background:var(--aqua)}
+  .p-seg i.cur{background:var(--pink)}
+
+  .p-name{font-family:'Suez One',serif;font-size:1.5rem;line-height:1.25;text-align:center}
+  .p-side{
+    display:inline-block;margin:8px auto 0;font-size:.8rem;font-weight:800;color:#1C0E24;
+    background:var(--aqua);padding:3px 14px;border-radius:99px;
+  }
+  .p-side.rest{background:var(--muted)}
+  .p-center{text-align:center;margin:14px 0}
+
+  .dial{position:relative;width:230px;height:230px;margin:0 auto}
+  .dial svg{transform:rotate(-90deg)}
+  .dial .txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .dial .txt b{font-family:'Suez One',serif;font-size:3.4rem;line-height:1}
+  .dial .txt span{font-size:.78rem;color:var(--muted);margin-top:2px}
+
+  .p-ctrl{display:flex;gap:10px;justify-content:center;align-items:center;margin:18px 0 6px}
+  .p-ctrl button{
+    border:1px solid var(--line);cursor:pointer;color:var(--ink);
+    background:rgba(255,255,255,.08);
+    font-family:'Assistant',sans-serif;font-weight:800;font-size:.9rem;
+    padding:12px 16px;border-radius:16px;
+  }
+  .p-ctrl button.main{
+    min-width:130px;font-size:1.05rem;color:#0E2A26;border:none;
+    background:linear-gradient(180deg,#5CF2DA,var(--aqua));
+    box-shadow:0 5px 0 #0E8E7A;
+  }
+  .p-ctrl button.main:active{transform:translateY(4px);box-shadow:0 1px 0 #0E8E7A}
+  .p-info{
+    margin-top:auto;border-radius:16px;padding:14px;
+    background:rgba(0,0,0,.3);border:1px solid var(--line);font-size:.86rem;line-height:1.55;
+  }
+  .p-info h5{font-size:.78rem;color:var(--orange);margin-bottom:4px}
+  .p-info h5.c{color:var(--pink);margin-top:10px}
+  .p-info ol{padding-inline-start:18px}
+  .p-info ul{padding-inline-start:18px;list-style:none}
+  .p-info ul li::before{content:'⚠ ';color:var(--pink)}
+  .p-info li{margin-bottom:3px}
+  .p-why{font-size:.84rem;color:var(--aqua);text-align:center;margin-bottom:6px;line-height:1.5}
+
+  /* reps mode */
+  .reps{font-family:'Suez One',serif;font-size:4rem;line-height:1}
+  .reps small{font-size:1.1rem;color:var(--muted)}
+  .grip{
+    display:inline-block;margin-top:10px;font-size:.86rem;font-weight:800;
+    background:linear-gradient(90deg,var(--violet),var(--pink));color:#fff;
+    padding:6px 16px;border-radius:99px;
+  }
+
+  /* ---- Tracking ---- */
+  .grid30{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px}
+  .grid30 div{
+    aspect-ratio:1;border-radius:9px;background:rgba(255,255,255,.07);
+    display:flex;align-items:center;justify-content:center;font-size:.62rem;color:var(--muted);
+  }
+  .grid30 div.p1{background:rgba(46,230,200,.3);color:var(--ink)}
+  .grid30 div.p2{background:rgba(46,230,200,.55);color:#12211F}
+  .grid30 div.p3{background:linear-gradient(135deg,var(--aqua),var(--pink));color:#1C0E24;font-weight:800}
+  .grid30 div.today{outline:2px solid var(--orange);outline-offset:1px}
+  .legend{display:flex;gap:12px;font-size:.7rem;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-inline-end:4px;vertical-align:-1px}
+
+  .kpi{display:flex;gap:10px;margin-bottom:14px}
+  .kpi > div{
+    flex:1;border-radius:18px;padding:12px 8px;text-align:center;
+    background:linear-gradient(180deg,var(--card-hi),transparent),var(--card);
+    border:1px solid var(--line);
+  }
+  .kpi b{font-family:'Suez One',serif;font-size:1.4rem;display:block;
+    background:linear-gradient(90deg,var(--aqua),var(--blue));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .kpi span{font-size:.7rem;color:var(--muted)}
+
+  .d-row{
+    display:flex;align-items:center;gap:10px;padding:10px 14px;
+    border-bottom:1px solid var(--line);font-size:.85rem;
+  }
+  .d-row:last-child{border-bottom:none}
+  .d-row .dt{font-weight:800;flex-shrink:0}
+  .d-row .chips{display:flex;gap:4px;flex-wrap:wrap;margin-inline-start:auto;justify-content:flex-end}
+  .chip{font-size:.62rem;padding:2px 7px;border-radius:99px;background:rgba(255,255,255,.1);color:var(--muted)}
+  .chip.on{background:rgba(46,230,200,.25);color:var(--aqua)}
+
+  .helpbox{
+    border-radius:16px;padding:14px 16px;margin-bottom:16px;font-size:.85rem;line-height:1.6;
+    background:rgba(157,78,221,.12);border:1px solid rgba(157,78,221,.3);
+  }
+  .helpbox b{color:var(--orange)}
+  .reset-btn{
+    width:100%;border:1px solid var(--line);background:rgba(0,0,0,.25);
+    color:var(--muted);font-family:'Assistant',sans-serif;font-size:.8rem;
+    padding:11px;border-radius:14px;cursor:pointer;margin-top:14px;
+  }
+
 </style>
 </head>
+
 <body>
 
 <header>
   <div class="wrap">
     <div class="ring-box">
-      <svg viewBox="0 0 92 92" id="ring"></svg>
-      <div class="ring-num"><b id="ringPos">1</b><span>מתוך 22</span></div>
+      <svg viewBox="0 0 92 92" id="tRing"></svg>
+      <div class="ring-num"><b id="tRingPos">0</b><span>מתוך 7</span></div>
     </div>
     <div>
-      <div class="greet">היי רונית! מוכנה? 💪</div>
-      <h1>חיטוב ישבן וירכיים</h1>
-      <div class="sub" id="cycleLabel">מחזור 1 · תוספת יומית לשגרת הכוח</div>
+      <div class="greet" id="hGreet">היי רונית! מוכנה? 💪</div>
+      <h1 id="hTitle">האימון היומי</h1>
+      <div class="sub" id="hSub">שבע תחנות, בסדר הנכון</div>
     </div>
     <img class="avatar" src="data:image/jpeg;base64,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" alt="רונית">
   </div>
 </header>
 
 <div class="wrap">
+
+<!-- ============ היום ============ -->
+<section class="view on" id="view-today">
+  <div class="day-head">
+    <div class="top">
+      <div>
+        <div class="day-title">סדר האימון</div>
+        <div class="day-date" id="todayDate"></div>
+      </div>
+      <div class="day-pct" id="todayPct">0%</div>
+    </div>
+    <div class="bar"><i id="todayBar" style="width:0%"></i></div>
+    <div class="day-note" id="todayNote"></div>
+  </div>
+
+  <div id="stationList"></div>
+
+  <div class="helpbox">
+    <b>למה זה הסדר הזה:</b> מתיחות דינמיות בהתחלה מכינות את האגן והגב לתנועה בלי להחליש את השריר.
+    מתיחות סטטיות ארוכות לפני אימון כוח מורידות זמנית כוח ויציבות, ולכן הן בסוף.
+    חיזוק הגב אחרי האירובי, כשהגוף חם אבל הגב עדיין טרי.
+  </div>
+</section>
+
+<!-- ============ חיטוב (הקיים, ללא שינוי) ============ -->
+<section class="view" id="view-glutes">
+  <div class="day-head">
+    <div class="top">
+      <div>
+        <div class="day-title">חיטוב ישבן וירכיים</div>
+        <div class="day-date" id="cycleLabel"></div>
+      </div>
+      <div class="ring-box" style="width:78px;height:78px">
+        <svg viewBox="0 0 92 92" id="ring"></svg>
+        <div class="ring-num"><b id="ringPos">1</b><span>מתוך 22</span></div>
+      </div>
+    </div>
+  </div>
 
   <div class="stats">
     <div class="stat"><b id="stTotal">0</b><span>אימונים בסך הכל</span></div>
@@ -261,13 +555,110 @@
 
   <div class="card" id="workoutCard"></div>
 
-  <h3 class="sec">היסטוריית אימונים</h3>
+  <h3 class="sec">היסטוריית אימוני חיטוב</h3>
   <div class="hist" id="histBox"></div>
+</section>
+
+<!-- ============ מתיחות ============ -->
+<section class="view" id="view-stretch">
+  <div class="level" id="levelBox"></div>
+
+  <h3 class="sec">לפני האימון · דינמי · <span id="warmTime"></span></h3>
+  <div class="slist" id="warmList"></div>
+  <button class="start-btn" id="warmBtn" onclick="startBlock('warm')">התחלה</button>
+
+  <h3 class="sec">אחרי האירובי · חיזוק גב · <span id="backTime"></span></h3>
+  <div class="slist" id="backList"></div>
+  <button class="start-btn blue" id="backBtn" onclick="startBlock('back')">התחלה</button>
+
+  <h3 class="sec">בסוף · סטטי · <span id="coolTime"></span></h3>
+  <div class="slist" id="coolList"></div>
+  <button class="start-btn alt" id="coolBtn" onclick="startBlock('cool')">התחלה</button>
+
+  <div class="helpbox" style="margin-top:20px">
+    <b>הגב התחתון שלך:</b> הכאב שבא והולך מגיע הרבה פעמים מהישבן ומהפיריפורמיס ולא מהגב עצמו,
+    ולכן פיגורה 4 ופיתול בשכיבה נמצאים כאן כל יום.
+    יישור עמוק לאחור, כמו גמל וקוברה מלאה, לא נכנס לתוכנית עד שהכאב נעלם לגמרי.
+    אם מתיחה כלשהי מייצרת כאב חד או קרינה לרגל, מדלגים עליה ולא לוחצים.
+  </div>
+</section>
+
+<!-- ============ מעקב ============ -->
+<section class="view" id="view-track">
+  <div class="kpi">
+    <div><b id="kStreak">0</b><span>רצף ימים</span></div>
+    <div><b id="kDays">0</b><span>ימי אימון</span></div>
+    <div><b id="kMin">0</b><span>דקות מתיחות</span></div>
+  </div>
+
+  <div class="day-head">
+    <div class="day-title">30 הימים האחרונים</div>
+    <div class="grid30" id="grid30"></div>
+    <div class="legend">
+      <span><i style="background:rgba(255,255,255,.07)"></i>ללא</span>
+      <span><i style="background:rgba(46,230,200,.3)"></i>חלקי</span>
+      <span><i style="background:rgba(46,230,200,.55)"></i>רוב האימון</span>
+      <span><i style="background:linear-gradient(135deg,#2EE6C8,#FF3E8A)"></i>אימון מלא</span>
+    </div>
+  </div>
+
+  <h3 class="sec">יומן</h3>
+  <div class="hist" id="dayLog"></div>
+
+  <button class="reset-btn" onclick="resetToday()">איפוס הסימונים של היום</button>
 
   <p class="foot">
     אין תאריכים קבועים ואין ימים שהוחמצו. האימון הבא פשוט מחכה לך.<br>
-    הנתונים נשמרים במכשיר הזה (localStorage).
+    הנתונים נשמרים במכשיר הזה (localStorage). היסטוריית החיטוב הישנה נשמרה במלואה.
   </p>
+</section>
+
+</div>
+
+<nav class="tabs">
+  <button id="tab-today" class="on" onclick="go('today')">
+    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="2"/></svg>
+    היום
+  </button>
+  <button id="tab-glutes" onclick="go('glutes')">
+    <svg viewBox="0 0 24 24"><path d="M5 12a7 7 0 1 0 14 0 7 7 0 0 0-14 0"/><path d="M9 12h6M12 9v6"/></svg>
+    חיטוב
+  </button>
+  <button id="tab-stretch" onclick="go('stretch')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="M12 7v6M12 13l-4 6M12 13l4 6M6 9l6 1 6-1"/></svg>
+    מתיחות
+  </button>
+  <button id="tab-track" onclick="go('track')">
+    <svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg>
+    מעקב
+  </button>
+</nav>
+
+<!-- ============ נגן ============ -->
+<div class="player" id="player">
+  <div class="p-wrap">
+    <div class="p-bar">
+      <button class="p-close" onclick="closePlayer()" aria-label="סגירה">✕</button>
+      <div class="p-of" id="pOf"></div>
+    </div>
+    <div class="p-seg" id="pSeg"></div>
+
+    <div class="p-center">
+      <div class="p-name" id="pName"></div>
+      <div id="pSideWrap"></div>
+    </div>
+
+    <div id="pDialWrap"></div>
+
+    <div class="p-ctrl">
+      <button onclick="prevStep()">הקודם</button>
+      <button class="main" id="pPlay" onclick="togglePlay()">השהיה</button>
+      <button onclick="nextStep()">הבא</button>
+    </div>
+
+    <div class="p-why" id="pWhy"></div>
+    <div class="p-info" id="pInfo"></div>
+  </div>
 </div>
 
 <script>
@@ -442,7 +833,7 @@ const WORKOUTS = {
 const ROTATION = ['א','ב','ג'];
 const CYCLE_LEN = 22;
 
-/* ---------- State ---------- */
+/* ---------- State (ללא שינוי: אותו מפתח, אותו מבנה) ---------- */
 const KEY = 'glutesTracker';
 let mem = {done: []};
 function load(){
@@ -457,13 +848,16 @@ function save(){
 }
 
 /* ---------- Helpers ---------- */
-const todayISO = () => new Date().toISOString().slice(0,10);
+const todayISO = () => {
+  const d = new Date();
+  return new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+};
 function typeOf(n){ return ROTATION[(n-1)%3]; }
 function cycleOf(n){ return Math.floor((n-1)/CYCLE_LEN)+1; }
 function posOf(n){ return ((n-1)%CYCLE_LEN)+1; }
 
 /* ---------- Render ---------- */
-function render(){
+function renderGlutes(){
   const total = mem.done.length;
   const next = total + 1;
   const type = typeOf(next);
@@ -471,7 +865,6 @@ function render(){
   const pos = posOf(next);
   const overload = pos >= 12;
 
-  // ring: 22 segments
   const ring = document.getElementById('ring');
   let segs = '';
   const cx=46, cy=46, r=39;
@@ -550,7 +943,7 @@ function render(){
     <span class="phase ${overload?'':'base'}">${overload?'שלב העמסה (12-22)':'שלב בסיס (1-11)'} · מחזור ${cyc}</span>
     ${exHtml}
     <button class="done-btn" onclick="markDone()">סיימתי את האימון ✓</button>
-    <p class="rest-note">בערך 10 דקות, אחרי בלוק הכוח הרגיל שלך.<br>שישי ושבת מנוחה, וגם כל יום אחר שתבחרי. הרצף לא נשבר.</p>
+    <p class="rest-note">תחנה 2 מתוך 7 בסדר האימון היומי.<br>שישי ושבת מנוחה, וגם כל יום אחר שתבחרי. הרצף לא נשבר.</p>
   `;
 
   const hist = document.getElementById('histBox');
@@ -575,19 +968,861 @@ function render(){
 function markDone(){
   const n = mem.done.length + 1;
   mem.done.push({n, type: typeOf(n), date: todayISO()});
-  save(); render();
+  save(); renderAll();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 function editDate(i, val){
-  if(mem.done[i] && val){ mem.done[i].date = val; save(); render(); }
+  if(mem.done[i] && val){ mem.done[i].date = val; save(); renderAll(); }
 }
 function undoLast(){
   if(mem.done.length && confirm('לבטל את סימון האימון האחרון?')){
-    mem.done.pop(); save(); render();
+    mem.done.pop(); save(); renderAll();
   }
 }
 
-load(); render();
+
+/* ================================================================
+   תוספת חדשה: מתיחות, רצועה, אירובי, חיזוק גב, סדר יומי ומעקב
+   מפתחות אחסון חדשים בלבד. glutesTracker לא נוגע.
+   ================================================================ */
+
+/* ---------- תנוחות פתיחה ---------- */
+const P = {
+  stand:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
+    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
+    <circle cx="50" cy="14" r="8" fill="#2A1631"/><line x1="50" y1="22" x2="50" y2="50"/>
+    <line x1="50" y1="28" x2="34" y2="44"/><line x1="50" y1="28" x2="66" y2="44"/>
+    <line x1="50" y1="50" x2="40" y2="80"/><line x1="50" y1="50" x2="60" y2="80"/></svg>`,
+  kneel:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
+    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
+    <circle cx="34" cy="26" r="8" fill="#2A1631"/><line x1="38" y1="32" x2="58" y2="52"/>
+    <line x1="38" y1="30" x2="20" y2="44"/><line x1="58" y1="52" x2="82" y2="60"/>
+    <line x1="58" y1="52" x2="56" y2="78"/><line x1="56" y1="78" x2="80" y2="78"/></svg>`,
+  seat:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
+    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
+    <circle cx="34" cy="26" r="8" fill="#2A1631"/><line x1="34" y1="34" x2="34" y2="72"/>
+    <line x1="34" y1="72" x2="84" y2="76"/><line x1="34" y1="42" x2="70" y2="66"/></svg>`,
+  supine:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
+    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
+    <circle cx="20" cy="70" r="8" fill="#2A1631"/><line x1="28" y1="72" x2="60" y2="74"/>
+    <line x1="60" y1="74" x2="70" y2="46"/><line x1="70" y1="46" x2="84" y2="66"/></svg>`,
+  prone:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
+    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
+    <circle cx="22" cy="46" r="8" fill="#2A1631"/><line x1="30" y1="50" x2="86" y2="74"/>
+    <line x1="30" y1="50" x2="24" y2="74"/></svg>`,
+  quad:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
+    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
+    <circle cx="24" cy="34" r="8" fill="#2A1631"/><line x1="32" y1="38" x2="76" y2="42"/>
+    <line x1="36" y1="40" x2="34" y2="76"/><line x1="74" y1="42" x2="76" y2="76"/></svg>`,
+  side:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
+    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
+    <circle cx="24" cy="40" r="8" fill="#2A1631"/><line x1="30" y1="46" x2="84" y2="70"/>
+    <line x1="32" y1="48" x2="30" y2="76"/></svg>`,
+  chair:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
+    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
+    <path d="M62 34 L62 74 M62 54 L86 54 M86 40 L86 74" stroke="rgba(255,255,255,.28)" stroke-width="4"/>
+    <circle cx="40" cy="24" r="8" fill="#2A1631"/><line x1="40" y1="32" x2="42" y2="54"/>
+    <line x1="42" y1="54" x2="70" y2="56"/><line x1="46" y1="54" x2="44" y2="76"/></svg>`
+};
+const POSE_HE = {stand:'עמידה',kneel:'כריעה',seat:'ישיבה',supine:'שכיבה על הגב',
+  prone:'שכיבה על הבטן',quad:'עמידת שש',side:'שכיבה על הצד',chair:'ישיבה על כיסא'};
+
+/* ---------- מאגר המתיחות ---------- */
+const ST = {
+  /* ===== דינמי, לפני האימון ===== */
+  legSwing:{n:'נדנוד רגל קדימה ואחורה',pose:'stand',sec:30,bi:true,
+    why:'מחמם המסטרינג וכופפי ירך בתנועה, בדיוק מה שצריך לפני אימון במקום מתיחה סטטית.',
+    how:['עמידה ליד קיר או כיסא, יד אחת נשענת לתמיכה.',
+      'נדנוד של רגל אחת קדימה ואחורה בטווח נוח.',
+      'הגדלת הטווח בהדרגה, ואז החלפת רגל.'],
+    cues:['הגו נשאר זקוף, לא נסחף עם הרגל.',
+      'האגן יציב, התנועה רק ממפרק הירך.',
+      'בלי בעיטות חדות בסוף הטווח.']},
+  chestOpen:{n:'פתיחת חזה עם הנפות ידיים',pose:'stand',sec:40,
+    why:'מחזירה תנועה לגב העליון ולכתפיים אחרי שעות ישיבה, לפני שמעמיסים עליהן.',
+    how:['עמידה, הידיים נפתחות לצדדים ולאחור בהנפה.',
+      'חיבוק עצמי בחזרה קדימה, השכמות מתרחקות.',
+      'תנועה רציפה בקצב הנשימה.'],
+    cues:['הפתיחה עד גובה הכתפיים, לא מעבר.',
+      'הגב התחתון לא מתקשת בפתיחה.',
+      'הכתפיים למטה, לא עולות לאוזניים.']},
+  catCow:{n:'חתול פרה',pose:'quad',sec:45,
+    why:'מחזירה תנועה לכל חוליה בעמוד השדרה לפני שמעמיסים עליו.',
+    how:['עמידת שש, ידיים מתחת לכתפיים וברכיים מתחת לאגן.',
+      'בשאיפה: האגן מסתובב קדימה, החזה נפתח, המבט קצת קדימה.',
+      'בנשיפה: האגן מסתובב אחורה, הגב מתעגל, הסנטר לחזה.',
+      'תנועה רציפה בקצב הנשימה, בלי עצירות.'],
+    cues:['התנועה מתחילה מהאגן ולא מהצוואר.',
+      'לא לדחוף לקשת מקסימלית, זו חימום ולא מתיחה.',
+      'המרפקים רכים, לא נעולים.']},
+  pelvicTilt:{n:'ניידות אגן על ברכיים',pose:'kneel',sec:45,
+    why:'האגן הוא צומת הכוח בין הגב לרגליים. אגן נעול מעמיס הכל על הגב התחתון.',
+    how:['ישיבה על הברכיים או כריעה גבוהה, גב ישר.',
+      'הטיית האגן קדימה ואחורה בלבד, הגו נשאר יציב.',
+      'אחרי כמה חזרות להוסיף תנועה לצדדים ואז סיבובים.'],
+    cues:['הצלעות לא זזות, רק האגן.',
+      'תנועה איטית, כאן מחפשים טווח ולא מהירות.',
+      'הבטן אסופה קלות, לא נופלת קדימה.']},
+  standTwist:{n:'סיבוב פלג גוף עליון בעמידה',pose:'stand',sec:45,
+    why:'משחררת את הגב האמצעי ואת החגורה הכתפית לפני עומס.',
+    how:['עמידה ברוחב האגן, ברכיים רכות.',
+      'סיבוב הגו מצד לצד, הידיים מתנופפות חופשי סביב הגוף.',
+      'הראש הולך עם הסיבוב.'],
+    cues:['האגן נשאר קדימה, מסתובב פלג הגוף העליון.',
+      'בלי תנופה חדה בסוף הטווח.',
+      'לנשום, לא לעצור נשימה.']},
+  deepSquat:{n:'סקוואט עמוק עם נדנוד',pose:'stand',sec:45,
+    why:'פותחת ירכיים, קרסוליים וגב תחתון בבת אחת. אחת התנוחות היעילות שיש.',
+    how:['רגליים ברוחב הכתפיים, אצבעות מעט החוצה.',
+      'ירידה לסקוואט עמוק כמה שנוח, עקבים על הרצפה אם אפשר.',
+      'המרפקים דוחפים בעדינות את הברכיים החוצה, נדנוד קל מצד לצד.'],
+    cues:['אם העקבים מתרוממים, לשים מגבת מגולגלת מתחתם.',
+      'הגב ארוך, לא מתעגל לגמרי.',
+      'להיאחז בדלת או בכיסא אם שיווי המשקל קשה.']},
+  inchworm:{n:'הליכת ידיים לרצפה',pose:'stand',sec:45,
+    why:'מחממת המסטרינג, כתפיים וליבה יחד, בלי מתיחה סטטית שמחלישה.',
+    how:['מעמידה, כיפוף קדימה עם ברכיים רכות עד שהידיים על הרצפה.',
+      'הליכה עם הידיים קדימה עד תנוחת פלאנק.',
+      'עצירה של שנייה, והליכה חזרה עם הידיים לרגליים ועלייה.'],
+    cues:['הברכיים כפופות כמה שצריך, לא מכריחים רגליים ישרות.',
+      'בפלאנק האגן לא צונח.',
+      'קצב איטי, בערך 5 שניות לכל מחזור.']},
+  wipers:{n:'מטוטלת ברכיים',pose:'supine',sec:45,
+    why:'מחזירה סיבוב לגב התחתון בעדינות, בלי עומס.',
+    how:['שכיבה על הגב, ברכיים כפופות, כפות רגליים על הרצפה.',
+      'הפלת שתי הברכיים יחד לצד אחד, ואז לשני.',
+      'הידיים פרושות לצדדים.'],
+    cues:['הכתפיים נשארות על הרצפה.',
+      'טווח נוח, לא מגיעים עד הרצפה בכוח.',
+      'התנועה איטית ומבוקרת בשני הכיוונים.']},
+  sideBendD:{n:'הטיות צד בעמידה',pose:'stand',sec:40,
+    why:'פותחת את הרחב גבי ואת הצלעות, שני אזורים שנתפסים מישיבה ממושכת.',
+    how:['עמידה, יד אחת נשלחת מעל הראש.',
+      'הטיה לצד המנוגד, מרגישים מתיחה לאורך כל הצד.',
+      'חזרה למרכז והחלפת צד ברצף.'],
+    cues:['לא להישען קדימה או אחורה, ההטיה במישור אחד.',
+      'האגן נשאר במקום.',
+      'החזקה של שנייה בכל צד, לא יותר.']},
+  threadDyn:{n:'שרוך המחט דינמי',pose:'quad',sec:30,bi:true,
+    why:'סיבוב לגב האמצעי, האזור שהכי נוטה להינעל ולהעביר עומס לגב התחתון.',
+    how:['עמידת שש.','העברת יד אחת מתחת לגוף לצד השני, הכתף מתקרבת לרצפה.',
+      'חזרה ופתיחת אותה יד לתקרה, המבט עוקב.'],
+    cues:['האגן נשאר מעל הברכיים ולא מסתובב איתו.',
+      'תנועה רציפה, נשימה בכל כיוון.',
+      'הזרוע התומכת יציבה.']},
+  hipCircles:{n:'סיבובי אגן בעמידה',pose:'stand',sec:40,
+    why:'מחממת את מפרק הירך לפני עומס, בדיוק מה שאגן נעול צריך.',
+    how:['עמידה, ידיים על המותניים.',
+      'סיבובי אגן גדולים לכיוון אחד, ואז לכיוון השני.'],
+    cues:['הרגליים נשארות במקום.',
+      'לחפש את הטווח הגדול ביותר שנוח.',
+      'הגב לא מתקשת מוגזם בחלק האחורי של הסיבוב.']},
+  worldGreat:{n:'מכרע עם סיבוב',pose:'stand',sec:30,bi:true,
+    why:'פותחת כופפי ירך, מקרבים וגב אמצעי בתנועה אחת. חימום מלא לפלג הגוף התחתון.',
+    how:['צעד גדול קדימה למכרע, שתי הידיים על הרצפה בפנים הרגל הקדמית.',
+      'המרפק של הצד הקדמי יורד לכיוון הרצפה.',
+      'אותה יד נפתחת לתקרה בסיבוב, מבט עוקב. חזרה והחלפה.'],
+    cues:['הרגל האחורית ישרה והעקב נדחף אחורה.',
+      'הסיבוב מהגב האמצעי, לא מהמותניים.',
+      'אם קשה להגיע לרצפה, לשים ספר או כיסא נמוך מתחת ליד.']},
+  rollDown:{n:'גלגול חוליה חוליה',pose:'stand',sec:45,
+    why:'מלמדת את הגב לזוז חוליה אחר חוליה במקום כגוש אחד.',
+    how:['עמידה זקופה, ברכיים רכות.',
+      'הורדת הסנטר לחזה וגלגול איטי כלפי מטה, חוליה אחרי חוליה.',
+      'תלייה רפויה למטה לשתי נשימות, וגלגול איטי חזרה למעלה.'],
+    cues:['הידיים והצוואר רפויים לגמרי.',
+      'העלייה איטית יותר מהירידה.',
+      'הברכיים כפופות קלות כל הזמן.']},
+
+  /* ===== סטטי, בסוף ===== */
+  childPose:{n:'תנוחת ילד מורחבת',pose:'kneel',sec:60,
+    why:'משחררת את כל שרשרת הגב האחורית ומרגיעה את מערכת העצבים אחרי אימון.',
+    how:['ישיבה על העקבים, ברכיים פתוחות לרוחב.',
+      'הליכה עם הידיים קדימה עד שהמצח מגיע לרצפה או לכרית.',
+      'שקיעה של האגן לכיוון העקבים ונשימה עמוקה לתוך הגב.'],
+    cues:['אם הברכיים כואבות, לשים כרית בין הישבן לעקבים.',
+      'לנשום לתוך הגב ולא לתוך הבטן, ההרחבה מורגשת מאחורה.',
+      'הכתפיים רפויות, לא נדחפות לאוזניים.']},
+  supineTwist:{n:'פיתול בשכיבה',pose:'supine',sec:30,bi:true,
+    why:'המתיחה הכי טובה לגב תחתון תפוס. משחררת גם את הישבן ואת הצלעות.',
+    how:['שכיבה על הגב, ברכיים כפופות.',
+      'הפלת שתי הברכיים לצד אחד, הידיים פרושות בצורת T.',
+      'הראש מסתובב לצד הנגדי, נשימה עמוקה והחזקה.'],
+    cues:['שתי הכתפיים נשארות על הרצפה, גם במחיר של טווח קטן יותר.',
+      'לא לדחוף את הברכיים למטה עם היד, נותנים למשקל לעשות את העבודה.',
+      'אם הגב התחתון צובט, להרים את הברכיים גבוה יותר לכיוון החזה.']},
+  figure4:{n:'פיגורה 4',pose:'supine',sec:30,bi:true,
+    why:'מכוונת לפיריפורמיס ולישבן. חלק גדול מכאבי הגב התחתון מתחילים בדיוק שם.',
+    how:['שכיבה על הגב, הנחת קרסול אחד על הברך הנגדית בצורת 4.',
+      'תפיסת הירך האחורית ומשיכה בעדינות לכיוון החזה.',
+      'החזקה ונשימה.'],
+    cues:['הברך של הרגל העליונה נדחפת החוצה בעדינות.',
+      'הראש והכתפיים נשארים על הרצפה.',
+      'אם קשה להגיע לירך, להשתמש במגבת סביבה.']},
+  seatedTwist:{n:'פיתול בישיבה',pose:'seat',sec:30,bi:true,
+    why:'מאריכה את הגב לאורך ומשחררת את הגב האמצעי בישיבה.',
+    how:['ישיבה עם רגליים ישרות, כיפוף רגל אחת והנחתה מעבר לברך הנגדית.',
+      'המרפק הנגדי נשען על הברך הכפופה.',
+      'התארכות למעלה בשאיפה, סיבוב בנשיפה.'],
+    cues:['הישיבה על שתי עצמות הישיבה, לא נופלים לצד אחד.',
+      'הסיבוב מתחיל מהבטן ולא מהצוואר.',
+      'הגב ארוך, לא מתעגל בזמן הסיבוב.']},
+  hamstring:{n:'מתיחת המסטרינג בישיבה',pose:'seat',sec:30,bi:true,
+    why:'המסטרינג קצר מושך את האגן אחורה ומשטח את הגב התחתון. זה מקור נפוץ לכאב.',
+    how:['ישיבה, רגל אחת ישרה קדימה והשנייה מקופלת פנימה.',
+      'התארכות מהאגן קדימה מעל הרגל הישרה, גב ישר.',
+      'החזקה במקום שבו מרגישים מתיחה בירך האחורית.'],
+    cues:['הכיפוף מהירך ולא מהגב. גב עגול מבטל את התרגיל.',
+      'הברך של הרגל הישרה יכולה להיות כפופה קלות.',
+      'לא מחפשים לגעת בבהונות אלא להרגיש מתיחה.']},
+  butterfly:{n:'פרפר',pose:'seat',sec:55,
+    why:'פותחת מקרבים ומפשעות, אזור שמושך את האגן ומשפיע ישירות על הגב.',
+    how:['ישיבה, כפות הרגליים צמודות זו לזו, הברכיים נופלות לצדדים.',
+      'תפיסת כפות הרגליים והתארכות של הגב כלפי מעלה.',
+      'נטייה עדינה קדימה מהירך.'],
+    cues:['לא לדחוף את הברכיים למטה בכוח.',
+      'ככל שהעקבים רחוקים מהגוף המתיחה עדינה יותר.',
+      'לשבת על קצה כרית אם הגב מתעגל.']},
+  sphinx:{n:'ספינקס',pose:'prone',sec:45,
+    why:'יישור עדין של הגב התחתון שמאזן שעות ישיבה. הגרסה הבטוחה של קוברה.',
+    how:['שכיבה על הבטן, מרפקים מתחת לכתפיים ואמות על הרצפה.',
+      'דחיפה קלה של האמות והתארכות של החזה קדימה ולמעלה.',
+      'נשימה רגועה, החזקה.'],
+    cues:['הישבן והרגליים רפויים, לא מכווצים.',
+      'אם מרגישים צביטה בגב התחתון, להזיז את המרפקים קדימה ולהנמיך.',
+      'הכתפיים רחוקות מהאוזניים.']},
+  tableStretch:{n:'מתיחת גב עליון על משטח',pose:'stand',sec:50,
+    why:'פותחת את הגב העליון והכתפיים ומורידה את הכיפוף שנוצר משעות מול מסך.',
+    how:['עמידה במרחק צעד משולחן או משיש.',
+      'הנחת הידיים על המשטח וצעד לאחור עד שהגו מקביל לרצפה.',
+      'שקיעה של החזה כלפי מטה בין הידיים.'],
+    cues:['הרגליים מתחת לאגן, לא מאחוריו.',
+      'האוזניים בין הזרועות, הצוואר לא צונח.',
+      'הגב התחתון ארוך, לא נופל לקשת עמוקה.']},
+  kneesChest:{n:'ברכיים לחזה',pose:'supine',sec:45,
+    why:'סוגרת את השרשרת האחורית ומורידה לחץ מהחוליות התחתונות.',
+    how:['שכיבה על הגב, משיכת שתי הברכיים לכיוון החזה.',
+      'חיבוק הרגליים והתנדנדות עדינה מצד לצד.'],
+    cues:['הראש נשאר על הרצפה.',
+      'המשיכה עדינה, לא לוחצים עד סוף הטווח.',
+      'לנשום עמוק, הבטן דוחפת את הירכיים.']},
+  lowLunge:{n:'מתיחת כופף ירך',pose:'kneel',sec:30,bi:true,
+    why:'כופף ירך קצר מטה את האגן קדימה ומייצר לחץ קבוע על הגב התחתון. זו המתיחה שהכי חסרה לרוב האנשים.',
+    how:['כריעה על ברך אחת, הרגל השנייה כפופה קדימה בזווית ישרה.',
+      'הכנסת האגן פנימה ומטה עד שמרגישים מתיחה בקדמת הירך האחורית.',
+      'החזקה ונשימה.'],
+    cues:['הכיווץ של הישבן בצד האחורי מעמיק את המתיחה ומגן על הגב.',
+      'לא לדחוף את הברך הקדמית מעבר לקרסול.',
+      'לשים כרית או מגבת מתחת לברך התחתונה.']},
+  threadNeedle:{n:'שרוך המחט',pose:'quad',sec:30,bi:true,
+    why:'משחררת את הגב האמצעי ואת השכמות, ומורידה עומס מהגב התחתון.',
+    how:['עמידת שש, העברת יד אחת מתחת לגוף לצד השני.',
+      'הכתף והרקה נחות על הרצפה.',
+      'היד השנייה יכולה להישלח קדימה או לחבק את הגב התחתון.'],
+    cues:['האגן נשאר גבוה מעל הברכיים.',
+      'לנשום לתוך השכמה שנמתחת.',
+      'אם הצוואר לא נוח, לשים כרית מתחת לראש.']},
+  nineNinety:{n:'ישיבת 90-90',pose:'seat',sec:30,bi:true,
+    why:'עובדת על סיבוב פנימי וחיצוני של הירך יחד. פותחת אגן נעול לעומק.',
+    how:['ישיבה, רגל קדמית כפופה 90 מעלות לפנים והרגל האחורית 90 מעלות לצד.',
+      'ישיבה זקופה, ואז נטייה עדינה קדימה מעל הרגל הקדמית.',
+      'החזקה, ואז החלפת צד.'],
+    cues:['הישיבה על שתי עצמות הישיבה.',
+      'הגב ארוך, הנטייה מהירך.',
+      'אם הברכיים לא מגיעות לרצפה, לשבת על כרית.']},
+  happyBaby:{n:'תינוק שמח',pose:'supine',sec:45,
+    why:'פותחת את הירכיים הפנימיות ומאריכה את הגב התחתון בלי עומס.',
+    how:['שכיבה על הגב, משיכת שתי הברכיים לצדי בית החזה.',
+      'תפיסת כפות הרגליים או השוקיים מבחוץ.',
+      'משיכה עדינה כלפי מטה, הגב התחתון שוקע לרצפה.'],
+    cues:['הגב התחתון נשאר על הרצפה.',
+      'הקרסוליים מעל הברכיים.',
+      'אפשר להתנדנד קלות מצד לצד לעיסוי הגב.']},
+  calfWall:{n:'מתיחת שוק מול קיר',pose:'stand',sec:30,bi:true,
+    why:'שוק קצר משנה את דפוס ההליכה ומעלה עומס לאורך כל השרשרת האחורית עד הגב.',
+    how:['ידיים על הקיר, רגל אחת מאחור ישרה, העקב נדחף לרצפה.',
+      'הרגל הקדמית כפופה, הגוף נשען לכיוון הקיר.',
+      'החזקה, ואז כיפוף קל של הברך האחורית למתיחת הסובך.'],
+    cues:['אצבעות הרגל האחורית קדימה ולא החוצה.',
+      'העקב האחורי לא מתרומם.',
+      'הגב ישר, לא מתקמרים.']},
+  latChild:{n:'מתיחת רחב גבי בצד',pose:'kneel',sec:30,bi:true,
+    why:'הרחב גבי מחבר את הזרוע לאגן. כשהוא קצר, הגב התחתון משלם.',
+    how:['מתנוחת ילד, הזזת שתי הידיים לצד אחד עד קצה המזרן.',
+      'שקיעה של בית השחי לכיוון הרצפה.',
+      'החזקה ונשימה לתוך הצד שנמתח, ואז החלפה.'],
+    cues:['שני צדי האגן נשארים על העקבים.',
+      'המתיחה מורגשת מבית השחי ועד המותן.',
+      'לא לסובב את הגו, רק להזיז את הידיים.']},
+  neckTrap:{n:'מתיחת צוואר וטרפז',pose:'seat',sec:30,bi:true,
+    why:'משחררת את המתח שנאסף בצוואר ובכתפיים מישיבה מול מחשב.',
+    how:['ישיבה זקופה, יד אחת אוחזת בקצה הכיסא או מתחת לישבן.',
+      'הטיית האוזן לכתף הנגדית, היד השנייה מוסיפה משקל עדין על הראש.',
+      'החזקה ונשימה, ואז החלפת צד.'],
+    cues:['בלי משיכה, רק משקל היד.',
+      'הכתף של הצד הנמתח נשארת למטה.',
+      'להימנע מסיבוב הראש, זו הטיה בלבד.']},
+  frogSoft:{n:'צפרדע עדינה',pose:'quad',sec:50,
+    why:'פתיחת מקרבים עמוקה שמשחררת את האגן ומורידה משיכה מהגב.',
+    how:['עמידת שש, פתיחת הברכיים לצדדים כמה שנוח.',
+      'הקרסוליים בקו הברכיים, האמות על הרצפה.',
+      'הזזת האגן אחורה בעדינות והחזקה.'],
+    cues:['לשים כרית מתחת לברכיים.',
+      'טווח נוח בלבד, זו מתיחה שקל להגזים בה.',
+      'הגב התחתון נשאר ארוך ולא נופל לקשת.']},
+  chairGlute:{n:'מתיחת ישבן בישיבה',pose:'chair',sec:30,bi:true,
+    why:'הגרסה של פיגורה 4 לכיסא. אפשר לעשות אותה גם באמצע יום עבודה.',
+    how:['ישיבה על קצה כיסא, הנחת קרסול אחד על הברך הנגדית.',
+      'גב ישר, נטייה עדינה קדימה מהירך.',
+      'החזקה, ואז החלפת צד.'],
+    cues:['הגב לא מתעגל, הנטייה מהאגן.',
+      'הברך העליונה נשמטת לצד ולא נדחפת בכוח.',
+      'שתי כפות הרגליים יציבות.']},
+
+  /* ===== חיזוק גב ===== */
+  birdDog:{n:'כלב ציפור',pose:'quad',sec:30,bi:true,
+    why:'התרגיל הבסיסי ליציבות הגב. מחזק את זקפי הגב מול הבטן החזקה שלך.',
+    how:['עמידת שש, גב ישר וליבה אסופה.',
+      'מתיחת יד אחת קדימה והרגל הנגדית אחורה, עד קו ישר אחד.',
+      'החזקה של 3 שניות, חזרה, והחלפת צד. עובדים לסירוגין לאורך הזמן.'],
+    cues:['האגן נשאר מקביל לרצפה, בלי הטיה לצד.',
+      'הרגל לא עולה מעל גובה האגן.',
+      'הצוואר בהמשך העמוד, המבט לרצפה.']},
+  ytw:{n:'Y-T-W בשכיבת פנים',pose:'prone',sec:50,
+    why:'מחזק את מייצבי השכמה והגב העליון, בדיוק האזור שנחלש מישיבה.',
+    how:['שכיבה על הבטן, המצח על הרצפה.',
+      'הרמת הידיים בצורת Y מעל הראש, הורדה.',
+      'הרמה בצורת T לצדדים, הורדה.',
+      'הרמה בצורת W עם מרפקים כפופים ליד הצלעות, הורדה. חוזרים במחזור.'],
+    cues:['ההרמה מהשכמות ולא מהידיים.',
+      'הראש נשאר למטה, לא מרימים את הצוואר.',
+      'הרמה קטנה ואיכותית עדיפה על גדולה ומתנדנדת.']},
+  superman:{n:'סופרמן מתחלף',pose:'prone',sec:45,
+    why:'מחזק את כל שרשרת הגב האחורית, מהצוואר עד הישבן.',
+    how:['שכיבה על הבטן, ידיים קדימה ורגליים ישרות.',
+      'הרמת יד אחת והרגל הנגדית יחד לגובה נמוך.',
+      'החזקה של שנייה, הורדה והחלפת צד.'],
+    cues:['הגרסה המתחלפת עדינה יותר לגב מהרמה של הכל יחד.',
+      'הרמה של כמה סנטימטרים מספיקה.',
+      'המבט לרצפה, לא מרימים את הראש.']},
+  sidePlankKnee:{n:'פלאנק צד על ברך',pose:'side',sec:30,bi:true,
+    why:'מחזק את מייצבי האגן הצדדיים. אגן יציב מוריד עומס מהגב התחתון.',
+    how:['שכיבה על הצד, מרפק מתחת לכתף, ברכיים כפופות.',
+      'הרמת האגן עד קו ישר מהראש עד הברכיים.',
+      'החזקה ונשימה, ואז החלפת צד.'],
+    cues:['האגן לא נופל אחורה, הגוף במישור אחד.',
+      'הכתף התומכת רחוקה מהאוזן.',
+      'להתחיל מ-15 שניות ולהאריך בהדרגה.']},
+  hipHinge:{n:'כיפוף ירך',pose:'stand',sec:45,
+    why:'מלמד את הגוף להתכופף מהירך ולא מהגב. זו ההרגלה שמונעת את הכאב ביומיום.',
+    how:['עמידה ברוחב האגן, ברכיים רכות, מקל או ידיים לאורך הגב.',
+      'דחיפת האגן אחורה וירידה של הגו קדימה בגב ישר.',
+      'עצירה כשמרגישים מתיחה בירך האחורית, וחזרה בדחיפת האגן קדימה.'],
+    cues:['הגב שומר על קו ישר לגמרי לאורך התנועה.',
+      'התנועה אחורה ולא למטה.',
+      'הישבן הוא שמחזיר אותך למעלה.']},
+  revSnow:{n:'מלאך שלג הפוך',pose:'prone',sec:45,
+    why:'פותח את החזה ומחזק את הגב העליון בו זמנית.',
+    how:['שכיבה על הבטן, ידיים לצדי הגוף וכפות ידיים כלפי מטה.',
+      'הרמת הידיים מהרצפה והחלקה איטית קדימה מעל הראש.',
+      'חזרה איטית לצדי הגוף. הידיים לא נוגעות ברצפה.'],
+    cues:['הידיים נשארות ישרות.',
+      'התנועה איטית מאוד, זה תרגיל של שליטה.',
+      'הכתפיים רחוקות מהאוזניים.']},
+  wallAngel:{n:'מלאך קיר',pose:'stand',sec:45,
+    why:'מתקן יציבה מכופפת ומחזק את הגב העליון בעמידה.',
+    how:['עמידה עם הגב לקיר, כפות הרגליים כ-20 סנטימטר מהקיר.',
+      'הצמדת הגב התחתון, הגב העליון והראש לקיר.',
+      'הידיים בצורת W על הקיר, החלקה למעלה ל-Y וחזרה.'],
+    cues:['שומרים על מגע של האמות בקיר לאורך התנועה.',
+      'הגב התחתון לא מתרומם מהקיר.',
+      'טווח קטן שנשמר עדיף על טווח גדול שמאבד מגע.']},
+  proneSwim:{n:'שחייה בשכיבת פנים',pose:'prone',sec:45,
+    why:'סיבולת לשרירי הגב. מחזק בלי עומס על החוליות.',
+    how:['שכיבה על הבטן, ידיים קדימה ורגליים ישרות.',
+      'הרמה קלה של הידיים והרגליים מהרצפה.',
+      'תנועות שחייה קטנות ומהירות של יד ורגל נגדית לסירוגין.'],
+    cues:['הבטן אסופה, האגן צמוד לרצפה.',
+      'המבט לרצפה.',
+      'תנועות קטנות, לא לנסות להרים גבוה.']}
+};
+
+/* ---------- הרכב הבלוקים ---------- */
+const BLOCKS = {
+  warm:{title:'מתיחות דינמיות',prog:false,color:'var(--aqua)',
+    anchors:['catCow','pelvicTilt'],
+    pool:['standTwist','deepSquat','inchworm','wipers','sideBendD','threadDyn','hipCircles','worldGreat','rollDown','legSwing','chestOpen'],
+    pick:3},
+  cool:{title:'מתיחות סטטיות',prog:true,color:'var(--orange)',
+    anchors:['childPose','supineTwist','figure4'],
+    pool:['seatedTwist','hamstring','butterfly','sphinx','tableStretch','kneesChest','lowLunge',
+          'threadNeedle','nineNinety','happyBaby','calfWall','latChild','neckTrap','frogSoft','chairGlute'],
+    pick:3},
+  back:{title:'חיזוק גב',prog:true,color:'var(--blue)',
+    anchors:['birdDog'],
+    pool:['ytw','superman','sidePlankKnee','hipHinge','revSnow','wallAngel','proneSwim'],
+    pick:2}
+};
+
+/* ---------- אחסון חדש ---------- */
+const DKEY = 'dailyRoutine_v1';
+let day = {days:{}};
+function dLoad(){
+  try{
+    const raw = localStorage.getItem(DKEY);
+    if(raw){ const o = JSON.parse(raw); if(o && typeof o.days === 'object') day = o; }
+  }catch(e){}
+  if(!day.days) day.days = {};
+}
+function dSave(){ try{ localStorage.setItem(DKEY, JSON.stringify(day)); }catch(e){} }
+function dGet(iso){ return day.days[iso] || []; }
+function dHas(iso,id){ return dGet(iso).indexOf(id) > -1; }
+function dToggle(id){
+  const t = todayISO();
+  const arr = dGet(t).slice();
+  const i = arr.indexOf(id);
+  if(i > -1) arr.splice(i,1); else arr.push(id);
+  day.days[t] = arr;
+  dSave();
+}
+function dMark(id){
+  const t = todayISO();
+  const arr = dGet(t).slice();
+  if(arr.indexOf(id) === -1) arr.push(id);
+  day.days[t] = arr;
+  dSave();
+}
+
+/* ---------- רמה והדרגתיות ---------- */
+function stretchDays(){
+  return Object.keys(day.days).filter(k=>{
+    const a = day.days[k];
+    return a.indexOf('warm')>-1 || a.indexOf('cool')>-1 || a.indexOf('back')>-1;
+  }).length;
+}
+function levelNow(){ return Math.min(4, 1 + Math.floor(stretchDays()/7)); }
+const LEVEL_ADD = [0, 5, 10, 15];
+function secFor(key, base){
+  const b = BLOCKS[key];
+  return (b && b.prog === false) ? base : base + LEVEL_ADD[levelNow()-1];
+}
+
+/* ---------- בחירת התרגילים להיום ---------- */
+function pickCount(key){
+  const b = BLOCKS[key];
+  return (key === 'cool' && levelNow() >= 3) ? b.pick - 1 : b.pick;
+}
+function blockList(key){
+  const b = BLOCKS[key];
+  const idx = stretchDays(), k = pickCount(key), n = b.pool.length;
+  const out = b.anchors.slice();
+  for(let i=0;i<k;i++) out.push(b.pool[(idx*b.pick + i) % n]);
+  return out;
+}
+
+function blockSeconds(key){
+  const ids = blockList(key);
+  let t = 0;
+  ids.forEach((id,i)=>{
+    const e = ST[id];
+    t += secFor(key, e.sec) * (e.bi ? 2 : 1);
+    if(i < ids.length-1) t += 8;
+  });
+  return t;
+}
+function mmss(s){ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+
+/* ---------- נגן ---------- */
+let Q = [], qi = 0, left = 0, endAt = 0, tick = null, playing = false, onFinish = null, actx = null;
+function initAudio(){
+  try{
+    if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)();
+    if(actx.state === 'suspended') actx.resume();
+  }catch(e){}
+}
+function beep(f,d){
+  try{
+    if(!actx) return;
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.connect(g); g.connect(actx.destination);
+    o.frequency.value = f; o.type = 'sine';
+    g.gain.setValueAtTime(.0001, actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.25, actx.currentTime+.02);
+    g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime+d);
+    o.start(); o.stop(actx.currentTime+d+.05);
+  }catch(e){}
+}
+let wake = null;
+async function keepAwake(on){
+  try{
+    if(on && 'wakeLock' in navigator){ wake = await navigator.wakeLock.request('screen'); }
+    else if(wake){ wake.release(); wake = null; }
+  }catch(e){}
+}
+
+function openPlayer(queue, finishId){
+  initAudio();
+  Q = queue; qi = 0; onFinish = finishId;
+  document.getElementById('player').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  keepAwake(true);
+  loadStep(true);
+}
+function closePlayer(){
+  playing = false;
+  if(tick){ clearInterval(tick); tick = null; }
+  document.getElementById('player').classList.remove('on');
+  document.body.style.overflow = '';
+  keepAwake(false);
+  renderAll();
+}
+function loadStep(autoplay){
+  if(qi >= Q.length){ finishSession(); return; }
+  const s = Q[qi];
+  left = s.sec;
+
+  document.getElementById('pOf').innerHTML =
+    `<b>${s.block}</b> · שלב ${qi+1} מתוך ${Q.length}`;
+  document.getElementById('pSeg').innerHTML =
+    Q.map((_,i)=>`<i class="${i<qi?'on':(i===qi?'cur':'')}"></i>`).join('');
+  document.getElementById('pName').textContent = s.name;
+  document.getElementById('pSideWrap').innerHTML =
+    s.side ? `<span class="p-side ${s.kind==='rest'?'rest':''}">${s.side}</span>` : '';
+  document.getElementById('pWhy').textContent = s.why || '';
+  document.getElementById('pInfo').innerHTML = s.how
+    ? `<h5>שלבי הביצוע</h5><ol>${s.how.map(x=>`<li>${x}</li>`).join('')}</ol>
+       <h5 class="c">חשוב להקפיד</h5><ul>${s.cues.map(x=>`<li>${x}</li>`).join('')}</ul>`
+    : '';
+
+  playing = !!autoplay;
+  endAt = Date.now() + left*1000;
+  drawDial();
+  document.getElementById('pPlay').textContent = playing ? 'השהיה' : 'המשך';
+  if(tick) clearInterval(tick);
+  tick = setInterval(step, 250);
+}
+function drawDial(){
+  const s = Q[qi];
+  const w = document.getElementById('pDialWrap');
+  if(s.kind === 'reps'){
+    const total = s.reps, doneR = Math.min(total, Math.floor((s.sec-left)/s.tempo));
+    w.innerHTML = `<div class="p-center">
+      <div class="reps">${doneR}<small> / ${total}</small></div>
+      <div style="font-size:.78rem;color:var(--muted);margin-top:6px">${fmt(left)} נותרו</div>
+      ${s.grip?`<div class="grip">${s.grip}</div>`:''}
+    </div>`;
+    return;
+  }
+  const pct = s.sec ? (s.sec - left) / s.sec : 0;
+  const r = 100, c = 2*Math.PI*r;
+  w.innerHTML = `<div class="dial">
+    <svg viewBox="0 0 230 230" width="230" height="230">
+      <circle cx="115" cy="115" r="${r}" stroke="rgba(255,255,255,.12)" stroke-width="13" fill="none"/>
+      <circle cx="115" cy="115" r="${r}" stroke="${s.kind==='rest'?'var(--muted)':'var(--aqua)'}"
+        stroke-width="13" fill="none" stroke-linecap="round"
+        stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}"/>
+    </svg>
+    <div class="txt"><b>${fmt(left)}</b><span>${s.kind==='rest'?'מעבר':'החזקה'}</span></div>
+  </div>`;
+}
+function fmt(s){
+  const m = Math.floor(s/60), r = s%60;
+  return m > 0 ? `${m}:${String(r).padStart(2,'0')}` : String(r);
+}
+function step(){
+  if(!playing) return;
+  const nl = Math.max(0, Math.ceil((endAt - Date.now())/1000));
+  if(nl === left) return;
+  left = nl;
+  if(left === 3 || left === 2 || left === 1) beep(660,.09);
+  if(left <= 0){
+    beep(880,.28);
+    qi++;
+    loadStep(true);
+    return;
+  }
+  drawDial();
+}
+function togglePlay(){
+  initAudio();
+  playing = !playing;
+  if(playing) endAt = Date.now() + left*1000;
+  document.getElementById('pPlay').textContent = playing ? 'השהיה' : 'המשך';
+}
+function nextStep(){ qi++; loadStep(playing); }
+function prevStep(){ if(qi > 0){ qi--; loadStep(playing); } }
+function finishSession(){
+  if(tick){ clearInterval(tick); tick = null; }
+  beep(1046,.4);
+  const fin = onFinish;
+  if(fin) dMark(fin);
+  closePlayer();
+  if(fin) go('today');
+}
+
+/* ---------- בניית תורים ---------- */
+function startBlock(key){
+  const b = BLOCKS[key];
+  const ids = blockList(key);
+  const q = [];
+  ids.forEach((id,i)=>{
+    const e = ST[id];
+    const sec = secFor(key, e.sec);
+    if(e.bi){
+      q.push({kind:'ex',block:b.title,name:e.n,side:'צד ימין',sec,why:e.why,how:e.how,cues:e.cues});
+      q.push({kind:'ex',block:b.title,name:e.n,side:'צד שמאל',sec,why:e.why,how:e.how,cues:e.cues});
+    } else {
+      q.push({kind:'ex',block:b.title,name:e.n,side:'',sec,why:e.why,how:e.how,cues:e.cues});
+    }
+    if(i < ids.length-1) q.push({kind:'rest',block:b.title,name:'מעבר לתרגיל הבא',side:'',sec:8});
+  });
+  openPlayer(q, key);
+}
+
+const GRIPS = ['כף היד פונה כלפי כף הרגל','כף היד פונה כלפי התקרה',
+  'כף היד פונה כלפי כף הרגל','כף היד פונה כלפי התקרה','כף היד פונה כלפי כף הרגל'];
+const BAND_HOW = ['עמידה על הרצועה עם כף רגל אחת, האחיזה ביד באותו צד.',
+  'רגליים ברוחב האגן, ברכיים כפופות קלות, גב ישר וליבה אסופה.',
+  'משיכה למעלה בכיפוף מרפק, המרפק צמוד לגוף.',
+  'ירידה איטית בשליטה עד יישור כמעט מלא של המרפק.'];
+const BAND_CUES = ['הגב נשאר ישר לחלוטין, בלי להיסחף אחורה עם הגו.',
+  'המרפק לא זז קדימה ואחורה, רק נפתח ונסגר.',
+  'הירידה איטית יותר מהעלייה, שם נמצא רוב האפקט.',
+  'אם הרצועה קלה מדי, לקצר אותה בעמידה רחבה יותר עליה.'];
+function startBand(){
+  const q = [];
+  const tempo = 4;
+  for(let r=0;r<5;r++){
+    ['יד ימין','יד שמאל'].forEach(side=>{
+      q.push({kind:'reps',block:`רצועה · סבב ${r+1} מתוך 5`,name:'כפיפת מרפק עם רצועה',
+        side, sec:9*tempo, reps:9, tempo, grip:GRIPS[r],
+        why:'אחיזה כלפי הרגל עובדת ברכיאליס ואמות, אחיזה כלפי התקרה עובדת ביצפס.',
+        how:BAND_HOW, cues:BAND_CUES});
+    });
+    if(r < 4) q.push({kind:'rest',block:`רצועה · סבב ${r+1} מתוך 5`,name:'מנוחה לפני הסבב הבא',side:'',sec:15});
+  }
+  openPlayer(q,'band');
+}
+function startPush(){
+  openPlayer([{kind:'reps',block:'שכיבות סמיכה',name:'שכיבות סמיכה',side:'',
+    sec:15*3, reps:15, tempo:3, grip:'',
+    why:'דוחפות את פלג הגוף העליון ומייצבות את הליבה בקו ישר אחד.',
+    how:['ידיים מעט רחבות מהכתפיים, גוף בקו ישר מהראש עד העקבים.',
+      'ירידה מבוקרת עד שהחזה קרוב לרצפה.',
+      'דחיפה חזרה עד יישור כמעט מלא של המרפקים.'],
+    cues:['האגן לא צונח ולא מתרומם.','המרפקים בזווית של כ-45 מעלות מהגוף ולא לצדדים.',
+      'אם קשה, לבצע על הברכיים או בזווית מול משטח גבוה.']}],'push');
+}
+function startCardio(){
+  openPlayer([{kind:'ex',block:'אירובי',name:'אלפטיקל',side:'',sec:30*60,
+    why:'שלושים דקות בעצימות שמאפשרת לדבר במשפטים קצרים.',
+    how:['חימום של שלוש דקות בהתנגדות נמוכה.',
+      'עשרים וארבע דקות בקצב יציב.','שלוש דקות הרגעה בהתנגדות נמוכה.'],
+    cues:['הגב ישר, לא נשענים על הידיות במשקל מלא.',
+      'הצעד מלא, העקב יורד בכל סיבוב.','אם הגב התחתון מתחיל לכאוב, להוריד התנגדות.']}],'cardio');
+}
+
+/* ---------- תחנות היום ---------- */
+const STATIONS = [
+  {id:'warm',   n:'מתיחות דינמיות',   m:()=>`5 תרגילים · ${mmss(blockSeconds('warm'))} דקות`, c:'var(--aqua)',   go:()=>startBlock('warm')},
+  {id:'glutes', n:'חיטוב ישבן וירכיים',m:()=>'3 תרגילים · כ-10 דקות',                          c:'var(--pink)',   go:()=>go('glutes')},
+  {id:'band',   n:'רצועה · 5 סבבים',   m:()=>'9 חזרות בכל צד · 7:00 דקות',                     c:'var(--orange)', go:startBand},
+  {id:'push',   n:'שכיבות סמיכה',      m:()=>'15 חזרות',                                       c:'var(--violet)', go:startPush},
+  {id:'cardio', n:'אירובי · אלפטיקל',  m:()=>'30 דקות',                                        c:'var(--violet)', go:startCardio},
+  {id:'back',   n:'חיזוק גב',          m:()=>`3 תרגילים · ${mmss(blockSeconds('back'))} דקות`,  c:'var(--blue)',   go:()=>startBlock('back')},
+  {id:'cool',   n:'מתיחות סטטיות',     m:()=>`6 תרגילים · ${mmss(blockSeconds('cool'))} דקות`, c:'var(--orange)', go:()=>startBlock('cool')}
+];
+function glutesDoneToday(){
+  return mem.done.some(d=>d.date === todayISO());
+}
+function stDone(id){
+  return id === 'glutes' ? glutesDoneToday() : dHas(todayISO(), id);
+}
+function tapStation(id){
+  if(id === 'glutes'){ go('glutes'); return; }
+  dToggle(id); renderAll();
+}
+function runStation(i){ STATIONS[i].go(); }
+
+/* ---------- ניווט ---------- */
+const TITLES = {
+  today:{t:'האימון היומי', s:'שבע תחנות, בסדר הנכון'},
+  glutes:{t:'חיטוב ישבן וירכיים', s:'תוספת יומית לשגרת הכוח'},
+  stretch:{t:'מתיחות וחיזוק גב', s:'דגש על הגב התחתון'},
+  track:{t:'מעקב', s:'הרצף, הימים והדקות'}
+};
+let curView = 'today';
+function go(v){
+  curView = v;
+  document.querySelectorAll('.view').forEach(e=>e.classList.remove('on'));
+  document.getElementById('view-'+v).classList.add('on');
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-'+v).classList.add('on');
+  document.getElementById('hTitle').textContent = TITLES[v].t;
+  document.getElementById('hSub').textContent = TITLES[v].s;
+  window.scrollTo({top:0});
+  renderAll();
+}
+
+/* ---------- תצוגה ---------- */
+function renderHeaderRing(){
+  const doneN = STATIONS.filter(s=>stDone(s.id)).length;
+  const ring = document.getElementById('tRing');
+  const N = STATIONS.length, cx=46, cy=46, r=39;
+  let segs = '';
+  for(let i=0;i<N;i++){
+    const a0 = (i/N)*2*Math.PI + .05, a1 = ((i+1)/N)*2*Math.PI - .05;
+    const x0=cx+r*Math.cos(a0), y0=cy+r*Math.sin(a0);
+    const x1=cx+r*Math.cos(a1), y1=cy+r*Math.sin(a1);
+    segs += `<path d="M${x0.toFixed(1)} ${y0.toFixed(1)} A${r} ${r} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)}"
+      stroke="${i<doneN?'#FFFFFF':'rgba(255,255,255,.3)'}" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+  }
+  ring.innerHTML = segs;
+  document.getElementById('tRingPos').textContent = doneN;
+}
+function renderToday(){
+  const doneN = STATIONS.filter(s=>stDone(s.id)).length;
+  const pct = Math.round(doneN/STATIONS.length*100);
+  const d = new Date();
+  const days = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+  document.getElementById('todayDate').textContent =
+    `יום ${days[d.getDay()]}, ${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()}`;
+  document.getElementById('todayPct').textContent = pct + '%';
+  document.getElementById('todayBar').style.width = pct + '%';
+
+  const nextS = STATIONS.find(s=>!stDone(s.id));
+  document.getElementById('todayNote').textContent =
+    doneN === 0 ? 'התחנה הראשונה מחכה לך. סך הכל כשעה.'
+    : (nextS ? `הבא בתור: ${nextS.n}.` : 'כל שבע התחנות הושלמו היום. כל הכבוד.');
+
+  document.getElementById('stationList').innerHTML = STATIONS.map((s,i)=>{
+    const dn = stDone(s.id);
+    return `<div class="station ${dn?'done':''}" style="--sc:${s.c}">
+      <span class="st-step">${i+1}</span>
+      <button class="st-tick" onclick="tapStation('${s.id}')"
+        aria-label="סימון ${s.n}">${dn?'✓':''}</button>
+      <div class="st-body">
+        <div class="st-name">${s.n}</div>
+        <div class="st-meta">${s.m()}</div>
+      </div>
+      <button class="st-go" onclick="runStation(${i})">${s.id==='glutes'?'פתיחה':(dn?'שוב':'התחלה')}</button>
+    </div>`;
+  }).join('');
+  renderHeaderRing();
+}
+function srow(id, key){
+  const e = ST[id], sec = secFor(key, e.sec);
+  const t = e.bi ? `${sec} שנ׳ ×2` : `${sec} שנ׳`;
+  return `<div class="srow">
+    <div class="pose">${P[e.pose]}</div>
+    <div style="min-width:0">
+      <div class="nm">${e.n}</div>
+      <div class="pos">${POSE_HE[e.pose]}</div>
+    </div>
+    <span class="sec">${t}</span>
+    <button class="info" onclick="showInfo('${id}','${key}')" aria-label="פרטים">i</button>
+  </div>`;
+}
+function showInfo(id, key){
+  const e = ST[id];
+  openPlayer([{kind:'ex',block:'תצוגה מקדימה',name:e.n,side:e.bi?'צד ימין':'',
+    sec:secFor(key, e.sec),why:e.why,how:e.how,cues:e.cues}], null);
+  playing = false;
+  document.getElementById('pPlay').textContent = 'המשך';
+}
+function renderStretch(){
+  const lv = levelNow(), dn = stretchDays(), toNext = 7 - (dn % 7);
+  document.getElementById('levelBox').innerHTML = `
+    <h4>רמה ${lv} מתוך 4 · ${dn} ימי מתיחות</h4>
+    <p>${lv < 4
+      ? `זמני ההחזקה במתיחות הסטטיות ובחיזוק הגב עולים ב-5 שניות בכל רמה. עוד ${toNext} ימים לרמה ${lv+1}.`
+      : 'רמה מלאה. ההחזקות ארוכות והתרגילים ממשיכים להתחלף כל יום.'}
+    המתיחות הדינמיות נשארות קצרות בכוונה, חימום לא צריך החזקות ארוכות.
+    שלוש המתיחות הראשונות בכל בלוק קבועות, השאר מתחלפות.</p>
+    <div class="pips">${[1,2,3,4].map(i=>`<i class="${i<=lv?'on':''}"></i>`).join('')}</div>`;
+  ['warm','cool','back'].forEach(k=>{
+    document.getElementById(k+'List').innerHTML = blockList(k).map(id=>srow(id,k)).join('');
+    document.getElementById(k+'Time').textContent = mmss(blockSeconds(k));
+    document.getElementById(k+'Btn').textContent = 'התחלה · ' + mmss(blockSeconds(k)) + ' דקות';
+  });
+}
+function renderTrack(){
+  const keys = Object.keys(day.days).filter(k=>day.days[k].length > 0).sort();
+  const glutesDays = mem.done.map(d=>d.date);
+  const allDays = Array.from(new Set(keys.concat(glutesDays))).sort();
+
+  // רצף
+  let streak = 0;
+  const t = new Date();
+  for(let i=0;i<400;i++){
+    const iso = new Date(t.getTime() - i*86400000).toISOString().slice(0,10);
+    const has = dGet(iso).length > 0 || glutesDays.indexOf(iso) > -1;
+    if(has) streak++;
+    else if(i > 0) break;
+  }
+  document.getElementById('kStreak').textContent = streak;
+  document.getElementById('kDays').textContent = allDays.length;
+  let mins = 0;
+  keys.forEach(k=>{
+    const a = day.days[k];
+    if(a.indexOf('warm')>-1) mins += Math.round(blockSeconds('warm')/60);
+    if(a.indexOf('cool')>-1) mins += Math.round(blockSeconds('cool')/60);
+    if(a.indexOf('back')>-1) mins += Math.round(blockSeconds('back')/60);
+  });
+  document.getElementById('kMin').textContent = mins;
+
+  // רשת 30 יום
+  let g = '';
+  for(let i=29;i>=0;i--){
+    const dt = new Date(t.getTime() - i*86400000);
+    const iso = dt.toISOString().slice(0,10);
+    let c = dGet(iso).length + (glutesDays.indexOf(iso)>-1 ? 1 : 0);
+    const cls = c === 0 ? '' : (c <= 2 ? 'p1' : (c <= 5 ? 'p2' : 'p3'));
+    g += `<div class="${cls} ${i===0?'today':''}">${dt.getDate()}</div>`;
+  }
+  document.getElementById('grid30').innerHTML = g;
+
+  // יומן
+  const recent = allDays.slice(-14).reverse();
+  document.getElementById('dayLog').innerHTML = recent.length === 0
+    ? `<div class="empty">עוד אין ימים מתועדים. סמני תחנה במסך היום.</div>`
+    : recent.map(iso=>{
+      const a = dGet(iso);
+      const chips = STATIONS.map(s=>{
+        const on = s.id === 'glutes' ? glutesDays.indexOf(iso)>-1 : a.indexOf(s.id)>-1;
+        return `<span class="chip ${on?'on':''}">${s.n.split(' ')[0]}</span>`;
+      }).join('');
+      const [y,m,dd] = iso.split('-');
+      return `<div class="d-row"><span class="dt">${dd}.${m}</span><div class="chips">${chips}</div></div>`;
+    }).join('');
+}
+function resetToday(){
+  if(confirm('לאפס את הסימונים של היום? אימון החיטוב והימים הקודמים לא ייפגעו.')){
+    delete day.days[todayISO()];
+    dSave(); renderAll();
+  }
+}
+
+function renderAll(){
+  renderGlutes();
+  renderToday();
+  renderStretch();
+  renderTrack();
+}
+
+/* ---------- חזרה מרקע ---------- */
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState !== 'visible') return;
+  if(!document.getElementById('player').classList.contains('on')) return;
+  keepAwake(true);
+  if(playing) step(); else drawDial();
+});
+
+/* ---------- אתחול ---------- */
+load();   // glutesTracker
+dLoad();  // dailyRoutine_v1
+go('today');
+
 </script>
 </body>
 </html>
