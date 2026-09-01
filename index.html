@@ -305,13 +305,20 @@
   .st-body{flex:1;min-width:0}
   .st-name{font-weight:800;font-size:.98rem}
   .st-meta{font-size:.75rem;color:var(--muted);margin-top:2px}
+  .st-time{
+    flex-shrink:0;font-family:'Suez One',serif;font-size:1.02rem;color:var(--sc,var(--pink));
+    min-width:46px;text-align:center;letter-spacing:.3px;
+  }
+  .station.done .st-time{color:var(--muted)}
   .st-go{
     border:none;cursor:pointer;flex-shrink:0;
     background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.05));
     border:1px solid var(--line);
-    color:#fff;font-family:'Assistant',sans-serif;font-weight:800;font-size:.82rem;
-    padding:9px 14px;border-radius:13px;
+    color:#fff;font-family:'Assistant',sans-serif;font-weight:800;font-size:.8rem;
+    padding:9px 12px;border-radius:13px;
   }
+  .station{gap:10px;padding:12px 12px}
+  .st-name{font-size:.94rem}
   .st-go:active{transform:translateY(2px)}
   .st-step{
     font-family:'Suez One',serif;font-size:.85rem;color:var(--muted);
@@ -561,7 +568,7 @@
   <div class="day-head">
     <div class="top">
       <div>
-        <div class="day-title">סדר האימון</div>
+        <div class="day-title">סדר האימון · <span id="todayTotal"></span></div>
         <div class="day-date" id="todayDate"></div>
       </div>
       <div class="day-pct" id="todayPct">0%</div>
@@ -1563,12 +1570,12 @@ const BLOCKS = {
   warm:{title:'מתיחות דינמיות',prog:false,color:'var(--aqua)',
     anchors:['catCow','pelvicTilt'],
     pool:['standTwist','deepSquat','inchworm','wipers','sideBendD','threadDyn','hipCircles','worldGreat','rollDown','legSwing','chestOpen'],
-    pick:3},
+    pick:2},
   cool:{title:'מתיחות סטטיות',prog:true,color:'var(--orange)',
     anchors:['childPose','supineTwist','figure4'],
     pool:['seatedTwist','hamstring','butterfly','sphinx','tableStretch','kneesChest','lowLunge',
           'threadNeedle','nineNinety','happyBaby','calfWall','latChild','neckTrap','frogSoft','chairGlute'],
-    pick:3},
+    pick:2},
   back:{title:'חיזוק גב',prog:true,color:'var(--blue)',
     anchors:['birdDog'],
     pool:['ytw','superman','sidePlankKnee','hipHinge','revSnow','wallAngel','proneSwim'],
@@ -1635,7 +1642,7 @@ function secFor(key, base){
 /* ---------- בחירת התרגילים להיום ---------- */
 function pickCount(key){
   const b = BLOCKS[key];
-  return (key === 'cool' && levelNow() >= 3) ? b.pick - 1 : b.pick;
+  return (key === 'cool' && levelNow() >= 3) ? Math.max(1, b.pick - 1) : b.pick;
 }
 function blockList(key){
   const b = BLOCKS[key];
@@ -1866,8 +1873,8 @@ function startBlock(key){
   openPlayer(q, key);
 }
 
-const GRIPS = ['כף היד פונה כלפי כף הרגל','כף היד פונה כלפי התקרה',
-  'כף היד פונה כלפי כף הרגל','כף היד פונה כלפי התקרה','כף היד פונה כלפי כף הרגל'];
+const GRIPS = ['כף היד פונה כלפי כף הרגל','כף היד פונה כלפי התקרה','כף היד פונה כלפי כף הרגל'];
+const BAND_ROUNDS = GRIPS.length;
 const BAND_HOW = ['עמידה על הרצועה עם כף רגל אחת, האחיזה ביד באותו צד.',
   'רגליים ברוחב האגן, ברכיים כפופות קלות, גב ישר וליבה אסופה.',
   'משיכה למעלה בכיפוף מרפק, המרפק צמוד לגוף.',
@@ -1879,14 +1886,14 @@ const BAND_CUES = ['הגב נשאר ישר לחלוטין, בלי להיסחף �
 function startBand(){
   const q = [];
   const tempo = 4;
-  for(let r=0;r<5;r++){
+  for(let r=0;r<BAND_ROUNDS;r++){
     ['יד ימין','יד שמאל'].forEach(side=>{
-      q.push({kind:'reps',block:`רצועה · סבב ${r+1} מתוך 5`,name:'כפיפת מרפק עם רצועה',
+      q.push({kind:'reps',block:`רצועה · סבב ${r+1} מתוך ${BAND_ROUNDS}`,name:'כפיפת מרפק עם רצועה',
         side, sec:9*tempo, reps:9, tempo, grip:GRIPS[r], fig:SFIG.band, exId:'band',
         why:'אחיזה כלפי הרגל עובדת ברכיאליס ואמות, אחיזה כלפי התקרה עובדת ביצפס.',
         how:BAND_HOW, cues:BAND_CUES});
     });
-    if(r < 4) q.push({kind:'rest',block:`רצועה · סבב ${r+1} מתוך 5`,name:'מנוחה לפני הסבב הבא',side:'',sec:15});
+    if(r < BAND_ROUNDS-1) q.push({kind:'rest',block:`רצועה · סבב ${r+1} מתוך ${BAND_ROUNDS}`,name:'מנוחה לפני הסבב הבא',side:'',sec:10});
   }
   openPlayer(q,'band');
 }
@@ -1911,7 +1918,7 @@ function startCardio(){
 
 /* ---------- נגן החיטוב: סט אחרי סט ---------- */
 const GTEMPO = {bridge:2, bridge1:2, donkeyA:2, clam:2, sideRaise:2, innerLift:2, revLunge:3, donkeyC:2, bridgeHold:12};
-const REST_SET = 25, REST_EX = 40;
+const REST_SET = 20, REST_EX = 20;
 function parseCount(c){
   const m = String(c).match(/(\d+)\s*[xX×]\s*(\d+)/);
   if(!m) return {sets:3, reps:12, bi:false};
@@ -1948,15 +1955,22 @@ function startGlutes(){
 }
 
 /* ---------- תחנות היום ---------- */
+const bandSeconds = () => BAND_ROUNDS*2*36 + (BAND_ROUNDS-1)*10;
 const STATIONS = [
-  {id:'warm',   n:'מתיחות דינמיות',   m:()=>`5 תרגילים · ${mmss(blockSeconds('warm'))} דקות`, c:'var(--aqua)',   go:()=>startBlock('warm')},
-  {id:'glutes', n:'חיטוב ישבן וירכיים',m:()=>`3 תרגילים · ${mmss(glutesSeconds())} דקות`,      c:'var(--pink)',   go:startGlutes},
-  {id:'band',   n:'רצועה · 5 סבבים',   m:()=>'9 חזרות בכל צד · 7:00 דקות',                     c:'var(--orange)', go:startBand},
-  {id:'push',   n:'שכיבות סמיכה',      m:()=>'15 חזרות',                                       c:'var(--violet)', go:startPush},
-  {id:'cardio', n:'אירובי · אלפטיקל',  m:()=>'30 דקות',                                        c:'var(--violet)', go:startCardio},
-  {id:'back',   n:'חיזוק גב',          m:()=>`3 תרגילים · ${mmss(blockSeconds('back'))} דקות`,  c:'var(--blue)',   go:()=>startBlock('back')},
-  {id:'cool',   n:'מתיחות סטטיות',     m:()=>`6 תרגילים · ${mmss(blockSeconds('cool'))} דקות`, c:'var(--orange)', go:()=>startBlock('cool')}
+  {id:'warm',   n:'מתיחות דינמיות',    m:()=>`${blockList('warm').length} תרגילים`, t:()=>blockSeconds('warm'), c:'var(--aqua)',   go:()=>startBlock('warm')},
+  {id:'glutes', n:'חיטוב ישבן וירכיים', m:()=>'3 תרגילים · 3 סטים',               t:glutesSeconds,             c:'var(--pink)',   go:startGlutes},
+  {id:'band',   n:'רצועה',              m:()=>`${BAND_ROUNDS} סבבים · 9 בכל צד`,  t:bandSeconds,               c:'var(--orange)', go:startBand},
+  {id:'push',   n:'שכיבות סמיכה',       m:()=>'15 חזרות',                          t:()=>45,                    c:'var(--violet)', go:startPush},
+  {id:'cardio', n:'אירובי · אלפטיקל',   m:()=>'קצב יציב',                          t:()=>1800,                  c:'var(--violet)', go:startCardio},
+  {id:'back',   n:'חיזוק גב',           m:()=>'3 תרגילים',                         t:()=>blockSeconds('back'),  c:'var(--blue)',   go:()=>startBlock('back')},
+  {id:'cool',   n:'מתיחות סטטיות',      m:()=>`${blockList('cool').length} תרגילים`, t:()=>blockSeconds('cool'), c:'var(--orange)', go:()=>startBlock('cool')}
 ];
+function totalSeconds(){ return STATIONS.reduce((a,s)=>a+s.t(), 0); }
+function leftSeconds(){ return STATIONS.filter(s=>!stDone(s.id)).reduce((a,s)=>a+s.t(), 0); }
+function minLabel(sec){
+  const m = Math.round(sec/60);
+  return m + (m === 1 ? ' דקה' : ' דקות');
+}
 function glutesDoneToday(){
   return mem.done.some(d=>d.date === todayISO());
 }
@@ -2016,9 +2030,11 @@ function renderToday(){
   document.getElementById('todayBar').style.width = pct + '%';
 
   const nextS = STATIONS.find(s=>!stDone(s.id));
+  const tot = totalSeconds(), lft = leftSeconds();
   document.getElementById('todayNote').textContent =
-    doneN === 0 ? 'התחנה הראשונה מחכה לך. סך הכל כשעה.'
-    : (nextS ? `הבא בתור: ${nextS.n}.` : 'כל שבע התחנות הושלמו היום. כל הכבוד.');
+    doneN === 0 ? `סך הכל ${minLabel(tot)}. התחנה הראשונה מחכה לך.`
+    : (nextS ? `הבא בתור: ${nextS.n}. נותרו ${minLabel(lft)}.` : 'כל שבע התחנות הושלמו היום. כל הכבוד.');
+  document.getElementById('todayTotal').textContent = mmss(tot);
 
   document.getElementById('stationList').innerHTML = STATIONS.map((s,i)=>{
     const dn = stDone(s.id);
@@ -2030,6 +2046,7 @@ function renderToday(){
         <div class="st-name">${s.n}</div>
         <div class="st-meta">${s.m()}</div>
       </div>
+      <span class="st-time">${mmss(s.t())}</span>
       <button class="st-go" onclick="runStation(${i})">${dn?'שוב':'התחלה'}</button>
     </div>`;
   }).join('');
@@ -2063,7 +2080,7 @@ function renderStretch(){
       ? `זמני ההחזקה במתיחות הסטטיות ובחיזוק הגב עולים ב-5 שניות בכל רמה. עוד ${toNext} ימים לרמה ${lv+1}.`
       : 'רמה מלאה. ההחזקות ארוכות והתרגילים ממשיכים להתחלף כל יום.'}
     המתיחות הדינמיות נשארות קצרות בכוונה, חימום לא צריך החזקות ארוכות.
-    שלוש המתיחות הראשונות בכל בלוק קבועות, השאר מתחלפות.</p>
+    העוגנים בכל בלוק קבועים, השאר מתחלפים כל יום.</p>
     <div class="pips">${[1,2,3,4].map(i=>`<i class="${i<=lv?'on':''}"></i>`).join('')}</div>`;
   ['warm','cool','back'].forEach(k=>{
     document.getElementById(k+'List').innerHTML = blockList(k).map(id=>srow(id,k)).join('');
