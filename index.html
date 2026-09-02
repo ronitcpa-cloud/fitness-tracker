@@ -541,6 +541,26 @@
   /* איור ברשימת המתיחות */
   .pose{width:70px;height:46px}
 
+  /* ---- נגן כרטיסים ---- */
+  .p-scroll{flex:1 1 auto;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column}
+  .p-scroll .p-fig{width:100%;max-height:150px;aspect-ratio:200/122;margin:2px auto 8px;flex-shrink:0}
+  .p-scroll .p-name{font-size:clamp(1.15rem,5vw,1.45rem);margin-bottom:6px}
+  #pDose{text-align:center;margin-bottom:8px}
+  .dose{
+    display:inline-block;font-weight:800;font-size:.86rem;color:#1C0E24;line-height:1.35;
+    background:linear-gradient(90deg,var(--aqua),#8CE8FF);padding:6px 14px;border-radius:14px;
+  }
+  .p-scroll .p-info{flex:0 0 auto;overflow:visible;min-height:0}
+  .p-info h5.s{color:var(--aqua);margin-top:2px}
+  .p-info p{margin-bottom:6px}
+  .p-ctrl button.done-main{
+    flex:1;max-width:300px;min-width:0;font-size:1.05rem;padding:14px 16px;color:#0E2A26;
+    background:linear-gradient(180deg,#5CF2DA,var(--aqua));box-shadow:0 6px 0 #0E8E7A;
+  }
+  .p-ctrl button.done-main:active{transform:translateY(4px);box-shadow:0 2px 0 #0E8E7A}
+  .p-ctrl{padding-top:8px;border-top:1px solid var(--line)}
+  .station[style*="--lime"] .st-tick{color:var(--lime)}
+
 </style>
 </head>
 
@@ -550,12 +570,12 @@
   <div class="wrap">
     <div class="ring-box">
       <svg viewBox="0 0 92 92" id="tRing"></svg>
-      <div class="ring-num"><b id="tRingPos">0</b><span>מתוך 7</span></div>
+      <div class="ring-num"><b id="tRingPos">0</b><span id="tRingOf">מתוך 8</span></div>
     </div>
     <div>
       <div class="greet" id="hGreet">היי רונית! מוכנה? 💪</div>
       <h1 id="hTitle">האימון היומי</h1>
-      <div class="sub" id="hSub">שבע תחנות, בסדר הנכון</div>
+      <div class="sub" id="hSub">שמונה תחנות, בסדר הנכון</div>
     </div>
     <img class="avatar" src="data:image/jpeg;base64,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" alt="רונית">
   </div>
@@ -580,7 +600,7 @@
   <div id="stationList"></div>
 
   <div class="helpbox">
-    <b>למה זה הסדר הזה:</b> מתיחות דינמיות בהתחלה מכינות את האגן והגב לתנועה בלי להחליש את השריר.
+    <b>למה זה הסדר הזה:</b> חימום חופשי ואז מתיחות דינמיות מכינות את האגן והגב לתנועה בלי להחליש את השריר.
     מתיחות סטטיות ארוכות לפני אימון כוח מורידות זמנית כוח ויציבות, ולכן הן בסוף.
     חיזוק הגב אחרי האירובי, כשהגוף חם אבל הגב עדיין טרי.
   </div>
@@ -691,7 +711,7 @@
   </button>
 </nav>
 
-<!-- ============ נגן ============ -->
+<!-- ============ נגן כרטיסים ============ -->
 <div class="player" id="player">
   <div class="p-wrap">
     <div class="p-bar">
@@ -700,24 +720,17 @@
     </div>
     <div class="p-seg" id="pSeg"></div>
 
-    <div class="p-center">
-      <div class="p-name" id="pName"></div>
-      <div id="pSideWrap"></div>
-    </div>
-
-    <div class="p-row">
+    <div class="p-scroll" id="pScroll">
       <div id="pFig"></div>
-      <div id="pDialWrap"></div>
+      <div class="p-name" id="pName"></div>
+      <div id="pDose"></div>
+      <div class="p-info" id="pInfo"></div>
     </div>
-    <div id="pExtra"></div>
 
     <div class="p-ctrl">
-      <button onclick="prevStep()">הקודם</button>
-      <button class="main" id="pPlay" onclick="togglePlay()">השהיה</button>
-      <button onclick="nextStep()">הבא</button>
+      <button id="pPrev" onclick="prevCard()">הקודם</button>
+      <button class="main done-main" id="pDone" onclick="nextCard()">סיימתי ✓</button>
     </div>
-
-    <div class="p-info" id="pInfo"></div>
   </div>
 </div>
 
@@ -1042,11 +1055,314 @@ const SFIG = {
   pushup: SV(`${HL(104,76,28,10)}${HD(162,60)}<line x1="154" y1="64" x2="44" y2="86"/>
     <line x1="152" y1="70" x2="150" y2="100"/><line x1="44" y1="86" x2="40" y2="100"/>
     ${AR('M120 60 L120 40 M112 48 L120 40 L128 48')}`),
+  free: SV(`${HL(100,60,16,12)}${HD(100,18)}<line x1="100" y1="28" x2="100" y2="62"/>
+    <line x1="100" y1="38" x2="70" y2="20"/><line x1="100" y1="38" x2="132" y2="22"/>
+    <line x1="100" y1="62" x2="78" y2="100"/><line x1="100" y1="62" x2="126" y2="90"/>
+    ${AR('M56 30 A20 20 0 0 1 68 8')}${AR('M144 30 A20 20 0 0 0 132 8')}`),
   cardio: SV(`${HL(100,58,18,14)}${HD(100,20)}<line x1="100" y1="30" x2="100" y2="62"/>
     <line x1="100" y1="40" x2="66" y2="52"/><line x1="100" y1="40" x2="134" y2="30"/>
     <line x1="100" y1="62" x2="70" y2="92"/><line x1="100" y1="62" x2="132" y2="88"/>
     <line x1="52" y1="98" x2="148" y2="98" stroke="rgba(255,255,255,.28)" stroke-width="5"/>
     ${AR('M40 60 A62 62 0 0 1 62 22')}`)
+};
+
+
+/* ---------- מאגר המתיחות: הסבר מפורט, איזו יד ואיזו רגל ----------
+   hold  = החזקה בשניות (סטטי, מתארך עם הרמה)
+   bi    = צד ימין ואז צד שמאל
+   reps  = מינון בחזרות (דינמי, חיזוק)
+   est   = הערכת זמן בשניות למסך היום
+*/
+const ST = {
+  /* ===== דינמי, לפני האימון ===== */
+  catCow:{n:'חתול פרה',reps:'10 חזרות איטיות',est:50,
+    why:'מחזירה תנועה לכל חוליה בעמוד השדרה לפני שמעמיסים עליו.',
+    start:'עמידת שש: כפות הידיים על הרצפה בדיוק מתחת לכתפיים, אצבעות קדימה. הברכיים על הרצפה מתחת לאגן, ברוחב האגן. הגב ישר, המבט לרצפה.',
+    how:['שאיפה: מורידים את הבטן לכיוון הרצפה. האגן מתגלגל כך שעצם הזנב עולה, החזה נפתח קדימה, הסנטר מתרומם מעט. זו "פרה".',
+      'נשיפה: דוחפים את הרצפה עם הידיים ומעגלים את הגב לתקרה כמו חתול. עצם הזנב נכנס פנימה, הסנטר לחזה. זה "חתול".',
+      'עוברים מאחד לשני בקצב הנשימה, כ-4 שניות לכל כיוון. חזרה אחת = פרה + חתול.'],
+    cues:['התנועה מתחילה מהאגן ולא מהצוואר.','לא לדחוף לקשת מקסימלית. זה חימום, לא מתיחה.','המרפקים ישרים אבל רכים, לא נעולים.']},
+  pelvicTilt:{n:'ניידות אגן על ברכיים',reps:'8 קדימה ואחורה, 8 לצדדים, 5 סיבובים לכל כיוון',est:60,
+    why:'האגן הוא הצומת בין הגב לרגליים. אגן נעול מעמיס הכל על הגב התחתון.',
+    start:'ישיבה על העקבים, או כריעה גבוהה על שתי הברכיים. כפות הידיים על עצמות האגן משני הצדדים, כדי להרגיש את התנועה.',
+    how:['קדימה ואחורה: דוחפים את עצם הזנב אחורה כך שהגב התחתון מתקשת והבטן יוצאת קדימה. ואז מכניסים את עצם הזנב פנימה כך שהגב התחתון מתעגל והבטן נאספת. 8 פעמים.',
+      'לצדדים: מזיזים את האגן ימינה ואז שמאלה, הצלעות נשארות במקום. 8 פעמים.',
+      'סיבובים: מחברים את שתי התנועות למעגל. 5 סיבובים בכיוון השעון, 5 נגד.'],
+    cues:['הצלעות והכתפיים לא זזות. רק האגן.','איטי. כאן מחפשים טווח ולא מהירות.','הבטן אסופה קלות, לא נופלת קדימה.']},
+  standTwist:{n:'סיבוב פלג גוף עליון בעמידה',reps:'10 סיבובים לכל צד',est:45,
+    why:'משחררת את הגב האמצעי ואת חגורת הכתפיים לפני עומס.',
+    start:'עמידה, רגליים ברוחב הכתפיים, ברכיים מעט כפופות. הידיים רפויות לצדי הגוף.',
+    how:['מסובבים את פלג הגוף העליון ימינה. הידיים רפויות ומתנופפות סביב הגוף: יד שמאל מגיעה לחזה, יד ימין לגב.',
+      'מסובבים שמאלה. עכשיו יד ימין לחזה ויד שמאל לגב.',
+      'הראש מסתובב עם הכתפיים. האגן והרגליים נשארים קדימה.'],
+    cues:['הסיבוב מהמותניים ומעלה. האגן לא זז.','בלי תנופה חדה בסוף הטווח.','נושמים, לא עוצרים נשימה.']},
+  deepSquat:{n:'סקוואט עמוק עם נדנוד',reps:'30 שניות בתנוחה, נדנוד רציף',est:40,
+    why:'פותחת ירכיים, קרסוליים וגב תחתון בבת אחת.',
+    start:'עמידה, רגליים קצת יותר רחבות מהכתפיים, אצבעות הרגליים מעט החוצה.',
+    how:['יורדים לסקוואט עמוק ככל שנוח, עד שהישבן קרוב לעקבים. העקבים נשארים על הרצפה.',
+      'מצמידים את כפות הידיים זו לזו לפני החזה. מרפק ימין דוחף בעדינות את ברך ימין החוצה, מרפק שמאל את ברך שמאל.',
+      'מתנדנדים קלות: מעבירים משקל לרגל ימין, ואז לרגל שמאל, ברצף.'],
+    cues:['אם העקבים עולים, מגבת מגולגלת מתחתם.','הגב ארוך, לא מתעגל לגמרי.','אם שיווי המשקל קשה, נאחזים בדלת או במשענת כיסא.']},
+  inchworm:{n:'הליכת ידיים לרצפה',reps:'6 חזרות',est:50,
+    why:'מחממת המסטרינג, כתפיים וליבה יחד.',
+    start:'עמידה, רגליים ברוחב האגן.',
+    how:['מתכופפים קדימה מהאגן, ברכיים כפופות כמה שצריך, עד ששתי כפות הידיים על הרצפה לפני הרגליים.',
+      'הולכים קדימה עם הידיים, יד ימין ואז יד שמאל, עד תנוחת פלאנק: הגוף בקו ישר מהראש עד העקבים.',
+      'עוצרים שנייה. הולכים עם הידיים חזרה אחורה לכיוון הרגליים.',
+      'מתגלגלים למעלה לעמידה חוליה חוליה, הראש עולה אחרון.'],
+    cues:['הברכיים כפופות כמה שצריך. לא מכריחים רגליים ישרות.','בפלאנק האגן לא צונח למטה.','קצב איטי, כ-6 שניות לחזרה.']},
+  wipers:{n:'מטוטלת ברכיים',reps:'10 לכל צד',est:45,
+    why:'מחזירה סיבוב לגב התחתון בעדינות, בלי עומס.',
+    start:'שכיבה על הגב. ברכיים כפופות, כפות הרגליים על הרצפה ברוחב האגן. הידיים פרושות לצדדים בגובה הכתפיים, כפות ידיים כלפי מטה.',
+    how:['מפילים את שתי הברכיים יחד ימינה, לכיוון הרצפה. שתי הכתפיים נשארות צמודות לרצפה.',
+      'מחזירים את הברכיים למרכז ומפילים אותן שמאלה.',
+      'הראש יכול לפנות לכיוון ההפוך מהברכיים.'],
+    cues:['הכתפיים לא מתרוממות מהרצפה. אם הן עולות, מקטינים את הטווח.','לא מגיעים עד הרצפה בכוח.','איטי ומבוקר בשני הכיוונים.']},
+  sideBendD:{n:'הטיות צד בעמידה',reps:'8 לכל צד',est:40,
+    why:'פותחת את הרחב גבי ואת הצלעות, אזורים שנתפסים מישיבה ממושכת.',
+    start:'עמידה, רגליים ברוחב הכתפיים.',
+    how:['מרימים את יד ימין ישר מעל הראש. יד שמאל מונחת על ירך שמאל.',
+      'נוטים עם הגו שמאלה. יד ימין נמתחת מעל הראש שמאלה. מרגישים מתיחה לאורך צד ימין של הגוף. עוצרים שנייה.',
+      'חוזרים לעמידה זקופה. אחרי 8 פעמים מחליפים: יד שמאל למעלה, נוטים ימינה.'],
+    cues:['ההטיה במישור אחד, לא נוטים קדימה או אחורה.','האגן נשאר במקום, לא נדחף לצד.','החזקה של שנייה בלבד בכל צד.']},
+  threadDyn:{n:'שרוך המחט דינמי',reps:'8 לכל צד',est:60,
+    why:'סיבוב לגב האמצעי, האזור שהכי נוטה להינעל ולהעביר עומס לגב התחתון.',
+    start:'עמידת שש: ידיים מתחת לכתפיים, ברכיים מתחת לאגן.',
+    how:['צד ימין: מרימים את יד ימין מהרצפה ומעבירים אותה מתחת לגוף שמאלה, כף היד פונה למעלה. כתף ימין והרקה הימנית מתקרבות לרצפה.',
+      'חוזרים, ומיד פותחים את יד ימין למעלה לכיוון התקרה. המבט עוקב אחרי היד. זו חזרה אחת.',
+      'אחרי 8 חזרות מחליפים: יד שמאל עוברת מתחת לגוף ימינה ונפתחת לתקרה.'],
+    cues:['האגן נשאר מעל הברכיים ולא מסתובב עם היד.','תנועה רציפה, נשימה בכל כיוון.','היד התומכת על הרצפה יציבה.']},
+  hipCircles:{n:'סיבובי אגן בעמידה',reps:'8 לכל כיוון',est:40,
+    why:'מחממת את מפרק הירך לפני עומס.',
+    start:'עמידה, רגליים ברוחב הכתפיים, ידיים על המותניים.',
+    how:['מסובבים את האגן במעגל גדול: קדימה, ימינה, אחורה, שמאלה. הראש והכתפיים נשארים כמעט במקום.',
+      '8 סיבובים בכיוון השעון, ואז 8 נגד כיוון השעון.'],
+    cues:['הרגליים נשארות במקום.','מחפשים את הטווח הגדול ביותר שנוח.','הגב לא מתקשת בכוח בחלק האחורי של הסיבוב.']},
+  worldGreat:{n:'מכרע עם סיבוב',reps:'5 לכל צד',est:70,
+    why:'פותחת כופפי ירך, מקרבים וגב אמצעי בתנועה אחת.',
+    start:'עמידה.',
+    how:['צד ימין: צעד גדול קדימה עם רגל ימין למכרע. רגל שמאל ישרה מאחור, עקב שמאל מורם. שתי כפות הידיים על הרצפה בצד הפנימי של כף רגל ימין.',
+      'מורידים את מרפק ימין לכיוון הרצפה, ליד כף רגל ימין.',
+      'מסובבים: יד ימין עולה לתקרה, החזה נפתח ימינה, המבט עוקב אחרי היד. יד שמאל נשארת על הרצפה.',
+      'מחזירים את יד ימין לרצפה, קמים, ומבצעים עם רגל שמאל קדימה: מרפק שמאל יורד, יד שמאל עולה.'],
+    cues:['הרגל האחורית ישרה והעקב נדחף אחורה.','הסיבוב מהגב האמצעי, לא מהמותניים.','אם קשה להגיע לרצפה, ספר או כיסא נמוך מתחת לידיים.']},
+  rollDown:{n:'גלגול חוליה חוליה',reps:'5 חזרות',est:50,
+    why:'מלמדת את הגב לזוז חוליה אחרי חוליה במקום כגוש אחד.',
+    start:'עמידה זקופה, רגליים ברוחב האגן, ברכיים מעט כפופות, ידיים רפויות.',
+    how:['מורידים את הסנטר לחזה. מתגלגלים למטה לאט, חוליה אחרי חוליה: קודם הצוואר, אז הגב העליון, אז הגב התחתון. הידיים תלויות רפויות.',
+      'בתחתית: תלייה רפויה לשתי נשימות, הראש כבד.',
+      'מתגלגלים חזרה למעלה לאט. הגב התחתון עולה ראשון, הראש עולה אחרון.'],
+    cues:['הידיים והצוואר רפויים לגמרי.','העלייה איטית יותר מהירידה.','הברכיים כפופות קלות כל הזמן.']},
+  legSwing:{n:'נדנוד רגל קדימה ואחורה',reps:'12 לכל רגל',est:50,
+    why:'מחמם המסטרינג וכופפי ירך בתנועה.',
+    start:'עמידה כשקיר או משענת כיסא בצד שמאל. יד שמאל נשענת עליהם. כל המשקל על רגל שמאל.',
+    how:['מנדנדים את רגל ימין קדימה ואחורה כמו מטוטלת, הברך ישרה אבל רכה. הגו זקוף.',
+      '12 נדנודים, מגדילים בהדרגה את הטווח.',
+      'מסתובבים כך שהקיר בצד ימין. יד ימין נשענת, המשקל על רגל ימין, ומנדנדים את רגל שמאל.'],
+    cues:['הגו לא נסחף עם הרגל.','האגן יציב, התנועה רק ממפרק הירך.','בלי בעיטה חדה בסוף הטווח.']},
+  chestOpen:{n:'פתיחת חזה עם הנפות ידיים',reps:'12 חזרות',est:45,
+    why:'מחזירה תנועה לגב העליון ולכתפיים אחרי שעות ישיבה.',
+    start:'עמידה, רגליים ברוחב הכתפיים. שתי הידיים ישרות לפני החזה בגובה הכתפיים, כפות ידיים זו מול זו.',
+    how:['פותחים את שתי הידיים לצדדים ולאחור בהנפה, כמו לפתוח דלת כפולה. השכמות מתקרבות זו לזו.',
+      'מחזירים את הידיים קדימה ומצליבים אותן על החזה, כמו חיבוק. השכמות מתרחקות.',
+      'פותחים בשאיפה, מחבקים בנשיפה. בכל חיבוק מחליפים איזו יד למעלה.'],
+    cues:['הפתיחה עד גובה הכתפיים, לא מעבר.','הגב התחתון לא מתקשת בפתיחה.','הכתפיים למטה, לא עולות לאוזניים.']},
+
+  /* ===== סטטי, בסוף ===== */
+  childPose:{n:'תנוחת ילד מורחבת',hold:60,
+    why:'משחררת את כל השרשרת האחורית ומרגיעה את מערכת העצבים אחרי אימון.',
+    start:'ישיבה על העקבים. הברכיים פתוחות לרוחב המזרן, בהונות הרגליים נוגעות זו בזו.',
+    how:['הולכים עם שתי הידיים קדימה על הרצפה עד שהחזה יורד בין הירכיים.',
+      'המצח מונח על הרצפה, או על כרית אם לא מגיע.',
+      'הישבן שוקע לכיוון העקבים. נושמים לתוך הגב ומרגישים איך הוא מתרחב בכל שאיפה.'],
+    cues:['אם הברכיים כואבות, כרית בין הישבן לעקבים.','הנשימה לתוך הגב, לא לתוך הבטן.','הכתפיים רפויות, לא נדחפות לאוזניים.']},
+  supineTwist:{n:'פיתול בשכיבה',hold:30,bi:true,
+    why:'המתיחה הכי טובה לגב תחתון תפוס. משחררת גם ישבן וצלעות.',
+    start:'שכיבה על הגב. הידיים פרושות לצדדים בצורת T, כפות ידיים כלפי מעלה.',
+    how:['צד ימין: מכופפים את ברך ימין ומושכים אותה לכיוון החזה. רגל שמאל ישרה על הרצפה.',
+      'מפילים את ברך ימין שמאלה, מעבר לגוף, לכיוון הרצפה. יד שמאל מונחת על ברך ימין ומוסיפה משקל קל.',
+      'הראש פונה ימינה, הפוך מהברך. כתף ימין נשארת על הרצפה גם אם הברך לא מגיעה לרצפה.',
+      'מחזיקים. חוזרים למרכז, ומבצעים עם ברך שמאל נופלת ימינה, יד ימין עליה, הראש פונה שמאלה.'],
+    cues:['שתי הכתפיים על הרצפה, גם במחיר טווח קטן יותר.','לא לוחצים את הברך למטה, נותנים למשקל לעשות את העבודה.','אם הגב התחתון צובט, מרימים את הברך גבוה יותר לכיוון החזה.']},
+  figure4:{n:'פיגורה 4',hold:30,bi:true,
+    why:'מכוונת לפיריפורמיס ולישבן. חלק גדול מכאבי הגב התחתון מתחילים שם.',
+    start:'שכיבה על הגב, ברכיים כפופות, כפות רגליים על הרצפה.',
+    how:['צד ימין: מניחים את קרסול ימין על ירך שמאל, ממש מעל הברך. ברך ימין פונה החוצה. הרגליים בצורת הספרה 4.',
+      'מרימים את כף רגל שמאל מהרצפה. מעבירים את שתי הידיים דרך הפתח שבין הרגליים ותופסים את ירך שמאל מאחור.',
+      'מושכים את ירך שמאל לכיוון החזה. מרגישים מתיחה בישבן ימין.',
+      'מחזיקים. מחליפים: קרסול שמאל על ירך ימין, תופסים את ירך ימין.'],
+    cues:['ברך ימין נדחפת בעדינות החוצה, לא לכיוון הפנים.','הראש והכתפיים על הרצפה.','אם קשה להגיע לירך, מגבת סביבה.']},
+  seatedTwist:{n:'פיתול בישיבה',hold:30,bi:true,
+    why:'מאריכה את הגב ומשחררת את הגב האמצעי.',
+    start:'ישיבה על הרצפה, שתי הרגליים ישרות קדימה.',
+    how:['צד ימין: מכופפים את ברך ימין ומניחים את כף רגל ימין על הרצפה מחוץ לברך שמאל. רגל שמאל נשארת ישרה.',
+      'יד ימין נשענת על הרצפה מאחורי הגב. מרפק שמאל נשען על הצד החיצוני של ברך ימין.',
+      'בשאיפה מתארכים למעלה. בנשיפה מסובבים את הגו ימינה, המבט מעבר לכתף ימין.',
+      'מחזיקים. מחליפים: ברך שמאל כפופה, כף רגל שמאל מחוץ לברך ימין, מרפק ימין על ברך שמאל, מסובבים שמאלה.'],
+    cues:['יושבים על שתי עצמות הישיבה, לא נופלים לצד.','הסיבוב מתחיל מהבטן ולא מהצוואר.','הגב ארוך, לא מתעגל בזמן הסיבוב.']},
+  hamstring:{n:'מתיחת המסטרינג בישיבה',hold:30,bi:true,
+    why:'המסטרינג קצר מושך את האגן ומשטח את הגב התחתון.',
+    start:'ישיבה על הרצפה.',
+    how:['צד ימין: רגל ימין ישרה קדימה, כף הרגל מכוונת לתקרה. רגל שמאל מכופפת, כף רגל שמאל נשענת על הצד הפנימי של ירך ימין.',
+      'מתארכים למעלה, ואז נוטים קדימה מהאגן מעל רגל ימין. שתי הידיים מחליקות לאורך רגל ימין לכיוון הקרסול.',
+      'עוצרים איפה שמרגישים מתיחה בחלק האחורי של ירך ימין. הגב נשאר ארוך.',
+      'מחזיקים. מחליפים: רגל שמאל ישרה, כף רגל ימין על ירך שמאל, נוטים מעל רגל שמאל.'],
+    cues:['הכיפוף מהירך ולא מהגב. גב עגול מבטל את התרגיל.','ברך הרגל הישרה יכולה להיות כפופה קלות.','לא מחפשים לגעת בבהונות אלא להרגיש מתיחה.']},
+  butterfly:{n:'פרפר',hold:55,
+    why:'פותחת מקרבים ומפשעות, אזור שמושך את האגן ומשפיע ישירות על הגב.',
+    start:'ישיבה על הרצפה, אפשר על קצה כרית.',
+    how:['מצמידים את כפות הרגליים זו לזו. הברכיים נופלות לצדדים.',
+      'תופסים את כפות הרגליים בשתי הידיים. מתארכים עם הגב למעלה.',
+      'נוטים קדימה מהאגן, בעדינות, עד שמרגישים מתיחה בצד הפנימי של הירכיים.'],
+    cues:['לא דוחפים את הברכיים למטה בכוח.','ככל שהעקבים רחוקים מהגוף, המתיחה עדינה יותר.','אם הגב מתעגל, יושבים על כרית.']},
+  sphinx:{n:'ספינקס',hold:45,
+    why:'יישור עדין של הגב התחתון שמאזן שעות ישיבה. הגרסה הבטוחה של קוברה.',
+    start:'שכיבה על הבטן. רגליים ישרות מאחור ברוחב האגן, גב כפות הרגליים על הרצפה.',
+    how:['מניחים את המרפקים על הרצפה מתחת לכתפיים. האמות מקבילות זו לזו, כפות הידיים על הרצפה, אצבעות קדימה.',
+      'דוחפים קלות את האמות לרצפה ומרימים את החזה קדימה ולמעלה. הגב התחתון מתקשת בעדינות.',
+      'הכתפיים יורדות מהאוזניים. המבט קדימה. נושמים רגוע.'],
+    cues:['הישבן והרגליים רפויים, לא מכווצים.','אם צובט בגב התחתון, מזיזים את המרפקים קדימה ומנמיכים.','הכתפיים רחוקות מהאוזניים.']},
+  tableStretch:{n:'מתיחת גב עליון על משטח',hold:50,
+    why:'פותחת את הגב העליון והכתפיים אחרי שעות מול מסך.',
+    start:'עמידה מול שולחן, שיש או משענת כיסא בגובה המותניים.',
+    how:['מניחים את שתי כפות הידיים על המשטח ברוחב הכתפיים.',
+      'הולכים עם הרגליים אחורה עד שהגו מקביל לרצפה והידיים ישרות. הרגליים ישר מתחת לאגן.',
+      'משקיעים את החזה כלפי מטה, בין הזרועות. הראש בין הזרועות, הצוואר רפוי.'],
+    cues:['הרגליים מתחת לאגן, לא מאחוריו.','הצוואר לא צונח, האוזניים בין הזרועות.','הגב התחתון ארוך, לא נופל לקשת עמוקה.']},
+  kneesChest:{n:'ברכיים לחזה',hold:45,
+    why:'סוגרת את השרשרת האחורית ומורידה לחץ מהחוליות התחתונות.',
+    start:'שכיבה על הגב.',
+    how:['מושכים את שתי הברכיים לכיוון החזה. תופסים אותן בשתי הידיים, יד ימין על ברך ימין ויד שמאל על ברך שמאל, או מחבקים את השוקיים.',
+      'מושכים בעדינות. הגב התחתון נצמד לרצפה.',
+      'אפשר להתנדנד קלות ימינה ושמאלה לעיסוי הגב.'],
+    cues:['הראש נשאר על הרצפה.','המשיכה עדינה, לא עד סוף הטווח.','נושמים עמוק, הבטן דוחפת את הירכיים.']},
+  lowLunge:{n:'מתיחת כופף ירך',hold:30,bi:true,
+    why:'כופף ירך קצר מטה את האגן קדימה ומייצר לחץ קבוע על הגב התחתון. המתיחה שהכי חסרה לרוב האנשים.',
+    start:'כריעה על הרצפה, כרית או מגבת מתחת לברכיים.',
+    how:['צד ימין: רגל ימין קדימה, כף רגל ימין שטוחה על הרצפה, ברך ימין בזווית ישרה מעל הקרסול. ברך שמאל על הרצפה מאחור, שוק שמאל שטוחה על הרצפה. שתי הידיים על ברך ימין.',
+      'מכווצים את ישבן שמאל ודוחפים את האגן קדימה ומטה. מרגישים מתיחה בקדמת ירך שמאל, ליד המפשעה.',
+      'הגו זקוף, לא נוטה קדימה.',
+      'מחזיקים. מחליפים: רגל שמאל קדימה, ברך ימין על הרצפה מאחור, מכווצים ישבן ימין.'],
+    cues:['כיווץ הישבן של הרגל האחורית מעמיק את המתיחה ומגן על הגב.','הברך הקדמית לא עוברת את הקרסול.','אם אין כרית, מגבת מקופלת מתחת לברך.']},
+  threadNeedle:{n:'שרוך המחט',hold:30,bi:true,
+    why:'משחררת את הגב האמצעי ואת השכמות, ומורידה עומס מהגב התחתון.',
+    start:'עמידת שש: ידיים מתחת לכתפיים, ברכיים מתחת לאגן.',
+    how:['צד ימין: מרימים את יד ימין ומעבירים אותה מתחת לגוף שמאלה, כף היד כלפי מעלה.',
+      'מניחים את כתף ימין ואת הרקה הימנית על הרצפה. האגן נשאר גבוה מעל הברכיים.',
+      'יד שמאל נשלחת קדימה על הרצפה, או מחבקת את הגב התחתון מאחור.',
+      'מחזיקים. מחליפים: יד שמאל עוברת מתחת לגוף ימינה, כתף שמאל והרקה השמאלית על הרצפה.'],
+    cues:['האגן נשאר גבוה מעל הברכיים.','נושמים לתוך השכמה שנמתחת.','אם הצוואר לא נוח, כרית מתחת לראש.']},
+  nineNinety:{n:'ישיבת 90-90',hold:30,bi:true,
+    why:'עובדת על סיבוב פנימי וחיצוני של הירך יחד. פותחת אגן נעול לעומק.',
+    start:'ישיבה על הרצפה, אפשר על כרית.',
+    how:['צד ימין: רגל ימין לפניך. ברך ימין כפופה בזווית ישרה, השוק מונחת על הרצפה במקביל לגוף. רגל שמאל לצד הגוף, ברך שמאל כפופה גם היא בזווית ישרה, שוק שמאל מאחור.',
+      'שתי הברכיים מנסות להגיע לרצפה. הגב זקוף, שתי הידיים על הרצפה לפניך.',
+      'נוטים קדימה מהאגן מעל שוק ימין, גב ישר.',
+      'מחזיקים. מחליפים: רגל שמאל לפנים, רגל ימין לצד.'],
+    cues:['יושבים על שתי עצמות הישיבה.','הגב ארוך, הנטייה מהירך.','אם הברכיים לא מגיעות לרצפה, יושבים על כרית גבוהה יותר.']},
+  happyBaby:{n:'תינוק שמח',hold:45,
+    why:'פותחת את הירכיים הפנימיות ומאריכה את הגב התחתון בלי עומס.',
+    start:'שכיבה על הגב.',
+    how:['מכופפים את שתי הברכיים ומושכים אותן לצדי בית החזה, פתוחות לרוחב.',
+      'תופסים את כפות הרגליים מבחוץ: יד ימין על כף רגל ימין, יד שמאל על כף רגל שמאל. הקרסוליים ישר מעל הברכיים, כפות הרגליים פונות לתקרה.',
+      'מושכים בעדינות את הברכיים למטה לכיוון הרצפה. הגב התחתון והראש נשארים על הרצפה.'],
+    cues:['הגב התחתון על הרצפה.','הקרסוליים מעל הברכיים, לא נוטים החוצה.','אפשר להתנדנד קלות מצד לצד.']},
+  calfWall:{n:'מתיחת שוק מול קיר',hold:30,bi:true,
+    why:'שוק קצר משנה את דפוס ההליכה ומעלה עומס לאורך כל השרשרת האחורית עד הגב.',
+    start:'עמידה מול קיר, במרחק צעד. שתי כפות הידיים על הקיר בגובה הכתפיים.',
+    how:['צד ימין: רגל ימין צעד גדול לאחור. ברך ימין ישרה, עקב ימין צמוד לרצפה, אצבעות רגל ימין פונות ישר לקיר. רגל שמאל קדימה, ברך שמאל כפופה.',
+      'נשענים לכיוון הקיר. מרגישים מתיחה בשוק ימין.',
+      'באמצע הזמן: מכופפים מעט את ברך ימין, העקב עדיין על הרצפה. המתיחה יורדת עמוק יותר, לסובך.',
+      'מחזיקים. מחליפים: רגל שמאל אחורה, רגל ימין קדימה כפופה.'],
+    cues:['אצבעות הרגל האחורית פונות קדימה ולא החוצה.','העקב האחורי לא מתרומם.','הגב ישר, לא מתקמרים.']},
+  latChild:{n:'מתיחת רחב גבי בצד',hold:30,bi:true,
+    why:'הרחב גבי מחבר את הזרוע לאגן. כשהוא קצר, הגב התחתון משלם.',
+    start:'תנוחת ילד: ישיבה על העקבים, ידיים קדימה על הרצפה.',
+    how:['צד ימין: הולכים עם שתי הידיים שמאלה, עד שהן בקצה השמאלי של המזרן. הישבן נשאר על העקבים.',
+      'משקיעים את בית השחי הימני לכיוון הרצפה. מרגישים מתיחה לאורך צד ימין, מבית השחי עד המותן.',
+      'מחזיקים. מחליקים עם הידיים ימינה ומותחים את צד שמאל.'],
+    cues:['שני צדי האגן נשארים על העקבים.','המתיחה מבית השחי ועד המותן.','לא מסובבים את הגו, רק מזיזים את הידיים.']},
+  neckTrap:{n:'מתיחת צוואר וטרפז',hold:30,bi:true,
+    why:'משחררת מתח שנאסף בצוואר ובכתפיים מישיבה מול מחשב.',
+    start:'ישיבה זקופה על כיסא, כפות רגליים על הרצפה.',
+    how:['צד ימין: יד ימין אוחזת בקצה הכיסא מתחת לישבן, כדי להחזיק את כתף ימין למטה.',
+      'מטים את הראש שמאלה: אוזן שמאל לכיוון כתף שמאל. המבט ישר קדימה.',
+      'יד שמאל מונחת בעדינות על צד ימין של הראש. רק משקל היד, בלי למשוך. מרגישים מתיחה בצד ימין של הצוואר ובכתף ימין.',
+      'מחזיקים. מחליפים: יד שמאל תופסת את הכיסא, הראש נוטה ימינה, יד ימין על הראש.'],
+    cues:['בלי משיכה. רק משקל היד.','הכתף של הצד הנמתח נשארת למטה.','הטיה בלבד, לא סיבוב של הראש.']},
+  frogSoft:{n:'צפרדע עדינה',hold:50,
+    why:'פתיחת מקרבים עמוקה שמשחררת את האגן ומורידה משיכה מהגב.',
+    start:'עמידת שש, כרית מתחת לברכיים.',
+    how:['פותחים את הברכיים לצדדים, רחב ככל שנוח.',
+      'מסובבים את כפות הרגליים החוצה כך שהצד הפנימי של הקרסוליים והשוקיים על הרצפה, בקו אחד עם הברכיים.',
+      'יורדים על האמות. דוחפים את האגן אחורה בעדינות, לכיוון העקבים.'],
+    cues:['טווח נוח בלבד. במתיחה הזו קל להגזים.','הגב התחתון ארוך, לא נופל לקשת.','אם כואב בברכיים, כרית עבה יותר.']},
+  chairGlute:{n:'מתיחת ישבן בישיבה',hold:30,bi:true,
+    why:'הגרסה של פיגורה 4 לכיסא. אפשר לעשות אותה גם באמצע יום עבודה.',
+    start:'ישיבה על קצה כיסא, גב ישר, כפות רגליים על הרצפה.',
+    how:['צד ימין: מרימים את רגל ימין ומניחים את קרסול ימין על ברך שמאל. ברך ימין נופלת החוצה.',
+      'יד ימין מונחת בעדינות על ברך ימין. יד שמאל על קרסול ימין.',
+      'נוטים קדימה מהאגן, גב ישר, עד שמרגישים מתיחה בישבן ימין.',
+      'מחזיקים. מחליפים: קרסול שמאל על ברך ימין.'],
+    cues:['הגב לא מתעגל, הנטייה מהאגן.','הברך העליונה נשמטת לצד, לא נדחפת בכוח.','שתי כפות הרגליים יציבות.']},
+
+  /* ===== חיזוק גב ===== */
+  birdDog:{n:'כלב ציפור',reps:'10 חזרות לכל צד, לסירוגין',est:80,
+    why:'התרגיל הבסיסי ליציבות הגב. מחזק את זקפי הגב מול הבטן החזקה שלך.',
+    start:'עמידת שש: ידיים מתחת לכתפיים, ברכיים מתחת לאגן. הגב ישר, הבטן אסופה, המבט לרצפה.',
+    how:['מותחים את יד ימין ישר קדימה ואת רגל שמאל ישר אחורה, בו זמנית. היד והרגל בגובה הגב, בקו ישר אחד עם הגוף.',
+      'מחזיקים 3 שניות. האגן לא מסתובב, שני צדי האגן באותו גובה.',
+      'מחזירים לאט. מותחים את יד שמאל קדימה ואת רגל ימין אחורה. מחזיקים 3 שניות. זו חזרה אחת לכל צד.'],
+    cues:['האגן מקביל לרצפה, בלי הטיה.','הרגל לא עולה מעל גובה האגן.','הצוואר בהמשך העמוד, המבט לרצפה.']},
+  ytw:{n:'Y-T-W בשכיבת פנים',reps:'8 חזרות Y, 8 חזרות T, 8 חזרות W',est:75,
+    why:'מחזק את מייצבי השכמה והגב העליון, האזור שנחלש מישיבה.',
+    start:'שכיבה על הבטן, המצח על הרצפה או על מגבת מקופלת. רגליים ישרות מאחור.',
+    how:['Y: שתי הידיים ישרות מעל הראש, פתוחות באלכסון כמו האות Y, האגודלים למעלה. מרימים את הידיים מהרצפה, מחזיקים 2 שניות, מורידים. 8 פעמים.',
+      'T: הידיים ישרות לצדדים בגובה הכתפיים, האגודלים למעלה. מרימים, מחזיקים 2 שניות, מורידים. 8 פעמים.',
+      'W: מכופפים את המרפקים כך שכפות הידיים ליד הצלעות והזרועות בצורת W. מרימים את המרפקים והידיים, מכווצים את השכמות זו לזו, מחזיקים 2 שניות, מורידים. 8 פעמים.'],
+    cues:['ההרמה מהשכמות ולא מהידיים.','הראש נשאר למטה, לא מרימים את הצוואר.','הרמה קטנה ואיכותית עדיפה על גדולה.']},
+  superman:{n:'סופרמן מתחלף',reps:'10 חזרות לכל צד, לסירוגין',est:60,
+    why:'מחזק את כל שרשרת הגב האחורית, מהצוואר עד הישבן.',
+    start:'שכיבה על הבטן, שתי הידיים ישרות קדימה, רגליים ישרות מאחור. המצח לרצפה.',
+    how:['מרימים את יד ימין ואת רגל שמאל יחד, כמה סנטימטרים מהרצפה. הראש נשאר למטה.',
+      'מחזיקים שנייה. מורידים לאט.',
+      'מרימים את יד שמאל ואת רגל ימין. מחזיקים שנייה, מורידים.'],
+    cues:['הגרסה המתחלפת עדינה יותר לגב מהרמה של הכל יחד.','הרמה של כמה סנטימטרים מספיקה.','המבט לרצפה, לא מרימים את הראש.']},
+  sidePlankKnee:{n:'פלאנק צד על ברך',hold:20,bi:true,
+    why:'מחזק את מייצבי האגן הצדדיים. אגן יציב מוריד עומס מהגב התחתון.',
+    start:'צד ימין: שכיבה על צד ימין. מרפק ימין על הרצפה ישר מתחת לכתף ימין, אמה ימין מונחת קדימה. שתי הברכיים כפופות, הברכיים והשוקיים על הרצפה מאחור. יד שמאל על ירך שמאל.',
+    how:['דוחפים את אמה ימין לרצפה ומרימים את האגן מהרצפה, עד שהגוף בקו ישר מהראש עד הברכיים.',
+      'מחזיקים. הגוף במישור אחד, האגן לא נופל אחורה ולא קדימה.',
+      'מורידים, מסתובבים לצד שמאל: מרפק שמאל מתחת לכתף שמאל, יד ימין על ירך ימין, ומחזיקים שוב.'],
+    cues:['הכתף התומכת רחוקה מהאוזן.','אם 20 שניות קשות, מתחילים מ-10 ומאריכים.','המבט ישר קדימה, לא למטה.']},
+  hipHinge:{n:'כיפוף ירך',reps:'12 חזרות איטיות',est:50,
+    why:'מלמד את הגוף להתכופף מהירך ולא מהגב. ההרגלה שמונעת את הכאב ביומיום.',
+    start:'עמידה, רגליים ברוחב האגן, ברכיים מעט כפופות. שתי הידיים על המותניים. אפשר עם מקל ארוך לאורך הגב שנוגע בעורף, בין השכמות ובעצם הזנב.',
+    how:['דוחפים את הישבן אחורה, כאילו סוגרים דלת עם הישבן. הגו נוטה קדימה כיחידה אחת, הגב נשאר ישר לחלוטין.',
+      'עוצרים כשמרגישים מתיחה בחלק האחורי של הירכיים, בערך כשהגו בזווית של 45 מעלות.',
+      'דוחפים את האגן קדימה וחוזרים לעמידה. הישבן עושה את העבודה, לא הגב.'],
+    cues:['הגב שומר על קו ישר לאורך כל התנועה.','התנועה אחורה, לא למטה. הברכיים כמעט לא מתכופפות יותר.','אם יש מקל, הוא נשאר צמוד בשלוש הנקודות כל הזמן.']},
+  revSnow:{n:'מלאך שלג הפוך',reps:'8 חזרות איטיות',est:55,
+    why:'פותח את החזה ומחזק את הגב העליון בו זמנית.',
+    start:'שכיבה על הבטן, המצח על הרצפה. שתי הידיים ישרות לצדי הגוף, כפות ידיים כלפי מטה.',
+    how:['מרימים את שתי הידיים כמה סנטימטרים מהרצפה.',
+      'מחליקים אותן לאט לצדדים ואז מעל הראש, בתנועה של מלאך שלג, כשהן באוויר כל הזמן.',
+      'מחזירים לאט לצדי הגוף. הידיים לא נוגעות ברצפה לאורך כל התנועה.'],
+    cues:['הידיים ישרות.','איטי מאוד, זה תרגיל של שליטה.','הכתפיים רחוקות מהאוזניים.']},
+  wallAngel:{n:'מלאך קיר',reps:'10 חזרות איטיות',est:50,
+    why:'מתקן יציבה מכופפת ומחזק את הגב העליון בעמידה.',
+    start:'עמידה עם הגב לקיר. כפות הרגליים כ-20 סנטימטר מהקיר. הישבן, הגב העליון והעורף נוגעים בקיר.',
+    how:['מרימים את הידיים לצדדים, מרפקים כפופים בזווית ישרה, בצורת W. הצד האחורי של האמות, המרפקים וגב כפות הידיים נוגעים בקיר.',
+      'מחליקים את הידיים למעלה לאורך הקיר עד שהן ישרות מעל הראש, בצורת Y. שומרים על מגע של האמות והידיים בקיר.',
+      'מחליקים חזרה למטה ל-W.'],
+    cues:['הגב התחתון לא מתרומם מהקיר.','טווח קטן שנשמר עדיף על טווח גדול שמאבד מגע.','אם האמות לא מגיעות לקיר, מתרחקים ממנו מעט.']},
+  proneSwim:{n:'שחייה בשכיבת פנים',reps:'20 שניות רצוף, 2 סבבים',est:60,
+    why:'סיבולת לשרירי הגב. מחזק בלי עומס על החוליות.',
+    start:'שכיבה על הבטן, שתי הידיים ישרות קדימה, רגליים ישרות מאחור. המצח לרצפה.',
+    how:['מרימים את שתי הידיים ואת שתי הרגליים כמה סנטימטרים מהרצפה.',
+      'תנועות שחייה קטנות ומהירות: יד ימין ורגל שמאל עולות בזמן שיד שמאל ורגל ימין יורדות, ולהפך.',
+      'ממשיכים ברצף 20 שניות בלי להוריד לרצפה. נחים 20 שניות וחוזרים.'],
+    cues:['הבטן אסופה, האגן צמוד לרצפה.','המבט לרצפה.','תנועות קטנות, לא מנסים להרים גבוה.']}
 };
 
 
@@ -1159,9 +1475,9 @@ function renderGlutes(){
     </div>
     <span class="phase ${overload?'':'base'}">${overload?'שלב העמסה (12-22)':'שלב בסיס (1-11)'} · מחזור ${cyc}</span>
     ${exHtml}
-    <button class="start-btn pinkbtn" onclick="startGlutes()">התחלה עם מונה חזרות · ${mmss(glutesSeconds())} דקות</button>
+    <button class="start-btn pinkbtn" onclick="startGlutes()">התחלה · תרגיל אחרי תרגיל</button>
     <button class="done-btn" style="margin-top:12px" onclick="markDone()">סימון ידני: סיימתי ✓</button>
-    <p class="rest-note">תחנה 2 מתוך 7 בסדר האימון היומי.<br>שישי ושבת מנוחה, וגם כל יום אחר שתבחרי. הרצף לא נשבר.</p>
+    <p class="rest-note">תחנה 3 מתוך 8 בסדר האימון היומי.<br>שישי ושבת מנוחה, וגם כל יום אחר שתבחרי. הרצף לא נשבר.</p>
   `;
 
   const hist = document.getElementById('histBox');
@@ -1198,385 +1514,23 @@ function undoLast(){
   }
 }
 
-
 /* ================================================================
-   תוספת חדשה: מתיחות, רצועה, אירובי, חיזוק גב, סדר יומי ומעקב
+   סדר יומי, מתיחות, חיזוק גב, רצועה ומעקב
    מפתחות אחסון חדשים בלבד. glutesTracker לא נוגע.
    ================================================================ */
 
-/* ---------- תנוחות פתיחה ---------- */
-const P = {
-  stand:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
-    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
-    <circle cx="50" cy="14" r="8" fill="#2A1631"/><line x1="50" y1="22" x2="50" y2="50"/>
-    <line x1="50" y1="28" x2="34" y2="44"/><line x1="50" y1="28" x2="66" y2="44"/>
-    <line x1="50" y1="50" x2="40" y2="80"/><line x1="50" y1="50" x2="60" y2="80"/></svg>`,
-  kneel:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
-    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
-    <circle cx="34" cy="26" r="8" fill="#2A1631"/><line x1="38" y1="32" x2="58" y2="52"/>
-    <line x1="38" y1="30" x2="20" y2="44"/><line x1="58" y1="52" x2="82" y2="60"/>
-    <line x1="58" y1="52" x2="56" y2="78"/><line x1="56" y1="78" x2="80" y2="78"/></svg>`,
-  seat:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
-    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
-    <circle cx="34" cy="26" r="8" fill="#2A1631"/><line x1="34" y1="34" x2="34" y2="72"/>
-    <line x1="34" y1="72" x2="84" y2="76"/><line x1="34" y1="42" x2="70" y2="66"/></svg>`,
-  supine:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
-    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
-    <circle cx="20" cy="70" r="8" fill="#2A1631"/><line x1="28" y1="72" x2="60" y2="74"/>
-    <line x1="60" y1="74" x2="70" y2="46"/><line x1="70" y1="46" x2="84" y2="66"/></svg>`,
-  prone:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
-    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
-    <circle cx="22" cy="46" r="8" fill="#2A1631"/><line x1="30" y1="50" x2="86" y2="74"/>
-    <line x1="30" y1="50" x2="24" y2="74"/></svg>`,
-  quad:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
-    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
-    <circle cx="24" cy="34" r="8" fill="#2A1631"/><line x1="32" y1="38" x2="76" y2="42"/>
-    <line x1="36" y1="40" x2="34" y2="76"/><line x1="74" y1="42" x2="76" y2="76"/></svg>`,
-  side:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
-    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
-    <circle cx="24" cy="40" r="8" fill="#2A1631"/><line x1="30" y1="46" x2="84" y2="70"/>
-    <line x1="32" y1="48" x2="30" y2="76"/></svg>`,
-  chair:`<svg viewBox="0 0 100 90" fill="none" stroke="#F7ECF4" stroke-width="5" stroke-linecap="round">
-    <line x1="12" y1="82" x2="88" y2="82" stroke="rgba(255,255,255,.2)" stroke-width="3"/>
-    <path d="M62 34 L62 74 M62 54 L86 54 M86 40 L86 74" stroke="rgba(255,255,255,.28)" stroke-width="4"/>
-    <circle cx="40" cy="24" r="8" fill="#2A1631"/><line x1="40" y1="32" x2="42" y2="54"/>
-    <line x1="42" y1="54" x2="70" y2="56"/><line x1="46" y1="54" x2="44" y2="76"/></svg>`
-};
-const POSE_HE = {stand:'עמידה',kneel:'כריעה',seat:'ישיבה',supine:'שכיבה על הגב',
-  prone:'שכיבה על הבטן',quad:'עמידת שש',side:'שכיבה על הצד',chair:'ישיבה על כיסא'};
-
-/* ---------- מאגר המתיחות ---------- */
-const ST = {
-  /* ===== דינמי, לפני האימון ===== */
-  legSwing:{n:'נדנוד רגל קדימה ואחורה',pose:'stand',sec:30,bi:true,
-    why:'מחמם המסטרינג וכופפי ירך בתנועה, בדיוק מה שצריך לפני אימון במקום מתיחה סטטית.',
-    how:['עמידה ליד קיר או כיסא, יד אחת נשענת לתמיכה.',
-      'נדנוד של רגל אחת קדימה ואחורה בטווח נוח.',
-      'הגדלת הטווח בהדרגה, ואז החלפת רגל.'],
-    cues:['הגו נשאר זקוף, לא נסחף עם הרגל.',
-      'האגן יציב, התנועה רק ממפרק הירך.',
-      'בלי בעיטות חדות בסוף הטווח.']},
-  chestOpen:{n:'פתיחת חזה עם הנפות ידיים',pose:'stand',sec:40,
-    why:'מחזירה תנועה לגב העליון ולכתפיים אחרי שעות ישיבה, לפני שמעמיסים עליהן.',
-    how:['עמידה, הידיים נפתחות לצדדים ולאחור בהנפה.',
-      'חיבוק עצמי בחזרה קדימה, השכמות מתרחקות.',
-      'תנועה רציפה בקצב הנשימה.'],
-    cues:['הפתיחה עד גובה הכתפיים, לא מעבר.',
-      'הגב התחתון לא מתקשת בפתיחה.',
-      'הכתפיים למטה, לא עולות לאוזניים.']},
-  catCow:{n:'חתול פרה',pose:'quad',sec:45,
-    why:'מחזירה תנועה לכל חוליה בעמוד השדרה לפני שמעמיסים עליו.',
-    how:['עמידת שש, ידיים מתחת לכתפיים וברכיים מתחת לאגן.',
-      'בשאיפה: האגן מסתובב קדימה, החזה נפתח, המבט קצת קדימה.',
-      'בנשיפה: האגן מסתובב אחורה, הגב מתעגל, הסנטר לחזה.',
-      'תנועה רציפה בקצב הנשימה, בלי עצירות.'],
-    cues:['התנועה מתחילה מהאגן ולא מהצוואר.',
-      'לא לדחוף לקשת מקסימלית, זו חימום ולא מתיחה.',
-      'המרפקים רכים, לא נעולים.']},
-  pelvicTilt:{n:'ניידות אגן על ברכיים',pose:'kneel',sec:45,
-    why:'האגן הוא צומת הכוח בין הגב לרגליים. אגן נעול מעמיס הכל על הגב התחתון.',
-    how:['ישיבה על הברכיים או כריעה גבוהה, גב ישר.',
-      'הטיית האגן קדימה ואחורה בלבד, הגו נשאר יציב.',
-      'אחרי כמה חזרות להוסיף תנועה לצדדים ואז סיבובים.'],
-    cues:['הצלעות לא זזות, רק האגן.',
-      'תנועה איטית, כאן מחפשים טווח ולא מהירות.',
-      'הבטן אסופה קלות, לא נופלת קדימה.']},
-  standTwist:{n:'סיבוב פלג גוף עליון בעמידה',pose:'stand',sec:45,
-    why:'משחררת את הגב האמצעי ואת החגורה הכתפית לפני עומס.',
-    how:['עמידה ברוחב האגן, ברכיים רכות.',
-      'סיבוב הגו מצד לצד, הידיים מתנופפות חופשי סביב הגוף.',
-      'הראש הולך עם הסיבוב.'],
-    cues:['האגן נשאר קדימה, מסתובב פלג הגוף העליון.',
-      'בלי תנופה חדה בסוף הטווח.',
-      'לנשום, לא לעצור נשימה.']},
-  deepSquat:{n:'סקוואט עמוק עם נדנוד',pose:'stand',sec:45,
-    why:'פותחת ירכיים, קרסוליים וגב תחתון בבת אחת. אחת התנוחות היעילות שיש.',
-    how:['רגליים ברוחב הכתפיים, אצבעות מעט החוצה.',
-      'ירידה לסקוואט עמוק כמה שנוח, עקבים על הרצפה אם אפשר.',
-      'המרפקים דוחפים בעדינות את הברכיים החוצה, נדנוד קל מצד לצד.'],
-    cues:['אם העקבים מתרוממים, לשים מגבת מגולגלת מתחתם.',
-      'הגב ארוך, לא מתעגל לגמרי.',
-      'להיאחז בדלת או בכיסא אם שיווי המשקל קשה.']},
-  inchworm:{n:'הליכת ידיים לרצפה',pose:'stand',sec:45,
-    why:'מחממת המסטרינג, כתפיים וליבה יחד, בלי מתיחה סטטית שמחלישה.',
-    how:['מעמידה, כיפוף קדימה עם ברכיים רכות עד שהידיים על הרצפה.',
-      'הליכה עם הידיים קדימה עד תנוחת פלאנק.',
-      'עצירה של שנייה, והליכה חזרה עם הידיים לרגליים ועלייה.'],
-    cues:['הברכיים כפופות כמה שצריך, לא מכריחים רגליים ישרות.',
-      'בפלאנק האגן לא צונח.',
-      'קצב איטי, בערך 5 שניות לכל מחזור.']},
-  wipers:{n:'מטוטלת ברכיים',pose:'supine',sec:45,
-    why:'מחזירה סיבוב לגב התחתון בעדינות, בלי עומס.',
-    how:['שכיבה על הגב, ברכיים כפופות, כפות רגליים על הרצפה.',
-      'הפלת שתי הברכיים יחד לצד אחד, ואז לשני.',
-      'הידיים פרושות לצדדים.'],
-    cues:['הכתפיים נשארות על הרצפה.',
-      'טווח נוח, לא מגיעים עד הרצפה בכוח.',
-      'התנועה איטית ומבוקרת בשני הכיוונים.']},
-  sideBendD:{n:'הטיות צד בעמידה',pose:'stand',sec:40,
-    why:'פותחת את הרחב גבי ואת הצלעות, שני אזורים שנתפסים מישיבה ממושכת.',
-    how:['עמידה, יד אחת נשלחת מעל הראש.',
-      'הטיה לצד המנוגד, מרגישים מתיחה לאורך כל הצד.',
-      'חזרה למרכז והחלפת צד ברצף.'],
-    cues:['לא להישען קדימה או אחורה, ההטיה במישור אחד.',
-      'האגן נשאר במקום.',
-      'החזקה של שנייה בכל צד, לא יותר.']},
-  threadDyn:{n:'שרוך המחט דינמי',pose:'quad',sec:30,bi:true,
-    why:'סיבוב לגב האמצעי, האזור שהכי נוטה להינעל ולהעביר עומס לגב התחתון.',
-    how:['עמידת שש.','העברת יד אחת מתחת לגוף לצד השני, הכתף מתקרבת לרצפה.',
-      'חזרה ופתיחת אותה יד לתקרה, המבט עוקב.'],
-    cues:['האגן נשאר מעל הברכיים ולא מסתובב איתו.',
-      'תנועה רציפה, נשימה בכל כיוון.',
-      'הזרוע התומכת יציבה.']},
-  hipCircles:{n:'סיבובי אגן בעמידה',pose:'stand',sec:40,
-    why:'מחממת את מפרק הירך לפני עומס, בדיוק מה שאגן נעול צריך.',
-    how:['עמידה, ידיים על המותניים.',
-      'סיבובי אגן גדולים לכיוון אחד, ואז לכיוון השני.'],
-    cues:['הרגליים נשארות במקום.',
-      'לחפש את הטווח הגדול ביותר שנוח.',
-      'הגב לא מתקשת מוגזם בחלק האחורי של הסיבוב.']},
-  worldGreat:{n:'מכרע עם סיבוב',pose:'stand',sec:30,bi:true,
-    why:'פותחת כופפי ירך, מקרבים וגב אמצעי בתנועה אחת. חימום מלא לפלג הגוף התחתון.',
-    how:['צעד גדול קדימה למכרע, שתי הידיים על הרצפה בפנים הרגל הקדמית.',
-      'המרפק של הצד הקדמי יורד לכיוון הרצפה.',
-      'אותה יד נפתחת לתקרה בסיבוב, מבט עוקב. חזרה והחלפה.'],
-    cues:['הרגל האחורית ישרה והעקב נדחף אחורה.',
-      'הסיבוב מהגב האמצעי, לא מהמותניים.',
-      'אם קשה להגיע לרצפה, לשים ספר או כיסא נמוך מתחת ליד.']},
-  rollDown:{n:'גלגול חוליה חוליה',pose:'stand',sec:45,
-    why:'מלמדת את הגב לזוז חוליה אחר חוליה במקום כגוש אחד.',
-    how:['עמידה זקופה, ברכיים רכות.',
-      'הורדת הסנטר לחזה וגלגול איטי כלפי מטה, חוליה אחרי חוליה.',
-      'תלייה רפויה למטה לשתי נשימות, וגלגול איטי חזרה למעלה.'],
-    cues:['הידיים והצוואר רפויים לגמרי.',
-      'העלייה איטית יותר מהירידה.',
-      'הברכיים כפופות קלות כל הזמן.']},
-
-  /* ===== סטטי, בסוף ===== */
-  childPose:{n:'תנוחת ילד מורחבת',pose:'kneel',sec:60,
-    why:'משחררת את כל שרשרת הגב האחורית ומרגיעה את מערכת העצבים אחרי אימון.',
-    how:['ישיבה על העקבים, ברכיים פתוחות לרוחב.',
-      'הליכה עם הידיים קדימה עד שהמצח מגיע לרצפה או לכרית.',
-      'שקיעה של האגן לכיוון העקבים ונשימה עמוקה לתוך הגב.'],
-    cues:['אם הברכיים כואבות, לשים כרית בין הישבן לעקבים.',
-      'לנשום לתוך הגב ולא לתוך הבטן, ההרחבה מורגשת מאחורה.',
-      'הכתפיים רפויות, לא נדחפות לאוזניים.']},
-  supineTwist:{n:'פיתול בשכיבה',pose:'supine',sec:30,bi:true,
-    why:'המתיחה הכי טובה לגב תחתון תפוס. משחררת גם את הישבן ואת הצלעות.',
-    how:['שכיבה על הגב, ברכיים כפופות.',
-      'הפלת שתי הברכיים לצד אחד, הידיים פרושות בצורת T.',
-      'הראש מסתובב לצד הנגדי, נשימה עמוקה והחזקה.'],
-    cues:['שתי הכתפיים נשארות על הרצפה, גם במחיר של טווח קטן יותר.',
-      'לא לדחוף את הברכיים למטה עם היד, נותנים למשקל לעשות את העבודה.',
-      'אם הגב התחתון צובט, להרים את הברכיים גבוה יותר לכיוון החזה.']},
-  figure4:{n:'פיגורה 4',pose:'supine',sec:30,bi:true,
-    why:'מכוונת לפיריפורמיס ולישבן. חלק גדול מכאבי הגב התחתון מתחילים בדיוק שם.',
-    how:['שכיבה על הגב, הנחת קרסול אחד על הברך הנגדית בצורת 4.',
-      'תפיסת הירך האחורית ומשיכה בעדינות לכיוון החזה.',
-      'החזקה ונשימה.'],
-    cues:['הברך של הרגל העליונה נדחפת החוצה בעדינות.',
-      'הראש והכתפיים נשארים על הרצפה.',
-      'אם קשה להגיע לירך, להשתמש במגבת סביבה.']},
-  seatedTwist:{n:'פיתול בישיבה',pose:'seat',sec:30,bi:true,
-    why:'מאריכה את הגב לאורך ומשחררת את הגב האמצעי בישיבה.',
-    how:['ישיבה עם רגליים ישרות, כיפוף רגל אחת והנחתה מעבר לברך הנגדית.',
-      'המרפק הנגדי נשען על הברך הכפופה.',
-      'התארכות למעלה בשאיפה, סיבוב בנשיפה.'],
-    cues:['הישיבה על שתי עצמות הישיבה, לא נופלים לצד אחד.',
-      'הסיבוב מתחיל מהבטן ולא מהצוואר.',
-      'הגב ארוך, לא מתעגל בזמן הסיבוב.']},
-  hamstring:{n:'מתיחת המסטרינג בישיבה',pose:'seat',sec:30,bi:true,
-    why:'המסטרינג קצר מושך את האגן אחורה ומשטח את הגב התחתון. זה מקור נפוץ לכאב.',
-    how:['ישיבה, רגל אחת ישרה קדימה והשנייה מקופלת פנימה.',
-      'התארכות מהאגן קדימה מעל הרגל הישרה, גב ישר.',
-      'החזקה במקום שבו מרגישים מתיחה בירך האחורית.'],
-    cues:['הכיפוף מהירך ולא מהגב. גב עגול מבטל את התרגיל.',
-      'הברך של הרגל הישרה יכולה להיות כפופה קלות.',
-      'לא מחפשים לגעת בבהונות אלא להרגיש מתיחה.']},
-  butterfly:{n:'פרפר',pose:'seat',sec:55,
-    why:'פותחת מקרבים ומפשעות, אזור שמושך את האגן ומשפיע ישירות על הגב.',
-    how:['ישיבה, כפות הרגליים צמודות זו לזו, הברכיים נופלות לצדדים.',
-      'תפיסת כפות הרגליים והתארכות של הגב כלפי מעלה.',
-      'נטייה עדינה קדימה מהירך.'],
-    cues:['לא לדחוף את הברכיים למטה בכוח.',
-      'ככל שהעקבים רחוקים מהגוף המתיחה עדינה יותר.',
-      'לשבת על קצה כרית אם הגב מתעגל.']},
-  sphinx:{n:'ספינקס',pose:'prone',sec:45,
-    why:'יישור עדין של הגב התחתון שמאזן שעות ישיבה. הגרסה הבטוחה של קוברה.',
-    how:['שכיבה על הבטן, מרפקים מתחת לכתפיים ואמות על הרצפה.',
-      'דחיפה קלה של האמות והתארכות של החזה קדימה ולמעלה.',
-      'נשימה רגועה, החזקה.'],
-    cues:['הישבן והרגליים רפויים, לא מכווצים.',
-      'אם מרגישים צביטה בגב התחתון, להזיז את המרפקים קדימה ולהנמיך.',
-      'הכתפיים רחוקות מהאוזניים.']},
-  tableStretch:{n:'מתיחת גב עליון על משטח',pose:'stand',sec:50,
-    why:'פותחת את הגב העליון והכתפיים ומורידה את הכיפוף שנוצר משעות מול מסך.',
-    how:['עמידה במרחק צעד משולחן או משיש.',
-      'הנחת הידיים על המשטח וצעד לאחור עד שהגו מקביל לרצפה.',
-      'שקיעה של החזה כלפי מטה בין הידיים.'],
-    cues:['הרגליים מתחת לאגן, לא מאחוריו.',
-      'האוזניים בין הזרועות, הצוואר לא צונח.',
-      'הגב התחתון ארוך, לא נופל לקשת עמוקה.']},
-  kneesChest:{n:'ברכיים לחזה',pose:'supine',sec:45,
-    why:'סוגרת את השרשרת האחורית ומורידה לחץ מהחוליות התחתונות.',
-    how:['שכיבה על הגב, משיכת שתי הברכיים לכיוון החזה.',
-      'חיבוק הרגליים והתנדנדות עדינה מצד לצד.'],
-    cues:['הראש נשאר על הרצפה.',
-      'המשיכה עדינה, לא לוחצים עד סוף הטווח.',
-      'לנשום עמוק, הבטן דוחפת את הירכיים.']},
-  lowLunge:{n:'מתיחת כופף ירך',pose:'kneel',sec:30,bi:true,
-    why:'כופף ירך קצר מטה את האגן קדימה ומייצר לחץ קבוע על הגב התחתון. זו המתיחה שהכי חסרה לרוב האנשים.',
-    how:['כריעה על ברך אחת, הרגל השנייה כפופה קדימה בזווית ישרה.',
-      'הכנסת האגן פנימה ומטה עד שמרגישים מתיחה בקדמת הירך האחורית.',
-      'החזקה ונשימה.'],
-    cues:['הכיווץ של הישבן בצד האחורי מעמיק את המתיחה ומגן על הגב.',
-      'לא לדחוף את הברך הקדמית מעבר לקרסול.',
-      'לשים כרית או מגבת מתחת לברך התחתונה.']},
-  threadNeedle:{n:'שרוך המחט',pose:'quad',sec:30,bi:true,
-    why:'משחררת את הגב האמצעי ואת השכמות, ומורידה עומס מהגב התחתון.',
-    how:['עמידת שש, העברת יד אחת מתחת לגוף לצד השני.',
-      'הכתף והרקה נחות על הרצפה.',
-      'היד השנייה יכולה להישלח קדימה או לחבק את הגב התחתון.'],
-    cues:['האגן נשאר גבוה מעל הברכיים.',
-      'לנשום לתוך השכמה שנמתחת.',
-      'אם הצוואר לא נוח, לשים כרית מתחת לראש.']},
-  nineNinety:{n:'ישיבת 90-90',pose:'seat',sec:30,bi:true,
-    why:'עובדת על סיבוב פנימי וחיצוני של הירך יחד. פותחת אגן נעול לעומק.',
-    how:['ישיבה, רגל קדמית כפופה 90 מעלות לפנים והרגל האחורית 90 מעלות לצד.',
-      'ישיבה זקופה, ואז נטייה עדינה קדימה מעל הרגל הקדמית.',
-      'החזקה, ואז החלפת צד.'],
-    cues:['הישיבה על שתי עצמות הישיבה.',
-      'הגב ארוך, הנטייה מהירך.',
-      'אם הברכיים לא מגיעות לרצפה, לשבת על כרית.']},
-  happyBaby:{n:'תינוק שמח',pose:'supine',sec:45,
-    why:'פותחת את הירכיים הפנימיות ומאריכה את הגב התחתון בלי עומס.',
-    how:['שכיבה על הגב, משיכת שתי הברכיים לצדי בית החזה.',
-      'תפיסת כפות הרגליים או השוקיים מבחוץ.',
-      'משיכה עדינה כלפי מטה, הגב התחתון שוקע לרצפה.'],
-    cues:['הגב התחתון נשאר על הרצפה.',
-      'הקרסוליים מעל הברכיים.',
-      'אפשר להתנדנד קלות מצד לצד לעיסוי הגב.']},
-  calfWall:{n:'מתיחת שוק מול קיר',pose:'stand',sec:30,bi:true,
-    why:'שוק קצר משנה את דפוס ההליכה ומעלה עומס לאורך כל השרשרת האחורית עד הגב.',
-    how:['ידיים על הקיר, רגל אחת מאחור ישרה, העקב נדחף לרצפה.',
-      'הרגל הקדמית כפופה, הגוף נשען לכיוון הקיר.',
-      'החזקה, ואז כיפוף קל של הברך האחורית למתיחת הסובך.'],
-    cues:['אצבעות הרגל האחורית קדימה ולא החוצה.',
-      'העקב האחורי לא מתרומם.',
-      'הגב ישר, לא מתקמרים.']},
-  latChild:{n:'מתיחת רחב גבי בצד',pose:'kneel',sec:30,bi:true,
-    why:'הרחב גבי מחבר את הזרוע לאגן. כשהוא קצר, הגב התחתון משלם.',
-    how:['מתנוחת ילד, הזזת שתי הידיים לצד אחד עד קצה המזרן.',
-      'שקיעה של בית השחי לכיוון הרצפה.',
-      'החזקה ונשימה לתוך הצד שנמתח, ואז החלפה.'],
-    cues:['שני צדי האגן נשארים על העקבים.',
-      'המתיחה מורגשת מבית השחי ועד המותן.',
-      'לא לסובב את הגו, רק להזיז את הידיים.']},
-  neckTrap:{n:'מתיחת צוואר וטרפז',pose:'seat',sec:30,bi:true,
-    why:'משחררת את המתח שנאסף בצוואר ובכתפיים מישיבה מול מחשב.',
-    how:['ישיבה זקופה, יד אחת אוחזת בקצה הכיסא או מתחת לישבן.',
-      'הטיית האוזן לכתף הנגדית, היד השנייה מוסיפה משקל עדין על הראש.',
-      'החזקה ונשימה, ואז החלפת צד.'],
-    cues:['בלי משיכה, רק משקל היד.',
-      'הכתף של הצד הנמתח נשארת למטה.',
-      'להימנע מסיבוב הראש, זו הטיה בלבד.']},
-  frogSoft:{n:'צפרדע עדינה',pose:'quad',sec:50,
-    why:'פתיחת מקרבים עמוקה שמשחררת את האגן ומורידה משיכה מהגב.',
-    how:['עמידת שש, פתיחת הברכיים לצדדים כמה שנוח.',
-      'הקרסוליים בקו הברכיים, האמות על הרצפה.',
-      'הזזת האגן אחורה בעדינות והחזקה.'],
-    cues:['לשים כרית מתחת לברכיים.',
-      'טווח נוח בלבד, זו מתיחה שקל להגזים בה.',
-      'הגב התחתון נשאר ארוך ולא נופל לקשת.']},
-  chairGlute:{n:'מתיחת ישבן בישיבה',pose:'chair',sec:30,bi:true,
-    why:'הגרסה של פיגורה 4 לכיסא. אפשר לעשות אותה גם באמצע יום עבודה.',
-    how:['ישיבה על קצה כיסא, הנחת קרסול אחד על הברך הנגדית.',
-      'גב ישר, נטייה עדינה קדימה מהירך.',
-      'החזקה, ואז החלפת צד.'],
-    cues:['הגב לא מתעגל, הנטייה מהאגן.',
-      'הברך העליונה נשמטת לצד ולא נדחפת בכוח.',
-      'שתי כפות הרגליים יציבות.']},
-
-  /* ===== חיזוק גב ===== */
-  birdDog:{n:'כלב ציפור',pose:'quad',sec:30,bi:true,
-    why:'התרגיל הבסיסי ליציבות הגב. מחזק את זקפי הגב מול הבטן החזקה שלך.',
-    how:['עמידת שש, גב ישר וליבה אסופה.',
-      'מתיחת יד אחת קדימה והרגל הנגדית אחורה, עד קו ישר אחד.',
-      'החזקה של 3 שניות, חזרה, והחלפת צד. עובדים לסירוגין לאורך הזמן.'],
-    cues:['האגן נשאר מקביל לרצפה, בלי הטיה לצד.',
-      'הרגל לא עולה מעל גובה האגן.',
-      'הצוואר בהמשך העמוד, המבט לרצפה.']},
-  ytw:{n:'Y-T-W בשכיבת פנים',pose:'prone',sec:50,
-    why:'מחזק את מייצבי השכמה והגב העליון, בדיוק האזור שנחלש מישיבה.',
-    how:['שכיבה על הבטן, המצח על הרצפה.',
-      'הרמת הידיים בצורת Y מעל הראש, הורדה.',
-      'הרמה בצורת T לצדדים, הורדה.',
-      'הרמה בצורת W עם מרפקים כפופים ליד הצלעות, הורדה. חוזרים במחזור.'],
-    cues:['ההרמה מהשכמות ולא מהידיים.',
-      'הראש נשאר למטה, לא מרימים את הצוואר.',
-      'הרמה קטנה ואיכותית עדיפה על גדולה ומתנדנדת.']},
-  superman:{n:'סופרמן מתחלף',pose:'prone',sec:45,
-    why:'מחזק את כל שרשרת הגב האחורית, מהצוואר עד הישבן.',
-    how:['שכיבה על הבטן, ידיים קדימה ורגליים ישרות.',
-      'הרמת יד אחת והרגל הנגדית יחד לגובה נמוך.',
-      'החזקה של שנייה, הורדה והחלפת צד.'],
-    cues:['הגרסה המתחלפת עדינה יותר לגב מהרמה של הכל יחד.',
-      'הרמה של כמה סנטימטרים מספיקה.',
-      'המבט לרצפה, לא מרימים את הראש.']},
-  sidePlankKnee:{n:'פלאנק צד על ברך',pose:'side',sec:30,bi:true,
-    why:'מחזק את מייצבי האגן הצדדיים. אגן יציב מוריד עומס מהגב התחתון.',
-    how:['שכיבה על הצד, מרפק מתחת לכתף, ברכיים כפופות.',
-      'הרמת האגן עד קו ישר מהראש עד הברכיים.',
-      'החזקה ונשימה, ואז החלפת צד.'],
-    cues:['האגן לא נופל אחורה, הגוף במישור אחד.',
-      'הכתף התומכת רחוקה מהאוזן.',
-      'להתחיל מ-15 שניות ולהאריך בהדרגה.']},
-  hipHinge:{n:'כיפוף ירך',pose:'stand',sec:45,
-    why:'מלמד את הגוף להתכופף מהירך ולא מהגב. זו ההרגלה שמונעת את הכאב ביומיום.',
-    how:['עמידה ברוחב האגן, ברכיים רכות, מקל או ידיים לאורך הגב.',
-      'דחיפת האגן אחורה וירידה של הגו קדימה בגב ישר.',
-      'עצירה כשמרגישים מתיחה בירך האחורית, וחזרה בדחיפת האגן קדימה.'],
-    cues:['הגב שומר על קו ישר לגמרי לאורך התנועה.',
-      'התנועה אחורה ולא למטה.',
-      'הישבן הוא שמחזיר אותך למעלה.']},
-  revSnow:{n:'מלאך שלג הפוך',pose:'prone',sec:45,
-    why:'פותח את החזה ומחזק את הגב העליון בו זמנית.',
-    how:['שכיבה על הבטן, ידיים לצדי הגוף וכפות ידיים כלפי מטה.',
-      'הרמת הידיים מהרצפה והחלקה איטית קדימה מעל הראש.',
-      'חזרה איטית לצדי הגוף. הידיים לא נוגעות ברצפה.'],
-    cues:['הידיים נשארות ישרות.',
-      'התנועה איטית מאוד, זה תרגיל של שליטה.',
-      'הכתפיים רחוקות מהאוזניים.']},
-  wallAngel:{n:'מלאך קיר',pose:'stand',sec:45,
-    why:'מתקן יציבה מכופפת ומחזק את הגב העליון בעמידה.',
-    how:['עמידה עם הגב לקיר, כפות הרגליים כ-20 סנטימטר מהקיר.',
-      'הצמדת הגב התחתון, הגב העליון והראש לקיר.',
-      'הידיים בצורת W על הקיר, החלקה למעלה ל-Y וחזרה.'],
-    cues:['שומרים על מגע של האמות בקיר לאורך התנועה.',
-      'הגב התחתון לא מתרומם מהקיר.',
-      'טווח קטן שנשמר עדיף על טווח גדול שמאבד מגע.']},
-  proneSwim:{n:'שחייה בשכיבת פנים',pose:'prone',sec:45,
-    why:'סיבולת לשרירי הגב. מחזק בלי עומס על החוליות.',
-    how:['שכיבה על הבטן, ידיים קדימה ורגליים ישרות.',
-      'הרמה קלה של הידיים והרגליים מהרצפה.',
-      'תנועות שחייה קטנות ומהירות של יד ורגל נגדית לסירוגין.'],
-    cues:['הבטן אסופה, האגן צמוד לרצפה.',
-      'המבט לרצפה.',
-      'תנועות קטנות, לא לנסות להרים גבוה.']}
-};
-
 /* ---------- הרכב הבלוקים ---------- */
 const BLOCKS = {
-  warm:{title:'מתיחות דינמיות',prog:false,color:'var(--aqua)',
+  warm:{title:'מתיחות דינמיות',prog:false,
     anchors:['catCow','pelvicTilt'],
     pool:['standTwist','deepSquat','inchworm','wipers','sideBendD','threadDyn','hipCircles','worldGreat','rollDown','legSwing','chestOpen'],
     pick:2},
-  cool:{title:'מתיחות סטטיות',prog:true,color:'var(--orange)',
+  cool:{title:'מתיחות סטטיות',prog:true,
     anchors:['childPose','supineTwist','figure4'],
     pool:['seatedTwist','hamstring','butterfly','sphinx','tableStretch','kneesChest','lowLunge',
           'threadNeedle','nineNinety','happyBaby','calfWall','latChild','neckTrap','frogSoft','chairGlute'],
     pick:2},
-  back:{title:'חיזוק גב',prog:true,color:'var(--blue)',
+  back:{title:'חיזוק גב',prog:true,
     anchors:['birdDog'],
     pool:['ytw','superman','sidePlankKnee','hipHinge','revSnow','wallAngel','proneSwim'],
     pick:2}
@@ -1611,20 +1565,6 @@ function dMark(id){
   dSave();
 }
 
-/* ---------- מצב מונה החזרות לכל תרגיל ---------- */
-const RKEY = 'repMode_v1';
-let repMode = {};
-function rmLoad(){ try{ const r = localStorage.getItem(RKEY); if(r) repMode = JSON.parse(r) || {}; }catch(e){} }
-function rmSave(){ try{ localStorage.setItem(RKEY, JSON.stringify(repMode)); }catch(e){} }
-function modeOf(id){ return repMode[id] === 'tap' ? 'tap' : 'auto'; }
-function toggleMode(){
-  const st = Q[qi];
-  if(!st || st.kind !== 'reps' || !st.exId) return;
-  repMode[st.exId] = modeOf(st.exId) === 'auto' ? 'tap' : 'auto';
-  rmSave();
-  loadStep(false);
-}
-
 /* ---------- רמה והדרגתיות ---------- */
 function stretchDays(){
   return Object.keys(day.days).filter(k=>{
@@ -1634,7 +1574,7 @@ function stretchDays(){
 }
 function levelNow(){ return Math.min(4, 1 + Math.floor(stretchDays()/7)); }
 const LEVEL_ADD = [0, 5, 10, 15];
-function secFor(key, base){
+function holdFor(key, base){
   const b = BLOCKS[key];
   return (b && b.prog === false) ? base : base + LEVEL_ADD[levelNow()-1];
 }
@@ -1651,201 +1591,77 @@ function blockList(key){
   for(let i=0;i<k;i++) out.push(b.pool[(idx*b.pick + i) % n]);
   return out;
 }
-
+function doseOf(id, key){
+  const e = ST[id];
+  if(e.hold){
+    const h = holdFor(key, e.hold);
+    return e.bi ? `להחזיק ${h} שניות בצד ימין, ואז ${h} שניות בצד שמאל` : `להחזיק ${h} שניות`;
+  }
+  return e.reps;
+}
+function exSeconds(id, key){
+  const e = ST[id];
+  if(e.hold) return holdFor(key, e.hold) * (e.bi ? 2 : 1);
+  return e.est || 45;
+}
 function blockSeconds(key){
   const ids = blockList(key);
   let t = 0;
-  ids.forEach((id,i)=>{
-    const e = ST[id];
-    t += secFor(key, e.sec) * (e.bi ? 2 : 1);
-    if(i < ids.length-1) t += 8;
-  });
+  ids.forEach((id,i)=>{ t += exSeconds(id, key); if(i < ids.length-1) t += 8; });
   return t;
 }
 function mmss(s){ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
 
-/* ---------- נגן ---------- */
-let Q = [], qi = 0, left = 0, endAt = 0, tapN = 0, tick = null, playing = false, onFinish = null, actx = null;
-function initAudio(){
-  try{
-    if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)();
-    if(actx.state === 'suspended') actx.resume();
-  }catch(e){}
-}
-function beep(f,d){
-  try{
-    if(!actx) return;
-    const o = actx.createOscillator(), g = actx.createGain();
-    o.connect(g); g.connect(actx.destination);
-    o.frequency.value = f; o.type = 'sine';
-    g.gain.setValueAtTime(.0001, actx.currentTime);
-    g.gain.exponentialRampToValueAtTime(.25, actx.currentTime+.02);
-    g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime+d);
-    o.start(); o.stop(actx.currentTime+d+.05);
-  }catch(e){}
-}
-let wake = null;
-async function keepAwake(on){
-  try{
-    if(on && 'wakeLock' in navigator){ wake = await navigator.wakeLock.request('screen'); }
-    else if(wake){ wake.release(); wake = null; }
-  }catch(e){}
-}
-
+/* ---------- נגן כרטיסים ---------- */
+let Q = [], qi = 0, onFinish = null;
 function openPlayer(queue, finishId){
-  initAudio();
   Q = queue; qi = 0; onFinish = finishId;
   document.getElementById('player').classList.add('on');
   document.body.style.overflow = 'hidden';
-  keepAwake(true);
-  loadStep(true);
+  showCard();
 }
 function closePlayer(){
-  playing = false;
-  if(tick){ clearInterval(tick); tick = null; }
   document.getElementById('player').classList.remove('on');
   document.body.style.overflow = '';
-  keepAwake(false);
   renderAll();
 }
-function loadStep(autoplay){
+function showCard(){
   if(qi >= Q.length){ finishSession(); return; }
   const s = Q[qi];
-  left = s.sec; tapN = 0;
-  const tapMode = s.kind === 'reps' && s.exId && modeOf(s.exId) === 'tap';
-  if(tapMode) autoplay = false;
-
-  document.getElementById('pOf').innerHTML =
-    `<b>${s.block}</b> · שלב ${qi+1} מתוך ${Q.length}`;
+  document.getElementById('pOf').innerHTML = `<b>${s.block}</b> · ${qi+1} מתוך ${Q.length}`;
   document.getElementById('pSeg').innerHTML =
     Q.map((_,i)=>`<i class="${i<qi?'on':(i===qi?'cur':'')}"></i>`).join('');
-  document.getElementById('pName').textContent = s.name;
-  document.getElementById('pSideWrap').innerHTML =
-    s.side ? `<span class="p-side ${s.kind==='rest'?'rest':''}">${s.side}</span>` : '';
   document.getElementById('pFig').innerHTML = s.fig ? `<div class="p-fig">${s.fig}</div>` : '';
-  document.getElementById('pInfo').innerHTML = s.how
-    ? `${s.why?`<div class="why">${s.why}</div>`:''}
-       <h5>שלבי הביצוע</h5><ol>${s.how.map(x=>`<li>${x}</li>`).join('')}</ol>
-       <h5 class="c">חשוב להקפיד</h5><ul>${s.cues.map(x=>`<li>${x}</li>`).join('')}</ul>`
-    : '';
-
-  playing = !!autoplay;
-  endAt = Date.now() + left*1000;
-  drawDial();
-  updateMain();
+  document.getElementById('pName').textContent = s.name;
+  document.getElementById('pDose').innerHTML = s.dose ? `<span class="dose">${s.dose}</span>` : '';
+  document.getElementById('pInfo').innerHTML =
+    `${s.why ? `<div class="why">${s.why}</div>` : ''}
+     ${s.start ? `<h5 class="s">מנח התחלה</h5><p>${s.start}</p>` : ''}
+     ${s.how && s.how.length ? `<h5>ביצוע</h5><ol>${s.how.map(x=>`<li>${x}</li>`).join('')}</ol>` : ''}
+     ${s.cues && s.cues.length ? `<h5 class="c">חשוב להקפיד</h5><ul>${s.cues.map(x=>`<li>${x}</li>`).join('')}</ul>` : ''}`;
+  document.getElementById('pDone').textContent = (qi === Q.length-1) ? 'סיימתי את החלק ✓' : 'סיימתי ✓';
+  document.getElementById('pPrev').style.visibility = qi === 0 ? 'hidden' : 'visible';
+  document.getElementById('pScroll').scrollTop = 0;
   fitInfo();
-  if(tick) clearInterval(tick);
-  tick = setInterval(step, 250);
 }
 function fitInfo(){
-  const el = document.getElementById('pInfo');
-  if(!el || !el.firstChild) return;
+  const el = document.getElementById('pScroll');
+  const info = document.getElementById('pInfo');
+  if(!el || !info) return;
   const apply = () => {
-    const why = el.querySelector('.why');
-    if(why) why.style.display = '';
     const over = () => el.scrollHeight > el.clientHeight + 1;
-    let fs = 0.88, guard = 0;
-    el.style.fontSize = fs + 'rem';
-    // שלב א: הקטנה מתונה של הטקסט
-    while(over() && fs > 0.72 && guard++ < 20){ fs -= 0.02; el.style.fontSize = fs.toFixed(2) + 'rem'; }
-    // שלב ב: הסתרת שורת ההסבר, שהיא הפחות חיונית תוך כדי ביצוע
-    if(over() && why) why.style.display = 'none';
-    // שלב ג: הקטנה נוספת רק אם עדיין צריך
-    while(over() && fs > 0.64 && guard++ < 40){ fs -= 0.02; el.style.fontSize = fs.toFixed(2) + 'rem'; }
+    let fs = 0.9, guard = 0;
+    info.style.fontSize = fs + 'rem';
+    while(over() && fs > 0.74 && guard++ < 20){ fs -= 0.02; info.style.fontSize = fs.toFixed(2) + 'rem'; }
   };
   if(typeof requestAnimationFrame === 'function') requestAnimationFrame(apply); else apply();
 }
 window.addEventListener('resize', ()=>{
   if(document.getElementById('player').classList.contains('on')) fitInfo();
 });
-
-function updateMain(){
-  const s = Q[qi], b = document.getElementById('pPlay');
-  if(s.kind === 'reps' && s.exId && modeOf(s.exId) === 'tap'){
-    b.textContent = 'חזרה +1'; b.className = 'main tap';
-  } else {
-    b.textContent = playing ? 'השהיה' : 'המשך'; b.className = 'main';
-  }
-}
-function drawDial(){
-  const s = Q[qi];
-  const w = document.getElementById('pDialWrap');
-  if(s.kind === 'reps'){
-    const tapMode = s.exId && modeOf(s.exId) === 'tap';
-    const total = s.reps;
-    const doneR = tapMode ? tapN : Math.min(total, Math.floor((s.sec-left)/s.tempo));
-    const pct = doneR/total;
-    const r = 92, c = 2*Math.PI*r;
-    w.innerHTML = `<div class="dial reps-dial" ${tapMode?'onclick="tapRep()"':''}>
-      <svg viewBox="0 0 214 214">
-        <circle cx="107" cy="107" r="${r}" stroke="rgba(255,255,255,.12)" stroke-width="14" fill="none"/>
-        <circle cx="107" cy="107" r="${r}" stroke="var(--pink)" stroke-width="14" fill="none"
-          stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}"/>
-      </svg>
-      <div class="txt">
-        <div class="reps">${doneR}<small> / ${total}</small></div>
-        <span>${tapMode ? 'הקישי על העיגול' : fmt(left)+' נותרו'}</span>
-      </div>
-    </div>
-    `;
-    document.getElementById('pExtra').innerHTML =
-      `${s.grip?`<span class="grip">${s.grip}</span>`:''}
-       ${s.exId?`<button class="mode-link" onclick="toggleMode()">${tapMode?'ספירה אוטומטית':'ספירה בהקשה'}</button>`:''}`;
-    return;
-  }
-  document.getElementById('pExtra').innerHTML = '';
-  const pct = s.sec ? (s.sec - left) / s.sec : 0;
-  const r = 100, c = 2*Math.PI*r;
-  w.innerHTML = `<div class="dial">
-    <svg viewBox="0 0 230 230">
-      <circle cx="115" cy="115" r="${r}" stroke="rgba(255,255,255,.12)" stroke-width="14" fill="none"/>
-      <circle cx="115" cy="115" r="${r}" stroke="${s.kind==='rest'?'var(--muted)':'var(--aqua)'}"
-        stroke-width="14" fill="none" stroke-linecap="round"
-        stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}"/>
-    </svg>
-    <div class="txt"><b>${fmt(left)}</b><span>${s.kind==='rest'?'מעבר':'החזקה'}</span></div>
-  </div>`;
-}
-function fmt(s){
-  const m = Math.floor(s/60), r = s%60;
-  return m > 0 ? `${m}:${String(r).padStart(2,'0')}` : String(r);
-}
-function step(){
-  if(!playing) return;
-  const nl = Math.max(0, Math.ceil((endAt - Date.now())/1000));
-  if(nl === left) return;
-  left = nl;
-  if(left === 3 || left === 2 || left === 1) beep(660,.09);
-  if(left <= 0){
-    beep(880,.28);
-    qi++;
-    loadStep(true);
-    return;
-  }
-  drawDial();
-}
-function togglePlay(){
-  initAudio();
-  const s = Q[qi];
-  if(s.kind === 'reps' && s.exId && modeOf(s.exId) === 'tap'){ tapRep(); return; }
-  playing = !playing;
-  if(playing) endAt = Date.now() + left*1000;
-  updateMain();
-}
-function tapRep(){
-  const s = Q[qi];
-  if(!s || s.kind !== 'reps') return;
-  initAudio();
-  tapN++;
-  if(tapN >= s.reps){ beep(880,.28); qi++; loadStep(true); return; }
-  beep(660,.07);
-  drawDial();
-}
-function nextStep(){ qi++; loadStep(playing); }
-function prevStep(){ if(qi > 0){ qi--; loadStep(playing); } }
+function nextCard(){ qi++; showCard(); }
+function prevCard(){ if(qi > 0){ qi--; showCard(); } }
 function finishSession(){
-  if(tick){ clearInterval(tick); tick = null; }
-  beep(1046,.4);
   const fin = onFinish;
   if(fin === 'glutes'){ markDone(); }
   else if(fin){ dMark(fin); }
@@ -1853,130 +1669,137 @@ function finishSession(){
   if(fin) go('today');
 }
 
-/* ---------- בניית תורים ---------- */
+/* ---------- בניית רצפי כרטיסים ---------- */
 function startBlock(key){
   const b = BLOCKS[key];
-  const ids = blockList(key);
-  const q = [];
-  ids.forEach((id,i)=>{
+  const q = blockList(key).map(id=>{
     const e = ST[id];
-    const sec = secFor(key, e.sec);
-    const f = SFIG[id];
-    if(e.bi){
-      q.push({kind:'ex',block:b.title,name:e.n,side:'צד ימין',sec,fig:f,why:e.why,how:e.how,cues:e.cues});
-      q.push({kind:'ex',block:b.title,name:e.n,side:'צד שמאל',sec,fig:f,why:e.why,how:e.how,cues:e.cues});
-    } else {
-      q.push({kind:'ex',block:b.title,name:e.n,side:'',sec,fig:f,why:e.why,how:e.how,cues:e.cues});
-    }
-    if(i < ids.length-1) q.push({kind:'rest',block:b.title,name:'מעבר לתרגיל הבא',side:'',sec:8});
+    return {block:b.title, name:e.n, fig:SFIG[id], dose:doseOf(id,key),
+      why:e.why, start:e.start, how:e.how, cues:e.cues};
   });
   openPlayer(q, key);
+}
+function showInfo(id, key){
+  const e = ST[id];
+  openPlayer([{block:'תצוגה מקדימה', name:e.n, fig:SFIG[id], dose:doseOf(id,key),
+    why:e.why, start:e.start, how:e.how, cues:e.cues}], null);
 }
 
 const GRIPS = ['כף היד פונה כלפי כף הרגל','כף היד פונה כלפי התקרה','כף היד פונה כלפי כף הרגל'];
 const BAND_ROUNDS = GRIPS.length;
-const BAND_HOW = ['עמידה על הרצועה עם כף רגל אחת, האחיזה ביד באותו צד.',
-  'רגליים ברוחב האגן, ברכיים כפופות קלות, גב ישר וליבה אסופה.',
-  'משיכה למעלה בכיפוף מרפק, המרפק צמוד לגוף.',
-  'ירידה איטית בשליטה עד יישור כמעט מלא של המרפק.'];
-const BAND_CUES = ['הגב נשאר ישר לחלוטין, בלי להיסחף אחורה עם הגו.',
-  'המרפק לא זז קדימה ואחורה, רק נפתח ונסגר.',
-  'הירידה איטית יותר מהעלייה, שם נמצא רוב האפקט.',
-  'אם הרצועה קלה מדי, לקצר אותה בעמידה רחבה יותר עליה.'];
+const bandSeconds = () => BAND_ROUNDS * 2 * 36 + (BAND_ROUNDS-1) * 10;
 function startBand(){
-  const q = [];
-  const tempo = 4;
-  for(let r=0;r<BAND_ROUNDS;r++){
-    ['יד ימין','יד שמאל'].forEach(side=>{
-      q.push({kind:'reps',block:`רצועה · סבב ${r+1} מתוך ${BAND_ROUNDS}`,name:'כפיפת מרפק עם רצועה',
-        side, sec:9*tempo, reps:9, tempo, grip:GRIPS[r], fig:SFIG.band, exId:'band',
-        why:'אחיזה כלפי הרגל עובדת ברכיאליס ואמות, אחיזה כלפי התקרה עובדת ביצפס.',
-        how:BAND_HOW, cues:BAND_CUES});
-    });
-    if(r < BAND_ROUNDS-1) q.push({kind:'rest',block:`רצועה · סבב ${r+1} מתוך ${BAND_ROUNDS}`,name:'מנוחה לפני הסבב הבא',side:'',sec:10});
-  }
-  openPlayer(q,'band');
+  const q = GRIPS.map((grip, r)=>({
+    block:'רצועה',
+    name:'כפיפת מרפק עם רצועה',
+    fig:SFIG.band,
+    dose:`${grip} · 9 חזרות יד ימין, 9 חזרות יד שמאל`,
+    why: r % 2 === 0
+      ? 'אחיזה כלפי הרגל עובדת על הברכיאליס ועל שרירי האמה.'
+      : 'אחיזה כלפי התקרה עובדת על הביצפס.',
+    start:'עומדים עם כף רגל ימין על אמצע הרצועה. אוחזים בשני הקצוות ביד ימין. רגליים ברוחב האגן, ברכיים מעט כפופות, גב ישר, בטן אסופה. מרפק ימין צמוד לצלעות.',
+    how:[`האחיזה בסבב הזה: ${grip}.`,
+      'מכופפים את מרפק ימין ומושכים את הרצועה למעלה לכיוון כתף ימין. המרפק לא זז מהצלעות, רק נפתח ונסגר.',
+      'יורדים לאט, כ-3 שניות, עד יישור כמעט מלא של המרפק. 9 חזרות.',
+      'מעבירים את הרצועה מתחת לכף רגל שמאל, אוחזים ביד שמאל, מרפק שמאל צמוד לצלעות. 9 חזרות באותה אחיזה.'],
+    cues:['הגב ישר לחלוטין. לא נסחפים אחורה עם הגו כדי לעזור למשיכה.',
+      'הירידה איטית יותר מהעלייה. שם רוב האפקט.',
+      'אם הרצועה קלה מדי, עומדים עליה ברוחב גדול יותר או מקצרים את האחיזה.']
+  }));
+  openPlayer(q, 'band');
 }
 function startPush(){
-  openPlayer([{kind:'reps',block:'שכיבות סמיכה',name:'שכיבות סמיכה',side:'',
-    sec:15*3, reps:15, tempo:3, grip:'', fig:SFIG.pushup, exId:'push',
-    why:'דוחפות את פלג הגוף העליון ומייצבות את הליבה בקו ישר אחד.',
-    how:['ידיים מעט רחבות מהכתפיים, גוף בקו ישר מהראש עד העקבים.',
-      'ירידה מבוקרת עד שהחזה קרוב לרצפה.',
-      'דחיפה חזרה עד יישור כמעט מלא של המרפקים.'],
-    cues:['האגן לא צונח ולא מתרומם.','המרפקים בזווית של כ-45 מעלות מהגוף ולא לצדדים.',
-      'אם קשה, לבצע על הברכיים או בזווית מול משטח גבוה.']}],'push');
+  openPlayer([{block:'שכיבות סמיכה', name:'שכיבות סמיכה', fig:SFIG.pushup, dose:'15 חזרות',
+    why:'מחזקות את החזה, הכתפיים והזרועות ומייצבות את הליבה בקו ישר אחד.',
+    start:'פלאנק על כפות הידיים: הידיים על הרצפה מעט רחבות מהכתפיים, אצבעות קדימה. הרגליים ישרות מאחור, על קצות הבהונות. הגוף בקו ישר מהראש עד העקבים.',
+    how:['מכופפים את המרפקים ויורדים בשליטה עד שהחזה קרוב לרצפה. המרפקים בזווית של כ-45 מעלות מהגוף, לא פתוחים לצדדים.',
+      'דוחפים את הרצפה וחוזרים למעלה עד יישור כמעט מלא של המרפקים.'],
+    cues:['האגן לא צונח ולא מתרומם. הגוף קרש אחד.','המבט לרצפה, הצוואר בהמשך הגב.','אם קשה, על הברכיים, או בזווית עם הידיים על משטח גבוה.']
+  }], 'push');
 }
 function startCardio(){
-  openPlayer([{kind:'ex',block:'אירובי',name:'אלפטיקל',side:'',sec:30*60,fig:SFIG.cardio,
-    why:'שלושים דקות בעצימות שמאפשרת לדבר במשפטים קצרים.',
-    how:['חימום של שלוש דקות בהתנגדות נמוכה.',
-      'עשרים וארבע דקות בקצב יציב.','שלוש דקות הרגעה בהתנגדות נמוכה.'],
-    cues:['הגב ישר, לא נשענים על הידיות במשקל מלא.',
-      'הצעד מלא, העקב יורד בכל סיבוב.','אם הגב התחתון מתחיל לכאוב, להוריד התנגדות.']}],'cardio');
+  openPlayer([{block:'אירובי', name:'אלפטיקל', fig:SFIG.cardio, dose:'30 דקות',
+    why:'עצימות שמאפשרת לדבר במשפטים קצרים, לא יותר.',
+    start:'',
+    how:['3 דקות חימום בהתנגדות נמוכה.','24 דקות בקצב יציב.','3 דקות הרגעה בהתנגדות נמוכה.'],
+    cues:['הגב ישר, לא נשענים על הידיות במשקל מלא.','הצעד מלא, העקב יורד בכל סיבוב.','אם הגב התחתון מתחיל לכאוב, מורידים התנגדות.']
+  }], 'cardio');
+}
+function startFree(){
+  openPlayer([{block:'חימום חופשי', name:'חימום חופשי', fig:SFIG.free, dose:'5 דקות לפי הרגשה',
+    why:'הגוף שלך יודע מה הוא צריך היום. הליכה במקום, הנפות ידיים, סיבובי כתפיים, קפיצות קלות, מה שמרגיש נכון.',
+    start:'',
+    how:[],
+    cues:['להתחיל עדין ולהגביר בהדרגה.','אם משהו תפוס הבוקר, לתת לו זמן במיוחד.']
+  }], 'free');
 }
 
-/* ---------- נגן החיטוב: סט אחרי סט ---------- */
-const GTEMPO = {bridge:2, bridge1:2, donkeyA:2, clam:2, sideRaise:2, innerLift:2, revLunge:3, donkeyC:2, bridgeHold:12};
-const REST_SET = 20, REST_EX = 20;
-function parseCount(c){
-  const m = String(c).match(/(\d+)\s*[xX×]\s*(\d+)/);
-  if(!m) return {sets:3, reps:12, bi:false};
-  return {sets:+m[1], reps:+m[2], bi:/לכל/.test(c)};
+/* ---------- כרטיסי החיטוב: כרטיס אחד לכל תרגיל, כולל כל הסטים ---------- */
+const HOLD_EX = {bridgeHold:10};
+/* איזה צד קודם, בלי לשנות את הסברי המקור */
+const SIDE_NOTE = {
+  bridge:'שכיבה על הגב. שתי כפות הרגליים על הרצפה, שתי הרגליים עובדות יחד.',
+  bridge1:'מתחילים ברגל ימין באוויר: כף רגל שמאל על הרצפה ותומכת, רגל ימין ישרה למעלה בהמשך קו הירך. אחרי 12 חזרות מחליפים: כף רגל ימין תומכת, רגל שמאל באוויר.',
+  donkeyA:'מתחילים ברגל ימין: שתי כפות הידיים וברך שמאל על הרצפה. רגל ימין עולה לאחור כפופה. אחרי 15 חזרות מחליפים: ברך ימין על הרצפה, רגל שמאל עולה.',
+  clam:'מתחילים על צד שמאל: שוכבים על צד שמאל, הראש נשען על יד שמאל, יד ימין על הרצפה לפני החזה. ברך ימין, העליונה, היא שנפתחת למעלה. אחרי 20 חזרות מסתובבים לצד ימין וברך שמאל נפתחת.',
+  sideRaise:'מתחילים על צד שמאל: שוכבים על צד שמאל, הראש על יד שמאל, יד ימין על הרצפה לפני החזה. רגל ימין, העליונה, היא שעולה. אחרי 15 חזרות מסתובבים לצד ימין ורגל שמאל עולה.',
+  innerLift:'מתחילים על צד ימין: שוכבים על צד ימין, הראש על יד ימין. רגל שמאל, העליונה, מקופלת קדימה עם כף הרגל על הרצפה לפני הגוף. רגל ימין, התחתונה, ישרה, והיא שעולה. אחרי 12 חזרות מסתובבים לצד שמאל ורגל שמאל עולה.',
+  revLunge:'מתחילים ברגל ימין: רגל שמאל נשארת קדימה במקום, רגל ימין צועדת גדול לאחור ויורדת. אחרי 10 חזרות מחליפים: רגל ימין נשארת קדימה, רגל שמאל צועדת לאחור.',
+  donkeyC:'מתחילים ברגל ימין: שתי כפות הידיים וברך שמאל על הרצפה. רגל ימין כפופה בועטת לאחור, עקב ימין לתקרה. אחרי 15 חזרות מחליפים: ברך ימין על הרצפה, רגל שמאל בועטת.',
+  bridgeHold:'שכיבה על הגב. שתי כפות הרגליים על הרצפה, שתי הרגליים עובדות יחד.'
+};
+function glutesDose(k, count){
+  const m = String(count).match(/(\d+)\s*[xX×]\s*(\d+)/);
+  if(!m) return count;
+  const sets = +m[1], reps = +m[2];
+  const per = /לכל רגל/.test(count) ? 'רגל' : (/לכל צד/.test(count) ? 'צד' : '');
+  if(per) return `${sets} סטים. בכל סט: ${reps} חזרות ${per} ימין, ואז ${reps} חזרות ${per} שמאל`;
+  if(HOLD_EX[k]) return `${sets} סטים × ${reps} חזרות. החזקה של ${HOLD_EX[k]} שניות בכל חזרה`;
+  return `${sets} סטים × ${reps} חזרות`;
 }
 function glutesQueue(){
   const type = typeOf(mem.done.length + 1);
   const wk = WORKOUTS[type];
-  const q = [];
-  wk.ex.forEach((k, ei)=>{
-    const e = EX[k], p = parseCount(e.count), tempo = GTEMPO[k] || 2;
-    const sides = p.bi ? ['צד ימין','צד שמאל'] : [''];
-    for(let st=0; st<p.sets; st++){
-      sides.forEach(side=>{
-        q.push({kind:'reps', block:`${wk.title} · ${e.name}`, name:e.name,
-          side:(side ? side + ' · ' : '') + `סט ${st+1} מתוך ${p.sets}`,
-          reps:p.reps, tempo, sec:p.reps*tempo, fig:FIGS[e.fig], exId:k,
-          why:e.goal.replace(/<[^>]*>/g,''), how:e.how, cues:e.cues});
-      });
-      const lastSet = (st === p.sets-1), lastEx = (ei === wk.ex.length-1);
-      if(!(lastSet && lastEx)){
-        q.push({kind:'rest', block:`${wk.title} · ${e.name}`,
-          name: lastSet ? 'מנוחה לפני התרגיל הבא' : 'מנוחה בין סטים',
-          side:'', sec: lastSet ? REST_EX : REST_SET});
-      }
-    }
+  return wk.ex.map(k=>{
+    const e = EX[k];
+    return {block:wk.title, name:e.name, fig:FIGS[e.fig], dose:glutesDose(k, e.count),
+      why:e.goal.replace(/<[^>]*>/g,''), start:SIDE_NOTE[k] || '', how:e.how, cues:e.cues.concat(['מנוחה של כ-20 שניות בין הסטים.'])};
   });
-  return q;
 }
-function glutesSeconds(){ return glutesQueue().reduce((a,s)=>a+s.sec, 0); }
+function glutesSeconds(){
+  const type = typeOf(mem.done.length + 1);
+  let t = 0;
+  WORKOUTS[type].ex.forEach(k=>{
+    const m = String(EX[k].count).match(/(\d+)\s*[xX×]\s*(\d+)/);
+    const sets = m ? +m[1] : 3, reps = m ? +m[2] : 12;
+    const bi = /לכל/.test(EX[k].count) ? 2 : 1;
+    const tempo = HOLD_EX[k] ? HOLD_EX[k] + 2 : 2;
+    t += sets * reps * bi * tempo + (sets-1) * 20;
+  });
+  t += (WORKOUTS[type].ex.length - 1) * 20;
+  return t;
+}
 function startGlutes(){
   if(glutesDoneToday() && !confirm('האימון של היום כבר סומן. להתחיל אותו שוב?')) return;
   openPlayer(glutesQueue(), 'glutes');
 }
 
 /* ---------- תחנות היום ---------- */
-const bandSeconds = () => BAND_ROUNDS*2*36 + (BAND_ROUNDS-1)*10;
 const STATIONS = [
-  {id:'warm',   n:'מתיחות דינמיות',    m:()=>`${blockList('warm').length} תרגילים`, t:()=>blockSeconds('warm'), c:'var(--aqua)',   go:()=>startBlock('warm')},
-  {id:'glutes', n:'חיטוב ישבן וירכיים', m:()=>'3 תרגילים · 3 סטים',               t:glutesSeconds,             c:'var(--pink)',   go:startGlutes},
-  {id:'band',   n:'רצועה',              m:()=>`${BAND_ROUNDS} סבבים · 9 בכל צד`,  t:bandSeconds,               c:'var(--orange)', go:startBand},
-  {id:'push',   n:'שכיבות סמיכה',       m:()=>'15 חזרות',                          t:()=>45,                    c:'var(--violet)', go:startPush},
-  {id:'cardio', n:'אירובי · אלפטיקל',   m:()=>'קצב יציב',                          t:()=>1800,                  c:'var(--violet)', go:startCardio},
-  {id:'back',   n:'חיזוק גב',           m:()=>'3 תרגילים',                         t:()=>blockSeconds('back'),  c:'var(--blue)',   go:()=>startBlock('back')},
-  {id:'cool',   n:'מתיחות סטטיות',      m:()=>`${blockList('cool').length} תרגילים`, t:()=>blockSeconds('cool'), c:'var(--orange)', go:()=>startBlock('cool')}
+  {id:'free',   n:'חימום חופשי',        m:()=>'לפי הרגשה',                            t:()=>300,                   c:'var(--lime)',   go:startFree},
+  {id:'warm',   n:'מתיחות דינמיות',     m:()=>`${blockList('warm').length} תרגילים`,  t:()=>blockSeconds('warm'),  c:'var(--aqua)',   go:()=>startBlock('warm')},
+  {id:'glutes', n:'חיטוב ישבן וירכיים',  m:()=>'3 תרגילים · 3 סטים',                 t:glutesSeconds,             c:'var(--pink)',   go:startGlutes},
+  {id:'band',   n:'רצועה',               m:()=>`${BAND_ROUNDS} סבבים · 9 בכל צד`,    t:bandSeconds,               c:'var(--orange)', go:startBand},
+  {id:'push',   n:'שכיבות סמיכה',        m:()=>'15 חזרות',                            t:()=>45,                    c:'var(--violet)', go:startPush},
+  {id:'cardio', n:'אירובי · אלפטיקל',    m:()=>'קצב יציב',                            t:()=>1800,                  c:'var(--violet)', go:startCardio},
+  {id:'back',   n:'חיזוק גב',            m:()=>'3 תרגילים',                           t:()=>blockSeconds('back'),  c:'var(--blue)',   go:()=>startBlock('back')},
+  {id:'cool',   n:'מתיחות סטטיות',       m:()=>`${blockList('cool').length} תרגילים`, t:()=>blockSeconds('cool'),  c:'var(--orange)', go:()=>startBlock('cool')}
 ];
 function totalSeconds(){ return STATIONS.reduce((a,s)=>a+s.t(), 0); }
 function leftSeconds(){ return STATIONS.filter(s=>!stDone(s.id)).reduce((a,s)=>a+s.t(), 0); }
-function minLabel(sec){
-  const m = Math.round(sec/60);
-  return m + (m === 1 ? ' דקה' : ' דקות');
-}
-function glutesDoneToday(){
-  return mem.done.some(d=>d.date === todayISO());
-}
-function stDone(id){
-  return id === 'glutes' ? glutesDoneToday() : dHas(todayISO(), id);
-}
+function minLabel(sec){ const m = Math.round(sec/60); return m + (m === 1 ? ' דקה' : ' דקות'); }
+function glutesDoneToday(){ return mem.done.some(d=>d.date === todayISO()); }
+function stDone(id){ return id === 'glutes' ? glutesDoneToday() : dHas(todayISO(), id); }
 function tapStation(id){
   if(id === 'glutes'){ go('glutes'); return; }
   dToggle(id); renderAll();
@@ -1985,7 +1808,7 @@ function runStation(i){ STATIONS[i].go(); }
 
 /* ---------- ניווט ---------- */
 const TITLES = {
-  today:{t:'האימון היומי', s:'שבע תחנות, בסדר הנכון'},
+  today:{t:'האימון היומי', s:'שמונה תחנות, בסדר הנכון'},
   glutes:{t:'חיטוב ישבן וירכיים', s:'תוספת יומית לשגרת הכוח'},
   stretch:{t:'מתיחות וחיזוק גב', s:'דגש על הגב התחתון'},
   track:{t:'מעקב', s:'הרצף, הימים והדקות'}
@@ -2018,6 +1841,7 @@ function renderHeaderRing(){
   }
   ring.innerHTML = segs;
   document.getElementById('tRingPos').textContent = doneN;
+  document.getElementById('tRingOf').textContent = 'מתוך ' + N;
 }
 function renderToday(){
   const doneN = STATIONS.filter(s=>stDone(s.id)).length;
@@ -2032,16 +1856,15 @@ function renderToday(){
   const nextS = STATIONS.find(s=>!stDone(s.id));
   const tot = totalSeconds(), lft = leftSeconds();
   document.getElementById('todayNote').textContent =
-    doneN === 0 ? `סך הכל ${minLabel(tot)}. התחנה הראשונה מחכה לך.`
-    : (nextS ? `הבא בתור: ${nextS.n}. נותרו ${minLabel(lft)}.` : 'כל שבע התחנות הושלמו היום. כל הכבוד.');
+    doneN === 0 ? `סך הכל כ-${minLabel(tot)}. התחנה הראשונה מחכה לך.`
+    : (nextS ? `הבא בתור: ${nextS.n}. נותרו כ-${minLabel(lft)}.` : 'כל התחנות הושלמו היום. כל הכבוד.');
   document.getElementById('todayTotal').textContent = mmss(tot);
 
   document.getElementById('stationList').innerHTML = STATIONS.map((s,i)=>{
     const dn = stDone(s.id);
     return `<div class="station ${dn?'done':''}" style="--sc:${s.c}">
       <span class="st-step">${i+1}</span>
-      <button class="st-tick" onclick="tapStation('${s.id}')"
-        aria-label="סימון ${s.n}">${dn?'✓':''}</button>
+      <button class="st-tick" onclick="tapStation('${s.id}')" aria-label="סימון ${s.n}">${dn?'✓':''}</button>
       <div class="st-body">
         <div class="st-name">${s.n}</div>
         <div class="st-meta">${s.m()}</div>
@@ -2053,24 +1876,15 @@ function renderToday(){
   renderHeaderRing();
 }
 function srow(id, key){
-  const e = ST[id], sec = secFor(key, e.sec);
-  const t = e.bi ? `${sec} שנ׳ ×2` : `${sec} שנ׳`;
+  const e = ST[id];
   return `<div class="srow">
     <div class="pose">${SFIG[id]}</div>
-    <div style="min-width:0">
+    <div style="min-width:0;flex:1">
       <div class="nm">${e.n}</div>
-      <div class="pos">${POSE_HE[e.pose]}</div>
+      <div class="pos">${doseOf(id,key)}</div>
     </div>
-    <span class="sec">${t}</span>
     <button class="info" onclick="showInfo('${id}','${key}')" aria-label="פרטים">i</button>
   </div>`;
-}
-function showInfo(id, key){
-  const e = ST[id];
-  openPlayer([{kind:'ex',block:'תצוגה מקדימה',name:e.n,side:e.bi?'צד ימין':'',
-    sec:secFor(key, e.sec),fig:SFIG[id],why:e.why,how:e.how,cues:e.cues}], null);
-  playing = false;
-  document.getElementById('pPlay').textContent = 'המשך';
 }
 function renderStretch(){
   const lv = levelNow(), dn = stretchDays(), toNext = 7 - (dn % 7);
@@ -2079,13 +1893,12 @@ function renderStretch(){
     <p>${lv < 4
       ? `זמני ההחזקה במתיחות הסטטיות ובחיזוק הגב עולים ב-5 שניות בכל רמה. עוד ${toNext} ימים לרמה ${lv+1}.`
       : 'רמה מלאה. ההחזקות ארוכות והתרגילים ממשיכים להתחלף כל יום.'}
-    המתיחות הדינמיות נשארות קצרות בכוונה, חימום לא צריך החזקות ארוכות.
     העוגנים בכל בלוק קבועים, השאר מתחלפים כל יום.</p>
     <div class="pips">${[1,2,3,4].map(i=>`<i class="${i<=lv?'on':''}"></i>`).join('')}</div>`;
   ['warm','cool','back'].forEach(k=>{
     document.getElementById(k+'List').innerHTML = blockList(k).map(id=>srow(id,k)).join('');
-    document.getElementById(k+'Time').textContent = mmss(blockSeconds(k));
-    document.getElementById(k+'Btn').textContent = 'התחלה · ' + mmss(blockSeconds(k)) + ' דקות';
+    document.getElementById(k+'Time').textContent = 'כ-' + mmss(blockSeconds(k));
+    document.getElementById(k+'Btn').textContent = 'התחלה';
   });
 }
 function renderTrack(){
@@ -2093,7 +1906,6 @@ function renderTrack(){
   const glutesDays = mem.done.map(d=>d.date);
   const allDays = Array.from(new Set(keys.concat(glutesDays))).sort();
 
-  // רצף
   let streak = 0;
   const t = new Date();
   for(let i=0;i<400;i++){
@@ -2113,7 +1925,6 @@ function renderTrack(){
   });
   document.getElementById('kMin').textContent = mins;
 
-  // רשת 30 יום
   let g = '';
   for(let i=29;i>=0;i--){
     const dt = new Date(t.getTime() - i*86400000);
@@ -2124,7 +1935,6 @@ function renderTrack(){
   }
   document.getElementById('grid30').innerHTML = g;
 
-  // יומן
   const recent = allDays.slice(-14).reverse();
   document.getElementById('dayLog').innerHTML = recent.length === 0
     ? `<div class="empty">עוד אין ימים מתועדים. סמני תחנה במסך היום.</div>`
@@ -2152,17 +1962,8 @@ function renderAll(){
   renderTrack();
 }
 
-/* ---------- חזרה מרקע ---------- */
-document.addEventListener('visibilitychange', ()=>{
-  if(document.visibilityState !== 'visible') return;
-  if(!document.getElementById('player').classList.contains('on')) return;
-  keepAwake(true);
-  if(playing) step(); else drawDial();
-});
-
 /* ---------- אתחול ---------- */
 load();   // glutesTracker
-rmLoad(); // repMode_v1
 dLoad();  // dailyRoutine_v1
 go('today');
 
